@@ -22,11 +22,11 @@ python 03_코드/analysis_A_cruise_schedule.py   # 크루즈 신고 → 기항�
 python 03_코드/analysis_A_datalab.py           # 데이터랩 외국인 카드소비 원도심 비교
 python 03_코드/collect_C_youtube.py            # YouTube 댓글 수집(.ent에 youtubeapikey 필요)
 python 03_코드/test_optw.py                    # 모델 규칙 테스트
-python 03_코드/run_B_model.py                  # OPTW 전체 실행(수 시간 걸림)
+FAST=1 python 03_코드/run_B_model.py           # 루트·검증만(약 1시간). FAST 없이 돌리면 분산·골목까지(수 시간)
 cd 03_코드/문서빌드 && npm i docx pptxgenjs && node report.js && node deck.js
 ```
 
 ## 알려진 한계
-- 노드 19곳 중 10곳의 영업·대기 값은 추정치(`노드데이터_설명.md`).
+- 영업시간·좌표: 19곳 중 13곳은 부산시 맛집정보 API 실제 값(`collect_B_busanfood.py`, `.ent`에 datagokrkey 필요). 시장·마을 6곳과 줄 대기 시간은 공개 데이터가 없어 추정(`노드데이터_설명.md`, `노드_실데이터대조_1118_B.csv`).
 - 분산 배정·골목 시나리오·추천빈도지수는 노드 v2(수요점수·3곳 추가) 이전 결과다. v2 재계산은 시간 문제로 중단했다.
 - 데이터랩 금액 단위 미확인 → 비중·증가율만 사용. 상륙 승객 수 미확보.
