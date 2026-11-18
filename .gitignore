@@ -1,0 +1,10 @@
+# 비밀키
+.ent
+*.env
+youtube_key.txt
+# 실행 로그·백업·캐시
+03_코드/runB_log.txt
+*_v1백업.csv
+__pycache__/
+node_modules/
+~$*

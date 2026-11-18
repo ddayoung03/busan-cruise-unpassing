@@ -1,0 +1,22 @@
+﻿port,metric,value,year,source,status
+부산,크루즈 입항 항차,203,2025,https://www.fnnews.com/news/202601181910078014,verified
+부산,크루즈 입항 항차,114,2024,https://www.fnnews.com/news/202601181910078014,verified
+부산,크루즈 입항 항차(전망),420,2026,https://www.fnnews.com/news/202601181910078014,verified
+부산,크루즈 관광객(명),257000,2025,https://www.segye.com/newsView/20260727518260,verified
+부산,상반기 항차,219,2026H1,https://www.segye.com/newsView/20260727518260,verified
+부산,상반기 관광객(명),320000,2026H1,https://www.segye.com/newsView/20260727518260,verified
+부산,연간 관광객 전망(명),700000,2026,https://www.segye.com/newsView/20260727518260,verified
+부산,"입항 건수(신고, 입항목적 전체)",197,2025,data.go.kr 15164568,raw
+부산,"승객수 합계(신고, 외+내국인)",249541,2025,data.go.kr 15164568,raw
+부산,상반기 승객수 합계(신고),323537,2026H1,data.go.kr 15164568,raw
+제주,상반기 입항 횟수,163,2025H1,https://www.heraldk.com/article/2025082421275404765,verified
+제주,상반기 입항 횟수,128,2024H1,https://www.heraldk.com/article/2025082421275404765,verified
+제주,크루즈객 1인당 평균 지출(USD),188.3,2023,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified
+제주,크루즈객 1인당 평균 지출(USD),157.1,2024,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified
+제주,크루즈객 1인당 평균 지출(USD),122.1,2025,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified
+제주,전국 크루즈 관광객 중 비중(%),70.2,2025,https://m.go.seoul.co.kr/news/2026/07/28/20260728019011,verified
+제주,"1인당 지출(USD 응답자, n=188)",229.8,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw
+제주,"1인당 지출(원화 응답자, n=630, 원)",56474,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw
+제주,"1인당 식음료비(원화 응답자, 원)",15384,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw
+제주,식음료비 비중(원화 응답자),0.272,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw
+제주,"1인당 쇼핑비(원화 응답자, 원)",34808,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw

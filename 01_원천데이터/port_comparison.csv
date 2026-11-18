@@ -1,0 +1,28 @@
+﻿port,metric,value,year,source,status,quote
+부산,크루즈 입항 항차,203,2025,https://www.fnnews.com/news/202601181910078014,verified,"""이는 지난해 203항차보다 2배가 훨씬 넘고, 지난 2024년 114항차와 비교할 때 4배가량"""
+부산,크루즈 입항 항차,114,2024,https://www.fnnews.com/news/202601181910078014,verified,같은 문장
+부산,크루즈 입항 항차(전망),420,2026,https://www.fnnews.com/news/202601181910078014,verified,"""420항차에 이를 것이라고 18일 밝혔다"""
+부산,크루즈 관광객(명),257000,2025,https://www.segye.com/newsView/20260727518260,verified,"""지난해 부산항에는 크루즈선 203항차가 입항해 약 25만7000명의 관광객이 찾았다."""
+부산,상반기 항차,219,2026H1,https://www.segye.com/newsView/20260727518260,verified,"""올해는 상반기에만 219항차·32만명이 이용했으며, 연말까지는 420항차·70만명"""
+부산,상반기 관광객(명),320000,2026H1,https://www.segye.com/newsView/20260727518260,verified,같은 문장
+부산,연간 관광객 전망(명),700000,2026,https://www.segye.com/newsView/20260727518260,verified,같은 문장
+부산,"입항 건수(신고, 입항목적 전체)",197,2025,data.go.kr 15164568,raw,
+부산,"승객수 합계(신고, 외+내국인)",249541,2025,data.go.kr 15164568,raw,
+부산,상반기 승객수 합계(신고),323537,2026H1,data.go.kr 15164568,raw,1~6월 합
+제주,상반기 입항 횟수,163,2025H1,https://www.heraldk.com/article/2025082421275404765,verified,"""올 상반기 제주에 입항한 크루즈는 총 163회로, 전년 동기(128회) 대비 27% 증가"""
+제주,상반기 입항 횟수,128,2024H1,https://www.heraldk.com/article/2025082421275404765,verified,같은 문장
+제주,크루즈객 1인당 평균 지출(USD),188.3,2023,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified,"""1인당 평균 지출액은 2023년 188.3달러에서 2024년 157.1달러, 지난해 122.1달러로 줄었다."""
+제주,크루즈객 1인당 평균 지출(USD),157.1,2024,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified,같은 문장
+제주,크루즈객 1인당 평균 지출(USD),122.1,2025,https://www.seoul.co.kr/news/newsView.php?id=20261104500078,verified,같은 문장
+제주,전국 크루즈 관광객 중 비중(%),70.2,2025,https://m.go.seoul.co.kr/news/2026/07/28/20260728019011,verified,"""지난해 기준 전국 크루즈 관광객의 70.2%를 차지했다."""
+제주,평균 체류시간(시간),5.04,2024,"(보고서 인용, 서울신문 확인 기사에 없음)",unverified,
+부산,항구별 입항 인원 비중(%),27.0,2026-08,"https://www.koreancenter.or.kr/news/articleView.html?idxno=1429325 (검색 스니펫, 페이지 직접 열람 실패)",partly,"""서귀포항이 전체의 과반을 차지했다. 이어 부산항(27.0%), 제주항(13.6%), 인천항(4.7%)"""
+제주항,항구별 입항 인원 비중(%),13.6,2026-08,https://www.koreancenter.or.kr/news/articleView.html?idxno=1429325,partly,같은 문장
+인천,항구별 입항 인원 비중(%),4.7,2026-08,https://www.koreancenter.or.kr/news/articleView.html?idxno=1429325,partly,같은 문장
+전국,방한 크루즈객 1~8월(명),1280158,2026,https://www.koreancenter.or.kr/news/articleView.html?idxno=1429325,partly,"""올해 크루즈 방한객은 128만 158명""(검색 스니펫)"
+전국,방한 크루즈 관광객(명),약 1602000,2025,https://www.koreancenter.or.kr/news/articleView.html?idxno=1429325,unverified,페이지 본문 열람 실패
+제주,"1인당 지출(USD 응답자, n=188)",229.8,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw,통화코드 1=USD 가정(조사표 순서)
+제주,"1인당 지출(원화 응답자, n=630, 원)",56474,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw,코드 5=Won 가정
+제주,"1인당 식음료비(원화 응답자, 원)",15384,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw,
+제주,식음료비 비중(원화 응답자),0.272,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw,"USD 0.138, 엔 0.218, 위안 0.305"
+제주,"1인당 쇼핑비(원화 응답자, 원)",34808,2023,"data.go.kr 15138822 원자료 계산(가중치 WT, 지출/지출기준인원)",raw,
