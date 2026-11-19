@@ -11,3 +11,5 @@ node_modules/
 
 # 지도 타일 캐시(저작권: OpenStreetMap)
 01_원천데이터/map_tiles/
+03_코드/_disp_*.log
+02_정제데이터/_disp_*.json
