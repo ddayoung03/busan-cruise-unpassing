@@ -139,7 +139,7 @@ T(s,[[th('기준'),th('항차'),th('승객')],...RC.map(r=>[r['기준'],r['항�
 tb(s,'보도치와 2.9% 차이(원인 미해명) — 발표에서는 신고 원자료 기준을 쓰고 차이를 공개',{x:0.6,y:3.95,w:6.0,h:0.8,fontSize:13,color:CORAL});
 T(s,[[th('기항 유형'),th('항차'),th('승객 비중'),th('상륙 가능 중앙값')],...ST.map(r=>[r['type'],r['항차'],r['승객비중%']+'%',r['상륙가능_중앙값h']+'시간'])],{x:7.0,y:1.6,w:5.7,colW:[1.8,1.0,1.3,1.6],fontSize:13,rowH:0.55});
 tb(s,'상륙 가능 시간 = 체류시간 − 2.5시간(하선·입국심사·승선 마감)',{x:7.0,y:3.95,w:5.7,h:0.6,fontSize:12,color:MUTE});
-s.addImage({path:R+'04_그림/그림4_체류시간분포.png',x:7.0,y:4.5,w:5.7,h:1.95,sizing:{type:'contain',w:5.7,h:1.95}});
+card(s,7.0,4.55,5.7,1.6,NAVY);tb(s,[{text:'그래서 루트 설계 기준\n',options:{bold:true,fontSize:15}},{text:'북항 당일 기항(S1): 08:30 하선 → 16:30까지 복귀\n= 돌아다닐 수 있는 시간 8시간',options:{fontSize:14}}],{x:7.2,y:4.7,w:5.3,h:1.35,color:WHITE});
 s.addNotes('분석 전에 숫자부터 맞췄습니다. 언론의 25.7만 명과 신고 원자료 24.9만 명이 2.9% 차이가 나서 기준을 표로 공개했습니다. 기항 유형별로 보면 승객의 81%가 8~13시간 기항선이고 실제로 돌아다닐 수 있는 시간은 중앙값 8.5시간입니다.');
 
 const ND=csv('노드_실데이터대조_1118_B.csv').filter(r=>r['추정(이전)']);
@@ -231,13 +231,15 @@ s.addNotes(`줄과 이동시간을 무작위로 흔들어 1,000번 시뮬레이�
 
 s=slide('한꺼번에 내려도 나눠 보내면 줄이 준다','결과 ④ 혼잡 분산 (같은 배 6그룹, 100명씩)');
 const d4=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('4')),d8=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('8'));
+const ALLEY_FAIL=Math.round(+split(fs.readFileSync(R+'02_정제데이터/골목방문시나리오_20260508_B.csv','utf8').trim().split(/\r?\n/).pop())[1]);   // 마지막 행 = 규칙 위반으로 제외된 인원
 s.addChart(p.ChartType.bar,[{name:'겹침 100명당 +4분',labels:d4.map(r=>r['배정']),values:d4.map(r=>+r['그룹 평균 줄대기(분)'])},
  {name:'겹침 100명당 +8분',labels:d8.map(r=>r['배정']),values:d8.map(r=>+r['그룹 평균 줄대기(분)'])}],
  {x:0.6,y:1.5,w:6.4,h:4.9,barDir:'col',barGrouping:'clustered',chartColors:['F2A493',CORAL],showValue:true,dataLabelPosition:'outEnd',dataLabelFontFace:FONT,dataLabelFontSize:12,dataLabelColor:INK,
   catAxisLabelFontFace:FONT,catAxisLabelFontSize:14,catAxisLabelColor:INK,valAxisHidden:true,valGridLine:{style:'none'},showLegend:true,legendPos:'t',legendFontFace:FONT,legendFontSize:12,
   showTitle:true,title:'그룹 평균 줄 대기(분)',titleFontFace:FONT,titleFontSize:14,titleColor:INK});
-card(s,7.4,1.7,5.3,4.5);tb(s,[{text:'같은 루트로 몰리면\n',options:{bold:true,color:NAVY,fontSize:17}},{text:`평균 ${d4[0]['그룹 평균 줄대기(분)']}~${d8[0]['그룹 평균 줄대기(분)']}분 줄, 6그룹 모두 위반\n\n`},
- {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${d4[1]['그룹 평균 줄대기(분)']}~${d8[1]['그룹 평균 줄대기(분)']}분, 위반 +4분 ${d4[1]['규칙 위반 그룹']}그룹 · +8분 ${d8[1]['규칙 위반 그룹']}그룹\n\n`},
+card(s,7.4,1.7,5.3,4.5);tb(s,[{text:'같은 루트로 몰리면\n',options:{bold:true,color:NAVY,fontSize:17}},{text:`평균 ${Math.round(d4[0]['그룹 평균 줄대기(분)'])}~${Math.round(d8[0]['그룹 평균 줄대기(분)'])}분 줄, 6그룹 모두 위반\n\n`},
+ {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${Math.round(d4[1]['그룹 평균 줄대기(분)'])}~${Math.round(d8[1]['그룹 평균 줄대기(분)'])}분, 위반 +4분 ${d4[1]['규칙 위반 그룹']}그룹 · +8분 ${d8[1]['규칙 위반 그룹']}그룹\n\n`},
+ {text:'2척 동시 기항일 (2026.5.8, 7,831명)\n',options:{bold:true,color:NAVY,fontSize:14}},{text:`앱 이용자 중 ${ALLEY_FAIL}명은 갈 수 있는 루트 없음\n→ 가게 확충 필요\n\n`,options:{fontSize:14}},
  {text:'순서대로 배정해 결과가 배정 순서에 따라 달라진다 → 동시 배정은 다음 과제'+(DISP_NEW?'':'\n(가게 변경 전 모델로 계산한 결과)'),options:{fontSize:12,color:MUTE}}],{x:7.7,y:1.95,w:4.8,h:4.1,fontSize:15});
 s.addNotes(`같은 배의 승객 6그룹이 한 루트로 몰리면 평균 ${d4[0]['그룹 평균 줄대기(분)']}~${d8[0]['그룹 평균 줄대기(분)']}분을 줄 서고 모든 그룹이 배 시간을 놓칩니다. 그룹마다 다른 루트를 배정하면 평균 ${d4[1]['그룹 평균 줄대기(분)']}~${d8[1]['그룹 평균 줄대기(분)']}분으로 줄고, 상인에게는 손님이 고르게 갑니다. 다만 그룹을 차례로 배정하는 방식이라 결과가 순서에 따라 달라지고, 더 약한 혼잡(+4분)에서 오히려 2그룹이 규칙을 어겼습니다. 모든 그룹을 동시에 배정하는 방식은 다음 과제입니다.`+(DISP_NEW?'':' 이 결과는 가게를 실제 데이터로 바꾸기 전 모델로 계산한 것입니다.'));
 
@@ -247,9 +249,9 @@ s=slide('그래서 무엇이 해결되나','해결 효과');
 T(s,[[th('문제'),th('해결책'),th('근거')],
  ['배를 놓칠까 봐 터미널 근처에만 머문다','승선 마감을 지키는 최적 루트',`지각 ${late}%, ${S1['복귀']} 복귀`],
  ['문 닫은 가게·긴 줄에 시간 낭비','실제 영업·브레이크·혼잡 반영',`탐욕법 대비 +${gain}%`],
- ['무엇을 먹을지 모른다','외국인 댓글 기반 수요점수','해산물·시장·면·고기 우선'],
+ ['무엇을 먹을지 모른다','외국인 댓글 기반 수요점수','해산물·면·시장·고기 순'],
  ['소비가 면세점·원도심에 갇힌다','원도심 밖까지 잇는 루트',`7곳 중 ${S1['원도심 밖 노드']}곳이 원도심 밖`],
- ['한꺼번에 몰려 줄이 길어진다','그룹별 분산 배정',`줄 대기 평균 ${d4[0]['그룹 평균 줄대기(분)']}분 → ${d4[1]['그룹 평균 줄대기(분)']}분`]],
+ ['한꺼번에 몰려 줄이 길어진다','그룹별 분산 배정',`줄 대기 평균 ${Math.round(d4[0]['그룹 평균 줄대기(분)'])}분 → ${Math.round(d4[1]['그룹 평균 줄대기(분)'])}분`]],
  {x:0.6,y:1.6,w:12.1,colW:[4.3,4.0,3.8],fontSize:15,rowH:0.75});
 s.addNotes('정리하면 다섯 가지 문제가 각각 해결책과 수치 근거로 연결됩니다.');
 
