@@ -156,18 +156,19 @@ s=slide('데이터 처리 지도: 원데이터에서 루트·서비스까지','�
 const COLS=[['원데이터',0.35],['처리 코드',2.85],['정제 표',5.35],['분석·모델',7.85],['결과물',10.45]];
 COLS.forEach(([t,x])=>tb(s,t,{x,y:1.45,w:2.3,h:0.35,fontSize:13,bold:true,color:CORAL,align:'center'}));
 const node=(x,y,t,sub,fill,w=2.3)=>{s.addShape(p.ShapeType.roundRect,{x,y,w,h:0.62,fill:{color:fill},line:{color:fill},rectRadius:0.06});
- tb(s,[{text:t+'\n',options:{bold:true,fontSize:11}},{text:sub,options:{fontSize:9}}],{x:x+0.08,y:y+0.04,w:w-0.16,h:0.56,valign:'middle',color:fill==NAVY?WHITE:INK});};
+ tb(s,[{text:t+'\n',options:{bold:true,fontSize:11}},{text:sub,options:{fontSize:9}}],{x:x+0.08,y:y+0.04,w:w-0.16,h:0.56,valign:'middle',color:[NAVY,CORAL,SEA,'5B6B78'].includes(fill)?WHITE:INK});};
 const arrow=(x1,y1,x2,y2)=>s.addShape(p.ShapeType.line,{x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1)||0.01,h:Math.abs(y2-y1)||0.01,flipV:y2<y1,line:{color:'9FB3C4',width:1.25,endArrowType:'triangle'}});
 const RAW=[['크루즈 입출항 신고','공공데이터포털 · 656행'],['외국인 카드소비','한국관광데이터랩 · 6구×12월'],['YouTube 댓글','Data API · 1,792개'],['부산 맛집 정보','부산시 API · 536곳'],['도로 이동시간','OSRM · 480쌍'],['참고 자료','제주 조사·대만 설문·언론']];
 const CODE=[['analysis_A_cruise','인코딩·중복 제거·체류시간'],['analysis_A_datalab','구·월 집계·지수화'],['collect_C_youtube','언어 판정·메뉴 사전'],['collect_B_busanfood','가게 매칭·영업시간 파싱'],['OSRM 행렬','택시+5분 / 도보'],['문헌 정리','대조군·국적 가중치']];
-const TBL=[['체류시간·기항일','기항 유형 3종, 8.5시간'],['원도심 비교','식음료 +76% vs +57%'],['메뉴 언급·수요점수','해산물 100 … 어묵 62'],['food_nodes 21곳','13곳 실데이터'],['travel_time','21×21 이동 분'],['대조군·퍼널','제주 −35%, 퍼널 5단계']];
-RAW.forEach(([a,b],i)=>{const y=1.9+i*0.78;node(0.35,y,a,b,ICE);arrow(2.65,y+0.31,2.85,y+0.31);node(2.85,y,a==='참고 자료'?'문헌 정리':CODE[i][0],CODE[i][1],'DCEAF5');arrow(5.15,y+0.31,5.35,y+0.31);node(5.35,y,TBL[i][0],TBL[i][1],'F7F9FB');});
-node(7.85,1.95,'퍼널·문제 진단','부산 패싱 근거',SEA);node(7.85,3.05,'수요점수','무엇을 먹일까',SEA);node(7.85,4.15,'OPTW 최적화','시간창·줄·위 용량',NAVY);node(7.85,5.25,'검증·분산','1,000회 · 그룹 배정',SEA);
-[[0,1.95],[1,1.95],[5,1.95],[2,3.05],[0,4.15],[3,4.15],[4,4.15]].forEach(([i,ty])=>arrow(7.65,1.9+i*0.78+0.31,7.85,ty+0.31));
+const GO={P:['→ 문제 진단','FBE1DB',CORAL],D:['→ 수요점수','D6EAF6',SEA],M:['→ OPTW 최적화','D9E1EA',NAVY]};
+const TBL=[['체류시간·기항일','하선·승선 시각','M'],['원도심 비교','+76% vs +57%','P'],['메뉴 언급','해산물 86건 …','D'],['food_nodes 21곳','영업·좌표','M'],['travel_time','21×21 이동 분','M'],['대조군·퍼널','제주 −35%','P']];
+RAW.forEach(([a,b],i)=>{const y=1.9+i*0.78;node(0.35,y,a,b,ICE);arrow(2.65,y+0.31,2.85,y+0.31);node(2.85,y,a==='참고 자료'?'문헌 정리':CODE[i][0],CODE[i][1],'DCEAF5');arrow(5.15,y+0.31,5.35,y+0.31);const g=GO[TBL[i][2]];node(5.35,y,TBL[i][0],g[0]+' · '+TBL[i][1],g[1]);});
+node(7.85,1.95,'퍼널·문제 진단','부산 패싱 근거',CORAL);node(7.85,3.05,'수요점수','무엇을 먹일까',SEA);node(7.85,4.15,'OPTW 최적화','시간창·줄·위 용량',NAVY);node(7.85,5.25,'검증·분산','1,000회 · 그룹 배정','5B6B78');
+tb(s,'같은 색 = 그 분석에 들어가는 표',{x:7.85,y:6.0,w:2.3,h:0.35,fontSize:10,color:MUTE,align:'center'});
 arrow(8.95,3.67,8.95,4.15);arrow(8.95,4.77,8.95,5.25);
 const OUT=[['루트 시간표·지도','6개 시나리오',2.5],['보고서·발표자료','CSV를 읽어 자동 생성',3.6],['Busan Bite Pass','승객 루트 + 상인 예보',4.7]];
 OUT.forEach(([a,b,y])=>{node(10.45,y,a,b,a.startsWith('Busan')?CORAL:ICE);arrow(10.15,4.46,10.45,y+0.31);});
-tb(s,'모든 단계는 03_코드의 스크립트로 다시 실행할 수 있고, 결과 표(02_정제데이터)를 읽어 문서와 서비스가 만들어진다 · 인터랙티브 지도: 06_서비스/데이터처리지도.html',{x:0.35,y:6.65,w:12.6,h:0.4,fontSize:11,color:MUTE});
+tb(s,'모든 단계는 03_코드 스크립트로 다시 실행할 수 있다 · 눌러 보는 인터랙티브 지도: 서비스의 ‘데이터 처리 지도’ 탭',{x:0.35,y:6.65,w:12.6,h:0.4,fontSize:11,color:MUTE});
 
 const RC=csv('2025승객수_기준차이_1118_A.csv'),ST=csv('체류시간요약_1118_A.csv');
 s=slide('숫자 맞추기: 보도 25.7만 명 vs 신고 24.9만 명','데이터 ④ 기준 차이 확인과 기항 유형');
