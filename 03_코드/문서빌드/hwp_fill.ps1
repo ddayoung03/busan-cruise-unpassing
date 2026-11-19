@@ -4,6 +4,7 @@
 param([string]$In, [string]$Ops, [string]$Out, [string]$Pdf = "")
 $ErrorActionPreference = "Stop"
 $h = New-Object -ComObject HWPFrame.HwpObject
+trap { $h.Clear(1); $h.Quit(); break }   # 오류가 나도 숨은 한글 창을 남기지 않는다(남으면 파일이 잠김)
 try { $h.RegisterModule("FilePathCheckDLL", "FilePathCheckerModule") | Out-Null } catch {}
 $h.XHwpWindows.Item(0).Visible = $false
 if (-not $h.Open($In, "HWP", "forceopen:true")) { throw "열기 실패: $In" }
