@@ -9,7 +9,8 @@ const short=s=>s.replace(/\(.*?\)/g,'').trim();
 const RT=csv('루트결과_1118_B.csv');const top=s=>RT.find(r=>r['시나리오'].startsWith(s)&&r['순위']=='1');const gr=s=>RT.find(r=>r['시나리오'].startsWith(s)&&r['순위'].startsWith('탐욕'));
 const N1=csv('제약무시계획_1118_B.csv')[0];const nvViol=Object.keys(N1).filter(k=>k.startsWith('위반:')).reduce((a,k)=>a+(+N1[k]),0);
 const VD=Object.fromEntries(csv('검증_1118_B.csv').map(r=>[r['지표'],+r['값']]));const vk=k=>VD[Object.keys(VD).find(x=>x.startsWith(k))];
-const DF=csv('분산효과_1118_B.csv');const TT=csv('루트시간표_1118_B.csv');
+const DF=csv('분산효과_1118_B.csv');
+const DISP_NEW=fs.statSync(R+'02_정제데이터/분산효과_1118_B.csv').mtimeMs>fs.statSync(R+'02_정제데이터/food_nodes_1118_B.csv').mtimeMs;const TT=csv('루트시간표_1118_B.csv');
 const S1=top('S1'),G1=gr('S1');
 const late=(vk('고정 루트 복귀 지각')*100).toFixed(1),ok=(vk('고정 루트 전체 규칙')*100).toFixed(1),p5=vk('고정 루트 복귀 여유 하위');
 const gain=((S1['목적함수']/G1['목적함수']-1)*100).toFixed(1);
@@ -229,15 +230,16 @@ card(s,0.6,4.2,12.1,1.9);tb(s,[{text:'그래서 운영은 이렇게  ',options:{
 s.addNotes(`줄과 이동시간을 무작위로 흔들어 1,000번 시뮬레이션했습니다. 지각 확률은 ${late}%이지만 하위 5%의 여유는 ${p5}분으로 빠듯합니다. 그래서 먼 구간은 선택형으로 두고 복귀 알림을 줍니다.`);
 
 s=slide('한꺼번에 내려도 나눠 보내면 줄이 준다','결과 ④ 혼잡 분산 (같은 배 6그룹, 100명씩)');
-const d4=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('4'));
-s.addChart(p.ChartType.bar,[{name:'평균 줄 대기(분)',labels:d4.map(r=>r['배정']),values:d4.map(r=>+r['그룹 평균 줄대기(분)'])}],
- {x:0.6,y:1.5,w:6.4,h:4.9,barDir:'col',chartColors:[CORAL],showValue:true,dataLabelPosition:'outEnd',dataLabelFontFace:FONT,dataLabelFontSize:13,dataLabelColor:INK,
-  catAxisLabelFontFace:FONT,catAxisLabelFontSize:14,catAxisLabelColor:INK,valAxisHidden:true,valGridLine:{style:'none'},showLegend:false,
-  showTitle:true,title:'그룹 평균 줄 대기 (겹침 100명당 +4분 가정)',titleFontFace:FONT,titleFontSize:14,titleColor:INK});
-card(s,7.4,1.7,5.3,4.5);tb(s,[{text:'같은 루트로 몰리면\n',options:{bold:true,color:NAVY,fontSize:17}},{text:`평균 ${d4[0]['그룹 평균 줄대기(분)']}분 줄, 6그룹 모두 지각\n\n`},
- {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${d4[1]['그룹 평균 줄대기(분)']}분, 위반 ${d4[1]['규칙 위반 그룹']}그룹\n\n`},
- {text:'혼잡이 더 크면 가게 수가 부족 → 가게 확충 필요\n(가게 변경 전 모델로 계산한 결과)',options:{fontSize:12,color:MUTE}}],{x:7.7,y:1.95,w:4.8,h:4.1,fontSize:15});
-s.addNotes('같은 배의 승객이 한 루트로 몰리면 줄이 길어져 모두 지각합니다. 그룹마다 다른 루트를 배정하면 줄이 절반 이하로 줄어듭니다. 상인에게는 손님이 고르게 갑니다. 이 결과는 가게를 실제 데이터로 바꾸기 전 모델로 계산한 것입니다.');
+const d4=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('4')),d8=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('8'));
+s.addChart(p.ChartType.bar,[{name:'겹침 100명당 +4분',labels:d4.map(r=>r['배정']),values:d4.map(r=>+r['그룹 평균 줄대기(분)'])},
+ {name:'겹침 100명당 +8분',labels:d8.map(r=>r['배정']),values:d8.map(r=>+r['그룹 평균 줄대기(분)'])}],
+ {x:0.6,y:1.5,w:6.4,h:4.9,barDir:'col',barGrouping:'clustered',chartColors:['F2A493',CORAL],showValue:true,dataLabelPosition:'outEnd',dataLabelFontFace:FONT,dataLabelFontSize:12,dataLabelColor:INK,
+  catAxisLabelFontFace:FONT,catAxisLabelFontSize:14,catAxisLabelColor:INK,valAxisHidden:true,valGridLine:{style:'none'},showLegend:true,legendPos:'t',legendFontFace:FONT,legendFontSize:12,
+  showTitle:true,title:'그룹 평균 줄 대기(분)',titleFontFace:FONT,titleFontSize:14,titleColor:INK});
+card(s,7.4,1.7,5.3,4.5);tb(s,[{text:'같은 루트로 몰리면\n',options:{bold:true,color:NAVY,fontSize:17}},{text:`평균 ${d4[0]['그룹 평균 줄대기(분)']}~${d8[0]['그룹 평균 줄대기(분)']}분 줄, 6그룹 모두 위반\n\n`},
+ {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${d4[1]['그룹 평균 줄대기(분)']}~${d8[1]['그룹 평균 줄대기(분)']}분, 위반 +4분 ${d4[1]['규칙 위반 그룹']}그룹 · +8분 ${d8[1]['규칙 위반 그룹']}그룹\n\n`},
+ {text:'순서대로 배정해 결과가 배정 순서에 따라 달라진다 → 동시 배정은 다음 과제'+(DISP_NEW?'':'\n(가게 변경 전 모델로 계산한 결과)'),options:{fontSize:12,color:MUTE}}],{x:7.7,y:1.95,w:4.8,h:4.1,fontSize:15});
+s.addNotes(`같은 배의 승객 6그룹이 한 루트로 몰리면 평균 ${d4[0]['그룹 평균 줄대기(분)']}~${d8[0]['그룹 평균 줄대기(분)']}분을 줄 서고 모든 그룹이 배 시간을 놓칩니다. 그룹마다 다른 루트를 배정하면 평균 ${d4[1]['그룹 평균 줄대기(분)']}~${d8[1]['그룹 평균 줄대기(분)']}분으로 줄고, 상인에게는 손님이 고르게 갑니다. 다만 그룹을 차례로 배정하는 방식이라 결과가 순서에 따라 달라지고, 더 약한 혼잡(+4분)에서 오히려 2그룹이 규칙을 어겼습니다. 모든 그룹을 동시에 배정하는 방식은 다음 과제입니다.`+(DISP_NEW?'':' 이 결과는 가게를 실제 데이터로 바꾸기 전 모델로 계산한 것입니다.'));
 
 // ===== ⑦ 효과·실행 =====
 section(7,'효과와 실행','무엇이 해결되고, 누가 실행하나');
@@ -247,7 +249,7 @@ T(s,[[th('문제'),th('해결책'),th('근거')],
  ['문 닫은 가게·긴 줄에 시간 낭비','실제 영업·브레이크·혼잡 반영',`탐욕법 대비 +${gain}%`],
  ['무엇을 먹을지 모른다','외국인 댓글 기반 수요점수','해산물·시장·면·고기 우선'],
  ['소비가 면세점·원도심에 갇힌다','원도심 밖까지 잇는 루트',`7곳 중 ${S1['원도심 밖 노드']}곳이 원도심 밖`],
- ['한꺼번에 몰려 줄이 길어진다','그룹별 분산 배정','같은 루트 대비 줄 절반 이하']],
+ ['한꺼번에 몰려 줄이 길어진다','그룹별 분산 배정',`줄 대기 평균 ${d4[0]['그룹 평균 줄대기(분)']}분 → ${d4[1]['그룹 평균 줄대기(분)']}분`]],
  {x:0.6,y:1.6,w:12.1,colW:[4.3,4.0,3.8],fontSize:15,rowH:0.75});
 s.addNotes('정리하면 다섯 가지 문제가 각각 해결책과 수치 근거로 연결됩니다.');
 
