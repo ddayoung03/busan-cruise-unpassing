@@ -333,7 +333,7 @@ class Problem:
         t, cur, st, lm, obj, queue = sc.start, sc.depot, 0.0, None, 0.0, 0.0
         viol = {"영업·브레이크": 0, "위 용량": 0, "식사 간격·시간창": 0, "복귀 지각": 0,
                 "방문 수 초과": 0, "원도심 밖 필수": 0}
-        visits = []
+        visits, stops = [], []
         for i, n in enumerate(route):
             r = self.A[n]
             nb = plan[i][4] - plan[i][3] if plan else -1e9
@@ -358,6 +358,7 @@ class Problem:
             obj += self.score(n, sc) - LAMBDA * (begin - t)
             queue += q
             visits.append((n, s0))
+            stops.append({"node": n, "from": cur, "leave": t, "queue_start": s0, "queue": q, "begin": begin, "end": end})
             t, cur, st, lm = end, n, st_n, lm_n
         back = t + self.T[cur, sc.depot] * tnoise
         viol["복귀 지각"] = int(back > sc.deadline() + 1e-9)
@@ -366,7 +367,7 @@ class Problem:
         return {"route": route, "names": [self.A[n]["name_ko"] for n in route],
                 "objective": round(obj - LAMBDA * (back - t), 1), "queue_min": round(queue, 1),
                 "return_min": back, "slack_min": sc.deadline() - back,
-                "violations": viol, "feasible": sum(viol.values()) == 0, "visits": visits}
+                "violations": viol, "feasible": sum(viol.values()) == 0, "visits": visits, "stops": stops}
 
     # ---------------- 검증 ----------------
     def sensitivity(self, sc: Scenario, runs=200, pct=0.3, seed=0):
