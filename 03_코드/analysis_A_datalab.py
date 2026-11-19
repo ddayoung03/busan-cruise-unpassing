@@ -37,3 +37,22 @@ print(out.to_string())
 ov = out.dropna(subset=["크루즈승객"])
 print(f"\n겹치는 달 {len(ov)}개 · 크루즈승객 vs 원도심 식음료 비중 상관 r = {ov['크루즈승객'].corr(ov['원도심 식음료 비중%']):.2f}"
       f" · vs 원도심 소비 비중 r = {ov['크루즈승객'].corr(ov['원도심 외국인소비 비중%']):.2f}")
+
+# 그림 9: 원도심 3구 vs 비교 3구 외국인 식음료 지수 + 크루즈 승객(보조축)
+import platform
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Malgun Gothic" if platform.system() == "Windows" else "NanumGothic"
+lab = [f"{i[2:4]}.{i[4:]}" for i in out.index]
+fig, ax = plt.subplots(figsize=(9, 4.2))
+ax.plot(lab, out["원도심 식음료(지수, 2025.10=100)"], "-o", color="#E8573F", lw=2.5, label="원도심 3구(중·동·영도)")
+ax.plot(lab, out["비교 식음료(지수, 2025.10=100)"], "-o", color="#8FA3B3", lw=2.5, label="비교 3구(서·부산진·해운대)")
+ax.set_ylabel("외국인 식음료 카드소비 지수 (2025.10=100)")
+ax2 = ax.twinx(); ax2.bar(lab, out["크루즈승객"].fillna(0) / 1e4, color="#0B3C5D", alpha=0.18, label="크루즈 승객(만 명, 우축)")
+ax2.set_ylabel("크루즈 승객(만 명)")
+h1, l1 = ax.get_legend_handles_labels(); h2, l2 = ax2.get_legend_handles_labels()
+ax.legend(h1 + h2, l1 + l2, loc="upper left", fontsize=9, frameon=False)
+ax.set_zorder(ax2.get_zorder() + 1); ax.patch.set_visible(False)
+ax.set_title("원도심 외국인 식음료 +76% vs 비교 지역 +57% (2025.10→2026.7)", fontsize=11)
+plt.tight_layout(); plt.savefig(ROOT / "04_그림/그림9_원도심비교.png", dpi=180); plt.close()
