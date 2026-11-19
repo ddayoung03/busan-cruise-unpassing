@@ -13,3 +13,5 @@ node_modules/
 01_원천데이터/map_tiles/
 03_코드/_disp_*.log
 02_정제데이터/_disp_*.json
+06_서비스/_routes_partial.json
+03_코드/_service_routes.log

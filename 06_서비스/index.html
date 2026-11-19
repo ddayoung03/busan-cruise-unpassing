@@ -1,0 +1,388 @@
+<title>Busan Bite Pass</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 항구 신호기 — 짙은 바다색 바탕의 상단 띠, 승객 시간표는 부두 시각표처럼 시각을 왼쪽에 고정한 세로 타임라인 */
+:root{
+  --sea:#0B3C5D; --sea-2:#14557F; --tide:#328CC1; --coral:#E8573F; --foam:#EAF2F8;
+  --bg:#F6F8FA; --card:#FFFFFF; --ink:#1D2B36; --mute:#5B6B78; --line:#D7E1E9; --ok:#2E8B57; --warn:#C47F12;
+  --f-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --sea:#0E2A3F; --sea-2:#173F5E; --tide:#5BB0E6; --coral:#FF7A63; --foam:#16293A;
+  --bg:#0C1620; --card:#132230; --ink:#E6EEF4; --mute:#93A6B6; --line:#24384A; --ok:#5CC48C; --warn:#E3A93C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sea:#0E2A3F; --sea-2:#173F5E; --tide:#5BB0E6; --coral:#FF7A63; --foam:#16293A;
+  --bg:#0C1620; --card:#132230; --ink:#E6EEF4; --mute:#93A6B6; --line:#24384A; --ok:#5CC48C; --warn:#E3A93C; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sea)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:var(--sea);color:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-block:12px}
+.brand{font-weight:900;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand svg{flex:none}
+.brand small{font-weight:500;font-size:12px;opacity:.75;letter-spacing:.02em}
+.lang{display:flex;gap:2px;background:rgba(255,255,255,.12);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;color:#fff;font:600 12px var(--f-body);padding:5px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--sea)}
+nav{background:var(--sea-2)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto}
+nav a{color:#D6E6F2;text-decoration:none;font-weight:600;font-size:14px;padding:10px 14px;border-bottom:3px solid transparent;white-space:nowrap}
+nav a[aria-current="page"]{color:#fff;border-color:var(--coral)}
+main{padding-block:20px 48px}
+h1{font-size:clamp(22px,4vw,30px);line-height:1.25;margin:0 0 6px;text-wrap:balance;font-weight:900}
+.lead{color:var(--mute);margin:0 0 18px;max-width:62ch}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+form.ask{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--mute);letter-spacing:.02em}
+select,button.go{font:600 15px var(--f-body);padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0}
+button.go{background:var(--coral);color:#fff;border:0;cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--tide);outline-offset:2px}
+.examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--mute);align-items:center}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:4px 10px;font:500 13px var(--f-body);cursor:pointer}
+.sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.sum div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.sum b{display:block;font:600 22px var(--f-num);color:var(--sea-2)}
+:root[data-theme="dark"] .sum b{color:var(--tide)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sum b{color:var(--tide)}}
+.sum span{font-size:12px;color:var(--mute)}
+.result{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
+.result>*,.fc>*,.sum>*,form.ask>*{min-width:0}
+.mapbox{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--foam)}
+.mapbox canvas{display:block;width:100%;height:auto}
+.maptools{position:absolute;top:8px;left:8px;display:flex;gap:4px}
+.maptools button{border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 12px var(--f-body);padding:4px 10px;border-radius:999px;cursor:pointer}
+.maptools button[aria-pressed="true"]{background:var(--sea);color:#fff;border-color:var(--sea)}
+.credit{position:absolute;right:6px;bottom:4px;font-size:10px;background:rgba(255,255,255,.85);color:#333;padding:1px 6px;border-radius:4px}
+ol.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:64px 28px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl time{font:600 16px var(--f-num);color:var(--sea-2);padding-top:2px}
+:root[data-theme="dark"] .tl time{color:var(--tide)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tl time{color:var(--tide)}}
+.pin{width:26px;height:26px;border-radius:50%;background:var(--sea);color:#fff;display:grid;place-items:center;font:700 13px var(--f-body)}
+.pin.end{background:var(--coral)}
+.tl h3{margin:0;font-size:16px;line-height:1.35}
+.tl .menu{color:var(--mute);font-size:13px;margin:2px 0 6px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--foam);color:var(--ink)}
+.tag.q{background:rgba(232,87,63,.12);color:var(--coral)}
+.tag.est{border:1px dashed var(--mute);background:transparent;color:var(--mute)}
+.alert{display:flex;gap:10px;align-items:flex-start;background:rgba(232,87,63,.1);border:1px solid rgba(232,87,63,.35);border-radius:var(--r);padding:12px;margin-top:12px;font-size:14px}
+.alert b{color:var(--coral)}
+.note{font-size:12px;color:var(--mute);margin-top:10px}
+.fc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:220px;padding-top:20px;border-bottom:1px solid var(--line)}
+.bars div{flex:1;background:var(--tide);border-radius:6px 6px 0 0;position:relative;min-height:2px}
+.bars div span{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font:600 11px var(--f-num);color:var(--ink)}
+.hours{display:flex;gap:6px;font:500 11px var(--f-num);color:var(--mute)}
+.hours span{flex:1;text-align:center}
+.heat{overflow-x:auto}
+.heat table{border-collapse:collapse;font-size:12px;min-width:560px;width:100%}
+.heat th,.heat td{padding:6px;text-align:center;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th:first-child,.heat td:first-child{text-align:left;white-space:nowrap}
+.heat tr{cursor:pointer}
+.heat tr[aria-selected="true"] td:first-child{font-weight:700;color:var(--coral)}
+.dm{position:relative;overflow-x:auto}
+.dm-grid{position:relative;display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:14px 26px;min-width:860px;padding:8px 4px}
+.dm-col h4{margin:0 0 8px;font-size:12px;letter-spacing:.05em;color:var(--coral)}
+.dm-col{display:flex;flex-direction:column;gap:10px}
+.dm-node{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;text-align:left;font:500 13px var(--f-body);color:var(--ink);cursor:pointer;position:relative;z-index:1}
+.dm-node small{display:block;color:var(--mute);font-size:11px}
+.dm-node.on{border-color:var(--coral);box-shadow:0 0 0 2px var(--coral)}
+.dm-node.rel{border-color:var(--tide)}
+.dm-node.dim{opacity:.35}
+.dm svg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.dm-detail{margin-top:14px}
+.dm-detail h3{margin:0 0 6px}
+.dm-detail dl{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 12px;margin:0;font-size:14px}
+.dm-detail dt{color:var(--mute)}
+.dm-detail code{font:500 12px var(--f-num);background:var(--foam);padding:1px 6px;border-radius:4px}
+footer{color:var(--mute);font-size:12px;padding-block:24px;border-top:1px solid var(--line)}
+@media (max-width:760px){
+  form.ask{grid-template-columns:1fr 1fr}
+  .sum{grid-template-columns:1fr 1fr}
+  .result,.fc{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:no-preference){.tl li{animation:in .3s ease both}@keyframes in{from{opacity:.4;transform:translateY(4px)}}}
+</style>
+
+<header><div class="wrap">
+  <div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#E8573F"/><path d="M7 17h14l-2 4H9z" fill="#fff"/><path d="M13 6v10M13 7l6 6h-6" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+    <span>Busan Bite Pass<br><small data-t="tag"></small></span></div>
+  <div class="lang" role="group" aria-label="Language">
+    <button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="zh">中</button><button data-lang="ja">日</button>
+  </div>
+</div></header>
+<nav><div class="wrap">
+  <a href="#route" data-tab="route" data-t="tab_route"></a>
+  <a href="#merchant" data-tab="merchant" data-t="tab_merchant"></a>
+  <a href="#data" data-tab="data" data-t="tab_data"></a>
+</div></nav>
+
+<main class="wrap">
+<section id="v-route">
+  <h1 data-t="h_route"></h1>
+  <p class="lead" data-t="lead_route"></p>
+  <div class="panel">
+    <form class="ask" id="ask">
+      <label for="term"><span data-t="f_term"></span><select id="term"><option value="D1"></option><option value="D2"></option></select></label>
+      <label for="start"><span data-t="f_start"></span><select id="start"></select></label>
+      <label for="board"><span data-t="f_board"></span><select id="board"></select></label>
+      <button class="go" type="submit" data-t="go"></button>
+    </form>
+    <div class="examples"><span data-t="ex"></span>
+      <button class="chip" data-ex="D1,510,1020" data-t="ex1"></button>
+      <button class="chip" data-ex="D2,720,975" data-t="ex2"></button>
+      <button class="chip" data-ex="D1,600,930" data-t="ex3"></button>
+    </div>
+  </div>
+  <div class="sum" id="sum"></div>
+  <div class="result">
+    <div>
+      <div class="mapbox"><canvas id="map" width="1040" height="860" role="img" aria-label="route map"></canvas>
+        <div class="maptools"><button data-map="core" data-t="m_core"></button><button data-map="wide" data-t="m_wide"></button></div>
+        <span class="credit" id="credit"></span></div>
+      <div class="alert" id="alert"></div>
+    </div>
+    <div class="panel"><ol class="tl" id="tl"></ol><p class="note" data-t="note_route"></p></div>
+  </div>
+</section>
+
+<section id="v-merchant" hidden>
+  <h1 data-t="h_merchant"></h1>
+  <p class="lead" data-t="lead_merchant"></p>
+  <div class="fc">
+    <div class="panel"><label for="store"><span data-t="f_store"></span><select id="store"></select></label>
+      <div class="bars" id="bars" aria-label="expected visitors by hour"></div><div class="hours" id="hrs"></div>
+      <p class="note" id="fcnote"></p></div>
+    <div class="panel heat"><table id="heat"></table></div>
+  </div>
+  <p class="note" data-t="note_merchant"></p>
+</section>
+
+<section id="v-data" hidden>
+  <h1 data-t="h_data"></h1>
+  <p class="lead" data-t="lead_data"></p>
+  <div class="panel dm" id="dm"><svg id="dmsvg"></svg><div class="dm-grid" id="dmgrid"></div></div>
+  <div class="panel dm-detail" id="dmd"></div>
+</section>
+</main>
+<footer><div class="wrap" data-t="foot"></div></footer>
+
+<script src="data.js"></script>
+<script>
+const T={
+ ko:{tag:"크루즈 승객을 위한 부산 한 끼 루트",tab_route:"내 루트",tab_merchant:"상인 수요 예보",tab_data:"데이터 처리 지도",
+  h_route:"배를 놓치지 않는 부산 한 끼",lead_route:"하선 터미널과 시각, 승선 마감만 고르세요. 외국인이 많이 찾는 부산 음식, 가게 영업시간, 줄, 이동시간을 함께 계산한 최적 루트를 보여 드립니다.",
+  f_term:"하선 터미널",f_start:"하선 시각",f_board:"승선 마감",go:"내 루트 보기",ex:"예시",ex1:"북항 당일 기항",ex2:"영도 짧은 기항",ex3:"반나절",
+  D1:"북항 크루즈터미널",D2:"영도 크루즈터미널",m_core:"원도심",m_wide:"부산 전체",
+  s_back:"터미널 복귀",s_slack:"승선 마감까지 여유",s_stops:"방문",s_spend:"예상 지출(1인)",min:"분",places:"곳",
+  depart:"하선",ret:"복귀",walk:"도보",taxi:"택시",queue:"줄",real:"부산시 공식 데이터",est:"영업시간 추정",hours:"영업",
+  alert:(a,b)=>`<b>복귀 알림 ${a}</b> 이 시각에 남은 일정을 확인하세요. 마지막 장소에서는 늦어도 <b>${b}</b>에 출발해야 합니다.`,
+  nofit:"이 조건에 맞는 루트가 없습니다. 하선 시각을 앞당기거나 승선 마감을 늦춰 보세요.",
+  snapped:(s,h)=>`가장 가까운 계산 조건(하선 ${s}, 이용 가능 ${h}시간)의 루트입니다.`,
+  note_route:"줄 대기 시간은 공개 데이터가 없어 추정치입니다. 크루즈 승객이 몰리는 날 기준으로 계산했습니다. 1,000회 모의 실험에서 지각 확률 1.2%.",
+  h_merchant:"오늘 몇 시에 손님이 올까",lead_merchant:"같은 입항 정보로 가게별·시간대별 예상 크루즈 손님을 미리 알려 드립니다. 아래는 큰 배 두 척이 겹친 2026년 5월 8일(7,831명) 예시입니다.",
+  f_store:"가게",fcnote:(n)=>`하루 예상 ${n}명 (앱 이용 10%, 상륙 80% 가정)`,note_merchant:"표의 행을 누르면 그 가게의 시간대별 그래프가 나옵니다. 앱 이용률이 올라가면 숫자도 커집니다.",
+  h_data:"데이터가 서비스가 되기까지",lead_data:"원데이터 6종이 처리 코드를 거쳐 정제 표가 되고, 분석과 최적화 모델을 지나 이 서비스가 됩니다. 상자를 누르면 무엇을 했는지, 어떤 파일인지 보입니다.",
+  foot:"2026 지산학 아이디어톤 「부산의 맛, 로컬에서 글로컬」 · 크루즈 미식 루트 팀 · 지도 © OpenStreetMap contributors · 가게 정보: 부산광역시 부산맛집정보 서비스"},
+ en:{tag:"A Busan food route for cruise passengers",tab_route:"My route",tab_merchant:"Shop forecast",tab_data:"Data map",
+  h_route:"Eat Busan, make your ship",lead_route:"Pick your terminal, when you get off, and your all-aboard time. We show the best route through the foods visitors love most, with opening hours, queues and travel time worked in.",
+  f_term:"Terminal",f_start:"Off the ship",f_board:"All aboard",go:"Show my route",ex:"Try",ex1:"North Port day call",ex2:"Short Yeongdo call",ex3:"Half day",
+  D1:"North Port Cruise Terminal",D2:"Yeongdo Cruise Terminal",m_core:"Old town",m_wide:"All Busan",
+  s_back:"Back at terminal",s_slack:"Spare before all-aboard",s_stops:"Stops",s_spend:"Est. spend (pp)",min:"min",places:"",
+  depart:"Off the ship",ret:"Back",walk:"Walk",taxi:"Taxi",queue:"Queue",real:"City data",est:"Hours estimated",hours:"Open",
+  alert:(a,b)=>`<b>Return reminder ${a}</b> Check what is left at this time. Leave your last stop by <b>${b}</b> at the latest.`,
+  nofit:"No route fits these times. Try getting off earlier or boarding later.",
+  snapped:(s,h)=>`Showing the closest planned case (off at ${s}, ${h} h available).`,
+  note_route:"Queue times are estimates (no public data). Planned for busy cruise days. In 1,000 simulations the chance of missing the ship was 1.2%.",
+  h_merchant:"When will cruise guests arrive?",lead_merchant:"From the same port schedule, each shop sees expected cruise guests by hour. Below: 8 May 2026, two ships, 7,831 passengers (example).",
+  f_store:"Shop",fcnote:(n)=>`About ${n} guests that day (10% app use, 80% going ashore)`,note_merchant:"Tap a row to chart that shop by hour. Numbers grow with app use.",
+  h_data:"From raw data to this service",lead_data:"Six raw datasets go through processing code into clean tables, then analysis and the optimisation model, and end up here. Tap a box for what was done and which file it is.",
+  foot:"2026 Ideathon “Taste of Busan, Local to Glocal” · Cruise Food Route team · Map © OpenStreetMap contributors · Shop data: Busan Metropolitan City"},
+ zh:{tag:"邮轮乘客的釜山美食路线",tab_route:"我的路线",tab_merchant:"商家客流预测",tab_data:"数据流程图",
+  h_route:"吃遍釜山，准时登船",lead_route:"选择码头、下船时间和登船截止时间。我们会结合游客最爱的釜山美食、营业时间、排队和交通时间，给出最佳路线。",
+  f_term:"下船码头",f_start:"下船时间",f_board:"登船截止",go:"查看路线",ex:"示例",ex1:"北港一日停靠",ex2:"影岛短停靠",ex3:"半天",
+  D1:"北港邮轮码头",D2:"影岛邮轮码头",m_core:"老城区",m_wide:"釜山全域",
+  s_back:"返回码头",s_slack:"距登船截止",s_stops:"站点",s_spend:"预计消费(人)",min:"分钟",places:"处",
+  depart:"下船",ret:"返回",walk:"步行",taxi:"出租车",queue:"排队",real:"市政数据",est:"营业时间为估计",hours:"营业",
+  alert:(a,b)=>`<b>返船提醒 ${a}</b> 请在此时确认剩余行程。最晚 <b>${b}</b> 从最后一站出发。`,
+  nofit:"没有符合该时间的路线。请提前下船或延后登船时间。",
+  snapped:(s,h)=>`显示最接近的计算条件（${s} 下船，可用 ${h} 小时）。`,
+  note_route:"排队时间无公开数据，为估计值。按邮轮客流高峰日计算。1,000 次模拟中误船概率为 1.2%。",
+  h_merchant:"今天几点会有客人？",lead_merchant:"根据同一港口时刻表，按店铺和时段预测邮轮客人数。示例：2026年5月8日两艘船同时停靠（7,831人）。",
+  f_store:"店铺",fcnote:(n)=>`当天约 ${n} 人（假设10%使用应用、80%上岸）`,note_merchant:"点击表格行查看该店铺分时段图表。",
+  h_data:"从原始数据到服务",lead_data:"六类原始数据经处理代码变成整理表，再经过分析与优化模型，最终成为本服务。点击方框查看详情。",
+  foot:"2026 产学研创意马拉松「釜山之味，从本地到全球」 · 邮轮美食路线团队 · 地图 © OpenStreetMap contributors · 店铺信息：釜山广域市"},
+ ja:{tag:"クルーズ客のための釜山グルメルート",tab_route:"マイルート",tab_merchant:"お店の来客予報",tab_data:"データ処理マップ",
+  h_route:"船に遅れず、釜山を味わう",lead_route:"ターミナル、下船時刻、乗船締切を選ぶだけ。人気の釜山グルメ、営業時間、行列、移動時間をまとめて計算した最適ルートを表示します。",
+  f_term:"下船ターミナル",f_start:"下船時刻",f_board:"乗船締切",go:"ルートを見る",ex:"例",ex1:"北港 日帰り寄港",ex2:"影島 短時間寄港",ex3:"半日",
+  D1:"北港クルーズターミナル",D2:"影島クルーズターミナル",m_core:"旧市街",m_wide:"釜山全体",
+  s_back:"ターミナル帰着",s_slack:"乗船締切までの余裕",s_stops:"立ち寄り",s_spend:"予想支出(1人)",min:"分",places:"か所",
+  depart:"下船",ret:"帰着",walk:"徒歩",taxi:"タクシー",queue:"行列",real:"釜山市データ",est:"営業時間は推定",hours:"営業",
+  alert:(a,b)=>`<b>帰船リマインド ${a}</b> この時刻に残りの予定を確認してください。最後の店は遅くとも <b>${b}</b> に出発。`,
+  nofit:"この条件に合うルートがありません。下船を早めるか乗船締切を遅らせてください。",
+  snapped:(s,h)=>`最も近い計算条件（${s} 下船、${h} 時間）のルートです。`,
+  note_route:"行列時間は公開データがないため推定値です。クルーズ客が多い日を想定。1,000回のシミュレーションで乗り遅れ確率1.2%。",
+  h_merchant:"今日は何時にお客さんが来る？",lead_merchant:"同じ入港情報から、お店ごと・時間帯ごとのクルーズ客数を予報します。例：2026年5月8日、大型船2隻（7,831人）。",
+  f_store:"お店",fcnote:(n)=>`当日 約${n}人（アプリ利用10%、上陸80%と仮定）`,note_merchant:"表の行をタップすると時間帯別グラフが出ます。",
+  h_data:"データがサービスになるまで",lead_data:"6種類の元データが処理コードで整理表になり、分析と最適化モデルを経てこのサービスになります。箱をタップすると詳細が見られます。",
+  foot:"2026 産学研アイデアソン「釜山の味、ローカルからグローカルへ」 · クルーズグルメルート チーム · 地図 © OpenStreetMap contributors · 店舗情報：釜山広域市"}
+};
+const DATA=window.BBP_DATA, P=Object.fromEntries(DATA.places.map(p=>[p.id,p]));
+let L='ko',MAPK='core';
+try{const s=localStorage.getItem('bbp_lang');if(s&&T[s])L=s}catch(e){}
+const t=k=>T[L][k];
+const hm=m=>`${String(Math.floor(m/60)).padStart(2,'0')}:${String(Math.round(m%60)).padStart(2,'0')}`;
+const nm=id=>P[id].name[L]||P[id].name.en||P[id].name.ko;
+const menu=id=>P[id].menu[L]||P[id].menu.en||P[id].menu.ko;
+
+function applyLang(){
+  document.documentElement.lang=L;
+  document.querySelectorAll('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));
+  document.querySelectorAll('#term option').forEach(o=>o.textContent=t(o.value));
+  document.getElementById('credit').textContent=DATA.credit;
+  renderRoute();renderMerchant();renderDM();
+}
+// ----- 입력 -----
+const startSel=document.getElementById('start'),boardSel=document.getElementById('board');
+for(let m=8*60;m<=13*60;m+=30)startSel.add(new Option(hm(m),m));
+for(let m=11*60;m<=22*60;m+=15)boardSel.add(new Option(hm(m),m));
+startSel.value=510;boardSel.value=1020;
+document.getElementById('ask').addEventListener('submit',e=>{e.preventDefault();renderRoute()});
+document.querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>{const[d,s,bd]=b.dataset.ex.split(',');document.getElementById('term').value=d;startSel.value=s;boardSel.value=bd;renderRoute()});
+
+function pick(){
+  const d=document.getElementById('term').value,s=+startSel.value,b=+boardSel.value;
+  const h=Math.floor((b-30-s)/60);
+  if(h<3)return {none:true};
+  const hh=Math.min(9,h);
+  const c=DATA.routes.find(r=>r.depot===d&&r.start===s&&r.hours===hh);
+  return {c,d,s,b,hh,snapped:hh!==(b-30-s)/60};
+}
+function renderRoute(){
+  const sum=document.getElementById('sum'),tl=document.getElementById('tl'),al=document.getElementById('alert');
+  const x=pick();
+  if(x.none||!x.c||!x.c.stops.length){sum.innerHTML='';tl.innerHTML=`<li><span></span><span></span><div>${t('nofit')}</div></li>`;al.hidden=true;drawMap(null);return}
+  const c=x.c,deadline=c.start+c.hours*60,ret=c.return,slack=x.b-30-ret+30;
+  const spend=c.stops.reduce((a,s)=>a+P[s.node].price,0),q=c.stops.reduce((a,s)=>a+s.queue,0);
+  sum.innerHTML=[[hm(ret),t('s_back')],[`${Math.round(x.b-ret)}${t('min')}`,t('s_slack')],[`${c.stops.length}${t('places')}`,t('s_stops')],[`₩${spend.toLocaleString()}`,t('s_spend')]]
+    .map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+  let h=`<li><time>${hm(c.start)}</time><span class="pin end">⚓</span><div><h3>${nm(c.depot)}</h3><div class="menu">${t('depart')}</div></div></li>`;
+  c.stops.forEach((s,i)=>{const p=P[s.node];
+    h+=`<li><time>${hm(s.begin)}</time><span class="pin">${i+1}</span><div><h3>${nm(s.node)}</h3><div class="menu">${menu(s.node)}</div>
+      <div class="tags"><span class="tag">${t(s.mode)} ${s.move}${t('min')}</span>${s.queue?`<span class="tag q">${t('queue')} ${s.queue}${t('min')}</span>`:''}
+      <span class="tag">₩${p.price.toLocaleString()}</span><span class="tag">${t('hours')} ${p.hours.replace('브레이크','break')}</span>${p.real?`<span class="tag">${t('real')}</span>`:`<span class="tag est">${t('est')}</span>`}</div></div></li>`});
+  h+=`<li><time>${hm(ret)}</time><span class="pin end">⚓</span><div><h3>${nm(c.depot)}</h3><div class="menu">${t('ret')} · ${t(c.back_mode)} ${c.back_move}${t('min')}</div></div></li>`;
+  if(x.snapped)h+=`<li><span></span><span></span><p class="note">${t('snapped')(hm(c.start),c.hours)}</p></li>`;
+  tl.innerHTML=h;
+  al.hidden=false;al.innerHTML=`<span aria-hidden="true">⏰</span><div>${t('alert')(hm(x.b-120),hm(deadline-c.back_move))}</div>`;
+  MAPK=c.stops.some(s=>!['중구','영도구','서구'].includes(P[s.node].gu))?'wide':'core';   // 원도심 밖까지 가면 부산 전체 지도
+  drawMap(c);
+}
+// ----- 지도(배경 이미지 + 웹 메르카토르) -----
+const IMG={};
+function loadImg(k){return new Promise(r=>{if(IMG[k])return r(IMG[k]);const i=new Image();i.onload=()=>{IMG[k]=i;r(i)};i.onerror=()=>r(null);i.src=DATA.maps[k].img})}
+const merc=(lon,lat)=>[lon*Math.PI/180*6378137,Math.log(Math.tan(Math.PI/4+lat*Math.PI/360))*6378137];
+let lastRoute=null;
+async function drawMap(c){
+  if(c!==undefined)lastRoute=c;c=lastRoute;
+  document.querySelectorAll('[data-map]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.map===MAPK));
+  const cv=document.getElementById('map'),g=cv.getContext('2d'),m=DATA.maps[MAPK],img=await loadImg(MAPK);
+  cv.width=1040;cv.height=Math.round(1040*m.h/m.w);
+  const css=getComputedStyle(document.documentElement);
+  if(img)g.drawImage(img,0,0,cv.width,cv.height);else{g.fillStyle=css.getPropertyValue('--foam');g.fillRect(0,0,cv.width,cv.height)}
+  if(!c)return;
+  const xy=id=>{const[a,b]=merc(P[id].lon,P[id].lat);return[(a-m.x0)/(m.x1-m.x0)*cv.width,(m.y1-b)/(m.y1-m.y0)*cv.height]};
+  const pts=[c.depot,...c.stops.map(s=>s.node),c.depot].map(xy);
+  g.lineWidth=5;g.strokeStyle='#E8573F';g.lineJoin='round';g.beginPath();pts.forEach(([a,b],i)=>i?g.lineTo(a,b):g.moveTo(a,b));g.stroke();
+  for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[e,f]=pts[i],ang=Math.atan2(f-b,e-a),mx=(a+e)/2,my=(b+f)/2;g.fillStyle='#E8573F';g.beginPath();g.moveTo(mx+12*Math.cos(ang),my+12*Math.sin(ang));g.lineTo(mx-9*Math.cos(ang-0.6),my-9*Math.sin(ang-0.6));g.lineTo(mx-9*Math.cos(ang+0.6),my-9*Math.sin(ang+0.6));g.fill()}
+  const[tx,ty]=pts[0];g.fillStyle='#1D2B36';g.fillRect(tx-11,ty-11,22,22);g.strokeStyle='#fff';g.lineWidth=2;g.strokeRect(tx-11,ty-11,22,22);
+  c.stops.forEach((s,i)=>{const[a,b]=pts[i+1];g.beginPath();g.arc(a,b,17,0,7);g.fillStyle='#0B3C5D';g.fill();g.lineWidth=3;g.strokeStyle='#fff';g.stroke();
+    g.fillStyle='#fff';g.font='700 18px "Noto Sans KR",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(i+1,a,b+1)});
+}
+document.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{MAPK=b.dataset.map;drawMap()});
+// ----- 상인 예보 -----
+let STORE=null;
+function renderMerchant(){
+  const ids=Object.keys(DATA.forecast).sort((a,b)=>tot(b)-tot(a));
+  if(!STORE)STORE=ids[0];
+  const sel=document.getElementById('store');sel.innerHTML='';ids.forEach(id=>sel.add(new Option(nm(id),id)));sel.value=STORE;
+  sel.onchange=()=>{STORE=sel.value;renderMerchant()};
+  const H=[9,10,11,12,13,14,15,16,17,18],f=DATA.forecast[STORE],mx=Math.max(1,...Object.values(f));
+  document.getElementById('bars').innerHTML=H.map(h=>{const v=f[h]||0;return `<div style="height:${v/mx*100}%"><span>${v||''}</span></div>`}).join('');
+  document.getElementById('hrs').innerHTML=H.map(h=>`<span>${h}</span>`).join('');
+  document.getElementById('fcnote').textContent=t('fcnote')(tot(STORE));
+  const all=Math.max(...ids.flatMap(id=>Object.values(DATA.forecast[id])));
+  document.getElementById('heat').innerHTML=`<thead><tr><th></th>${H.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`+
+    ids.map(id=>`<tr data-id="${id}" aria-selected="${id===STORE}"><td>${nm(id)}</td>${H.map(h=>{const v=DATA.forecast[id][h]||0;return `<td style="background:rgba(50,140,193,${(v/all*0.75).toFixed(2)})">${v||''}</td>`}).join('')}</tr>`).join('')+'</tbody>';
+  document.querySelectorAll('#heat tr[data-id]').forEach(r=>r.onclick=()=>{STORE=r.dataset.id;renderMerchant()});
+}
+const tot=id=>Object.values(DATA.forecast[id]).reduce((a,b)=>a+b,0);
+// ----- 데이터 처리 지도 -----
+const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델","결과물"],en:["Raw data","Processing","Clean tables","Analysis · model","Outputs"],zh:["原始数据","处理代码","整理表","分析·模型","成果"],ja:["元データ","処理コード","整理表","分析・モデル","成果物"]},
+ nodes:[
+  ["r1",0,"크루즈 입출항 신고","Cruise port calls","공공데이터포털 15164568 · CSV(cp949) · 656행×34열 · 2023.1~2026.7","01_원천데이터/data.go.kr/busan_cruise_report/",["p1"]],
+  ["r2",0,"외국인 카드소비","Foreign card spending","한국관광데이터랩 외래객 지역별 방한현황 · 6개 구×12개월 · 업종별","01_원천데이터/datalab/",["p2"]],
+  ["r3",0,"YouTube 댓글","YouTube comments","YouTube Data API v3 · 영·중·일 검색 상위 영상 · 1,792개(작성자명 미저장)","01_원천데이터/youtube/",["p3"]],
+  ["r4",0,"부산 맛집 정보","Busan restaurant API","공공데이터포털 15063472(부산시) · 536곳 · 국문·영문·일문","01_원천데이터/data.go.kr/busan_food_api/",["p4"]],
+  ["r5",0,"도로 이동시간","Road travel times","OSRM 경로 API · 21개 지점 480쌍","02_정제데이터/travel_time_1118_B.csv",["p5"]],
+  ["r6",0,"참고 자료","Reference","제주 크루즈 실태조사, 대만 관광객 설문, 언론 27건","01_원천데이터/port_comparison.csv",["p6"]],
+  ["p1",1,"analysis_A_cruise_schedule","","인코딩 정리 → 중복 제거(656→648) → 체류시간·기항 유형 → 기항일 표","03_코드/analysis_A_cruise_schedule.py",["c1"]],
+  ["p2",1,"analysis_A_datalab","","구·월 정리 → 원도심 3구 vs 비교 3구 → 식음료 지수·비중 + 그림9","03_코드/analysis_A_datalab.py",["c2"]],
+  ["p3",1,"collect_C_youtube","","문자로 언어 판정(가나=일, 한자=중, 라틴=영) → 메뉴 사전 매칭 → 범주별 언급 수","03_코드/collect_C_youtube.py",["c3"]],
+  ["p4",1,"collect_B_busanfood","","API 전체 수집 → 가게명으로 지점과 짝짓기 → 영업·브레이크 파싱 → 좌표 교체","03_코드/collect_B_busanfood.py",["c4"]],
+  ["p5",1,"OSRM 행렬","OSRM matrix","전 지점 쌍 경로 → 택시(+5분 호출) / 1.5km 이하 도보","02_정제데이터/노드데이터_설명.md",["c5"]],
+  ["p6",1,"문헌 정리","Literature","대조군 수치 확인(verified/unverified) · 국적 가중치","01_원천데이터/출처목록.md",["c6"]],
+  ["c1",2,"체류시간·기항일","Dwell time","기항 유형 3종 · 상륙 가능 중앙값 8.5시간 · 2025 승객 수 기준 차이","02_정제데이터/체류시간요약_1118_A.csv",["a1","a3"]],
+  ["c2",2,"원도심 비교","Old town vs others","원도심 식음료 +76% vs 비교 3구 +57% · 상관 r=0.14(연관만)","02_정제데이터/외국인소비_원도심비교_1118_A.csv",["a1"]],
+  ["c3",2,"메뉴 언급·수요점수","Demand score","해산물 86건 … 어묵 2건 → 수요점수 50~100","02_정제데이터/메뉴언급_언어별_1118_C.csv",["a2"]],
+  ["c4",2,"food_nodes 21곳","Places","가게 19곳 + 터미널 2곳 · 13곳 부산시 실데이터 · 추정 대비 대조표","02_정제데이터/food_nodes_1118_B.csv",["a3"]],
+  ["c5",2,"travel_time","Travel matrix","21×21 이동 분(택시·도보)","02_정제데이터/travel_time_1118_B.csv",["a3"]],
+  ["c6",2,"대조군·퍼널","Benchmarks","제주 1인 지출 −35.2% · 퍼널 5단계","02_정제데이터/퍼널수치_1118_A.csv",["a1"]],
+  ["a1",3,"문제 진단","Problem","부산 패싱: 승객 +175.7%, 소비의 약 66%가 쇼핑","05_문서/3주차_발표자료.pptx",["o2"]],
+  ["a2",3,"수요점수","Demand","외국인이 실제로 말하는 음식 → 만족도","03_코드/collect_C_youtube.py",["a3"]],
+  ["a3",3,"OPTW 최적화","OPTW model","목적: 수요점수 − 0.8×(줄+이동) · 제약: 승선 마감·영업·혼잡 줄·위 용량·식사 간격 · 분기한정 최적해","03_코드/cruise_route_optw.py",["a4","o1","o3"]],
+  ["a4",3,"검증·분산","Validation","1,000회 모의(지각 1.2%) · 6그룹 분산 배정 · 2척 동시 기항일","03_코드/run_B_model.py · run_dispersion.py",["o2","o3"]],
+  ["o1",4,"루트 시간표·지도","Itineraries","6개 시나리오 시간표 · 실제 지도","03_코드/make_itinerary.py",[]],
+  ["o2",4,"보고서·발표자료","Report · slides","CSV를 읽어 자동 생성 · 발표 대본 포함","03_코드/문서빌드/",[]],
+  ["o3",4,"Busan Bite Pass","This service","154개 조건 최적 루트 사전 계산 · 상인 예보 · 4개 언어","03_코드/make_service_routes.py · make_service_data.py",[]]
+ ]};
+let DMSEL='a3';
+function renderDM(){
+  const grid=document.getElementById('dmgrid');
+  grid.innerHTML=DM.cols[L].map((h,i)=>`<div class="dm-col"><h4>${h}</h4>${DM.nodes.filter(n=>n[1]===i).map(n=>`<button class="dm-node" data-id="${n[0]}">${L==='ko'?n[2]:(n[3]||n[2])}<small>${(L==='ko'?n[4]:n[4]).split(' · ')[0]}</small></button>`).join('')}</div>`).join('');
+  grid.querySelectorAll('.dm-node').forEach(b=>b.onclick=()=>{DMSEL=b.dataset.id;renderDM()});
+  requestAnimationFrame(drawDM);
+}
+function drawDM(){
+  const box=document.getElementById('dm'),svg=document.getElementById('dmsvg'),grid=document.getElementById('dmgrid');
+  const R=grid.getBoundingClientRect(),W=grid.scrollWidth,H=grid.scrollHeight;
+  svg.setAttribute('width',W);svg.setAttribute('height',H);svg.style.width=W+'px';svg.style.height=H+'px';
+  const pos=id=>{const e=grid.querySelector(`[data-id="${id}"]`).getBoundingClientRect();return{l:e.left-R.left,r:e.right-R.left,y:e.top-R.top+e.height/2}};
+  const by=Object.fromEntries(DM.nodes.map(n=>[n[0],n]));
+  const up=new Set,down=new Set;
+  (function d(id){by[id][6].forEach(x=>{if(!down.has(x)){down.add(x);d(x)}})})(DMSEL);
+  (function u(id){DM.nodes.forEach(n=>{if(n[6].includes(id)&&!up.has(n[0])){up.add(n[0]);u(n[0])}})})(DMSEL);
+  const css=getComputedStyle(document.documentElement);
+  let s='';
+  DM.nodes.forEach(n=>n[6].forEach(to=>{const a=pos(n[0]),b=pos(to);const hot=(up.has(n[0])||n[0]===DMSEL)&&(down.has(to)||to===DMSEL||up.has(to));
+    const x1=a.r,x2=b.l,mx=(x1+x2)/2;s+=`<path d="M${x1},${a.y} C${mx},${a.y} ${mx},${b.y} ${x2},${b.y}" fill="none" stroke="${hot?css.getPropertyValue('--coral'):css.getPropertyValue('--line')}" stroke-width="${hot?2.5:1.2}"/>`}));
+  svg.innerHTML=s;
+  grid.querySelectorAll('.dm-node').forEach(b=>{const id=b.dataset.id;b.classList.toggle('on',id===DMSEL);b.classList.toggle('rel',up.has(id)||down.has(id));b.classList.toggle('dim',!(id===DMSEL||up.has(id)||down.has(id)))});
+  const n=by[DMSEL];
+  document.getElementById('dmd').innerHTML=`<h3>${n[2]}${n[3]&&n[3]!==n[2]?` <small style="color:var(--mute);font-weight:500">${n[3]}</small>`:''}</h3><dl><dt>${L==='ko'?'한 일':'What'}</dt><dd>${n[4]}</dd><dt>${L==='ko'?'파일':'File'}</dt><dd><code>${n[5]}</code></dd><dt>${L==='ko'?'다음 단계':'Feeds into'}</dt><dd>${n[6].map(x=>by[x][2]).join(', ')||'—'}</dd></dl>`;
+}
+window.addEventListener('resize',()=>{if(!document.getElementById('v-data').hidden)drawDM()});
+// ----- 탭(해시) -----
+function route(){const h=(location.hash||'#route').slice(1);['route','merchant','data'].forEach(k=>{document.getElementById('v-'+k).hidden=k!==h;document.querySelector(`[data-tab="${k}"]`).setAttribute('aria-current',k===h?'page':'false')});if(h==='data')requestAnimationFrame(drawDM)}
+window.addEventListener('hashchange',route);
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.lang;try{localStorage.setItem('bbp_lang',L)}catch(e){};applyLang()});
+applyLang();route();
+</script>

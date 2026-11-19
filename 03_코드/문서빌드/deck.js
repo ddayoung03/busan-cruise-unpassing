@@ -36,29 +36,31 @@ const card=(s,x,y,w,h,fill=ICE)=>s.addShape(p.ShapeType.roundRect,{x,y,w,h,fill:
 const th=t=>({text:t,options:{bold:true,color:WHITE,fill:{color:NAVY}}});
 const T=(s,rows,o)=>s.addTable(rows,{fontFace:FONT,fontSize:13,color:INK,border:{type:'solid',color:'C9D6E0',pt:0.75},valign:'middle',margin:0.06,...o});
 let SEC='';
-const slide=(title,kicker,master='CONTENT')=>{const s=p.addSlide({masterName:master,sectionTitle:SEC});s.addText(title,{placeholder:'title'});
+const REG=[];
+const slide=(title,kicker,master='CONTENT')=>{const s=p.addSlide({masterName:master,sectionTitle:SEC});REG.push([title,s]);s.addText(title,{placeholder:'title'});
  if(kicker)tb(s,kicker,{x:0.6,y:0.22,w:12,h:0.35,fontSize:13,bold:true,color:CORAL});return s;};
-const section=(n,title,sub)=>{SEC=title;p.addSection({title});const s=p.addSlide({masterName:'SECTION',sectionTitle:SEC});
+const section=(n,title,sub)=>{SEC=title;p.addSection({title});const s=p.addSlide({masterName:'SECTION',sectionTitle:SEC});REG.push(['§'+title,s]);
  dot(s,n,0.8,2.95,1.1,CORAL);s.addText(title,{placeholder:'title'});tb(s,sub,{x:2.3,y:4.1,w:10,h:0.8,fontSize:18,color:'C9DCEB'});return s;};
 const stat=(s,x,y,w,big,lab,color=NAVY)=>{tb(s,big,{x,y,w,h:0.95,fontSize:44,bold:true,color});tb(s,lab,{x,y:y+0.95,w,h:0.8,fontSize:14,color:MUTE});};
 
 // ===== 0. 표지 =====
 SEC='표지';p.addSection({title:SEC});
 let s=p.addSlide({masterName:'DARK',sectionTitle:SEC});
-s.addText('면세점에서 멈추지 않게\n크루즈 승객의 부산 패싱 끊기',{placeholder:'title'});
+s.addText('면세점에서 멈추지 않게\n크루즈 승객의 부산 패싱 끊기',{placeholder:'title'});REG.push(['표지',s]);
 tb(s,'하선 시간 안에, 배를 놓치지 않고, 외국인이 원하는 부산 음식으로',{x:0.8,y:4.3,w:11.5,h:0.5,fontSize:20,color:'C9DCEB'});
 tb(s,'크루즈 미식 루트 팀 · 2026 지산학 아이디어톤 「부산의 맛, 로컬에서 글로컬」 3주차',{x:0.8,y:6.5,w:11.5,h:0.4,fontSize:13,color:'9FB8CC'});
 s.addNotes('크루즈 승객이 부산에 내려도 면세점만 들르고 배로 돌아가는 “부산 패싱”을, 데이터와 최적화로 끊어 보겠다는 발표입니다.');
 
 // ===== 1. 우리가 만든 것 (한 장 요약) =====
 SEC='요약';p.addSection({title:SEC});
-s=slide('우리가 만든 것: 배를 놓치지 않는 “부산 한 끼” 루트 추천','한 장 요약');
+s=slide('Busan Bite Pass: 배를 놓치지 않는 “부산 한 끼” 루트','한 장 요약 — 우리가 만든 서비스');
 const flow=[['하선','QR로 배 이름만 입력\n→ 하선·승선 시각 자동'],['루트 추천','외국인이 원하는 음식 +\n영업·줄·이동을 계산'],['시간표','몇 시에 어디서\n줄 서고 먹는지'],['복귀 알림','승선 2시간 전\n남은 일정 조정']];
 flow.forEach(([a,b],i)=>{const x=0.6+i*3.1;card(s,x,1.75,2.8,2.3);dot(s,i+1,x+0.2,1.95);tb(s,a,{x:x+0.9,y:2.0,w:1.8,h:0.5,fontSize:19,bold:true,color:NAVY});
  tb(s,b,{x:x+0.2,y:2.75,w:2.45,h:1.2,fontSize:14,color:INK});if(i<3)tb(s,'→',{x:x+2.8,y:2.6,w:0.3,h:0.5,fontSize:22,bold:true,color:CORAL,align:'center'});});
 stat(s,0.6,4.55,3.9,'403,188명','2026년 1~7월 크루즈 승객\n전년 대비 +175.7%');
 stat(s,4.75,4.55,3.9,'약 66%','중구 외국인 카드소비 중 쇼핑\n(면세점 포함) — 식음료는 19~23%',CORAL);
 stat(s,8.9,4.55,3.9,`지각 ${late}%`,`최적 루트 1,000회 모의\n규칙 준수 ${ok}%`,SEA);
+tb(s,[{text:'+ 상인용 수요 예보  ',options:{bold:true,color:CORAL}},{text:'같은 입항 정보로 가게별·시간대별 예상 손님을 미리 알려 준다'}],{x:0.6,y:6.35,w:12,h:0.4,fontSize:15});
 s.addNotes(`우리가 만든 것은 크루즈 승객용 루트 추천입니다. 배 이름만 넣으면 하선·승선 시각이 정해지고, 외국인이 실제로 원하는 음식과 가게 영업시간, 줄, 이동시간을 함께 계산해 시간표를 줍니다. 승객은 1년 새 거의 3배로 늘었는데 소비의 약 66%가 쇼핑에 머뭅니다. 우리 루트는 무작위 1,000번 흔들어도 지각 확률이 ${late}%입니다.`);
 
 // ===== 목차 =====
@@ -80,6 +82,13 @@ s.addNotes('1주차 점수표 아이디어는 근거가 부족해 접었고, 2�
 
 // ===== ① 문제 =====
 section(1,'문제','승객은 늘었는데 소비는 면세점에서 멈춘다');
+s=slide('오전 8시, 북항에 수천 명이 내린다','문제 — 크루즈 승객의 하루');
+const day=[['08:00','입항','수천 명이 한꺼번에 북항에 닿는다'],['09:30','하선','입국 심사를 마치면 벌써 9시 반'],['12:00','점심','이름난 밀면집 앞 줄은 40분을 넘는다'],['13:00','포기','줄을 포기하고 면세 쇼핑만 하거나 단체버스로 경주로'],['16:30','복귀','승선 마감 30분 전, 부산의 맛은 못 보고 배로']];
+day.forEach(([t,a,b],i)=>{const y=1.6+i*0.86;tb(s,t,{x:0.6,y:y+0.08,w:1.3,h:0.5,fontSize:20,bold:true,color:i>=3?CORAL:NAVY});dot(s,i+1,1.95,y+0.05,0.5,i>=3?CORAL:NAVY);tb(s,a,{x:2.65,y:y+0.1,w:1.2,h:0.45,fontSize:17,bold:true,color:NAVY});tb(s,b,{x:3.85,y:y+0.12,w:4.6,h:0.45,fontSize:15});});
+card(s,8.8,1.7,3.9,3.0,NAVY);tb(s,[{text:'“사실 부산 여행할 시간이 없어요”\n\n',options:{fontSize:19,bold:true}},{text:'— 크루즈로 온 독일 관광객\n(KBS부산, 2026.1.18)',options:{fontSize:13,color:'C9DCEB'}}],{x:9.05,y:1.95,w:3.45,h:2.6,color:WHITE});
+tb(s,'부산에 내렸지만 부산의 맛은 먹지 못하고 떠난다 — 언론이 말하는 “부산 패싱”',{x:8.8,y:4.9,w:3.9,h:1.1,fontSize:15,bold:true,color:CORAL});
+tb(s,'시각은 북항 당일 기항을 가정한 예시(2주차 보고서)',{x:0.6,y:6.45,w:8,h:0.35,fontSize:11,color:MUTE});
+
 s=slide('크루즈 승객은 3년 새 거의 3배, 머무는 시간은 8시간 남짓','문제 ① 기회는 커졌다');
 s.addImage({path:R+'04_그림/그림5_월별승객.png',x:0.6,y:1.6,w:7.4,h:4.6});
 stat(s,8.5,1.8,4.3,'+175.7%','2026년 1~7월 승객 403,188명\n(전년 같은 기간 대비)');
@@ -95,6 +104,16 @@ card(s,6.3,1.7,6.4,1.45);tb(s,[{text:'먹을 수요는 있다  ',options:{bold:t
 card(s,6.3,3.35,6.4,1.45);tb(s,[{text:'하지만 오래 못 간다  ',options:{bold:true,color:CORAL}},{text:'식음료는 월 19~23%에 머물고, 소비는 터미널·면세점 근처에서 끝난다'}],{x:6.5,y:3.5,w:6.0,h:1.2,fontSize:15});
 card(s,6.3,5.0,6.4,1.15,'F7F9FB');tb(s,'주의: 쇼핑·식음료 비중은 데이터랩 업종 구성(2025.10~2026.9). 월별 크루즈 승객과의 상관은 약해(r=0.14) 연관으로만 해석',{x:6.5,y:5.1,w:6.0,h:0.95,fontSize:12,color:MUTE});
 s.addNotes('한국관광데이터랩에서 구별 외국인 카드소비를 받았습니다. 중구는 쇼핑이 약 3분의 2입니다. 식음료는 원도심에서 비교 지역보다 빨리 늘고 있어 먹을 의지는 있습니다. 문제는 짧은 시간 안에 어디를 어떻게 갈지 모른다는 것입니다. 다만 월별 상관은 약해서 인과로 단정하지 않습니다.');
+
+s=slide('제주가 먼저 겪었다: 승객은 늘어도 1인 지출은 35% 줄었다','문제 ③ 대조군 — 제주');
+s.addChart(p.ChartType.bar,[{name:'제주 크루즈객 1인당 평균 지출(달러)',labels:['2023','2024','2025'],values:[188.3,157.1,122.1]}],
+ {x:0.6,y:1.55,w:6.0,h:4.7,barDir:'col',chartColors:[CORAL],showValue:true,dataLabelPosition:'outEnd',dataLabelFontFace:FONT,dataLabelFontSize:14,dataLabelColor:INK,
+  catAxisLabelFontFace:FONT,catAxisLabelFontSize:14,catAxisLabelColor:INK,valAxisHidden:true,valGridLine:{style:'none'},showLegend:false,
+  showTitle:true,title:'제주 크루즈객 1인당 평균 지출 (달러)',titleFontFace:FONT,titleFontSize:14,titleColor:INK});
+stat(s,7.0,1.7,5.7,'−35.2%','2년 만에 1인당 지출 감소 (188.3 → 122.1달러)',CORAL);
+stat(s,7.0,3.3,5.7,'70.2%','전국 크루즈 관광객 중 제주 비중 (2025)',NAVY);
+card(s,7.0,5.0,5.7,1.25,'F7F9FB');tb(s,[{text:'정책의 빈틈  ',options:{bold:true,color:NAVY}},{text:'부산 정책은 터미널 24시간 운영·야경·K뷰티 순환버스 중심. “맛”으로 체류와 소비를 늘리는 접근은 비어 있다'}],{x:7.2,y:5.1,w:5.3,h:1.05,fontSize:13});
+tb(s,'자료: 서울신문(2026.11.4, 2026.7.28) — 2주차 보고서 대조군',{x:0.6,y:6.45,w:8,h:0.35,fontSize:11,color:MUTE});
 
 // ===== ② 원인 =====
 section(2,'원인','왜 가게까지 못 가나 — 네 가지 원인, 네 가지 과제');
@@ -133,8 +152,25 @@ pipe.forEach(([a,b,c],i)=>{const y=1.55+i*0.97;dot(s,i+1,0.6,y+0.12,0.5);tb(s,a,
  tb(s,c,{x:9.85,y:y+0.08,w:2.9,h:0.66,fontSize:12,color:MUTE,valign:'middle'});});
 s.addNotes('원데이터마다 정제 과정을 거쳤습니다. 입출항 신고는 인코딩을 맞추고 중복을 지운 뒤 체류시간을 계산했습니다. 댓글은 문자 종류로 언어를 나누고 메뉴 사전으로 음식 범주를 셌습니다. 맛집 API는 우리 지점과 이름으로 짝을 지어 실제 영업시간으로 바꿨습니다.');
 
+s=slide('데이터 처리 지도: 원데이터에서 루트·서비스까지','데이터 ③ 전체 흐름 한눈에');
+const COLS=[['원데이터',0.35],['처리 코드',2.85],['정제 표',5.35],['분석·모델',7.85],['결과물',10.45]];
+COLS.forEach(([t,x])=>tb(s,t,{x,y:1.45,w:2.3,h:0.35,fontSize:13,bold:true,color:CORAL,align:'center'}));
+const node=(x,y,t,sub,fill,w=2.3)=>{s.addShape(p.ShapeType.roundRect,{x,y,w,h:0.62,fill:{color:fill},line:{color:fill},rectRadius:0.06});
+ tb(s,[{text:t+'\n',options:{bold:true,fontSize:11}},{text:sub,options:{fontSize:9}}],{x:x+0.08,y:y+0.04,w:w-0.16,h:0.56,valign:'middle',color:fill==NAVY?WHITE:INK});};
+const arrow=(x1,y1,x2,y2)=>s.addShape(p.ShapeType.line,{x:Math.min(x1,x2),y:Math.min(y1,y2),w:Math.abs(x2-x1)||0.01,h:Math.abs(y2-y1)||0.01,flipV:y2<y1,line:{color:'9FB3C4',width:1.25,endArrowType:'triangle'}});
+const RAW=[['크루즈 입출항 신고','공공데이터포털 · 656행'],['외국인 카드소비','한국관광데이터랩 · 6구×12월'],['YouTube 댓글','Data API · 1,792개'],['부산 맛집 정보','부산시 API · 536곳'],['도로 이동시간','OSRM · 480쌍'],['참고 자료','제주 조사·대만 설문·언론']];
+const CODE=[['analysis_A_cruise','인코딩·중복 제거·체류시간'],['analysis_A_datalab','구·월 집계·지수화'],['collect_C_youtube','언어 판정·메뉴 사전'],['collect_B_busanfood','가게 매칭·영업시간 파싱'],['OSRM 행렬','택시+5분 / 도보'],['문헌 정리','대조군·국적 가중치']];
+const TBL=[['체류시간·기항일','기항 유형 3종, 8.5시간'],['원도심 비교','식음료 +76% vs +57%'],['메뉴 언급·수요점수','해산물 100 … 어묵 62'],['food_nodes 21곳','13곳 실데이터'],['travel_time','21×21 이동 분'],['대조군·퍼널','제주 −35%, 퍼널 5단계']];
+RAW.forEach(([a,b],i)=>{const y=1.9+i*0.78;node(0.35,y,a,b,ICE);arrow(2.65,y+0.31,2.85,y+0.31);node(2.85,y,a==='참고 자료'?'문헌 정리':CODE[i][0],CODE[i][1],'DCEAF5');arrow(5.15,y+0.31,5.35,y+0.31);node(5.35,y,TBL[i][0],TBL[i][1],'F7F9FB');});
+node(7.85,1.95,'퍼널·문제 진단','부산 패싱 근거',SEA);node(7.85,3.05,'수요점수','무엇을 먹일까',SEA);node(7.85,4.15,'OPTW 최적화','시간창·줄·위 용량',NAVY);node(7.85,5.25,'검증·분산','1,000회 · 그룹 배정',SEA);
+[[0,1.95],[1,1.95],[5,1.95],[2,3.05],[0,4.15],[3,4.15],[4,4.15]].forEach(([i,ty])=>arrow(7.65,1.9+i*0.78+0.31,7.85,ty+0.31));
+arrow(8.95,3.67,8.95,4.15);arrow(8.95,4.77,8.95,5.25);
+const OUT=[['루트 시간표·지도','6개 시나리오',2.5],['보고서·발표자료','CSV를 읽어 자동 생성',3.6],['Busan Bite Pass','승객 루트 + 상인 예보',4.7]];
+OUT.forEach(([a,b,y])=>{node(10.45,y,a,b,a.startsWith('Busan')?CORAL:ICE);arrow(10.15,4.46,10.45,y+0.31);});
+tb(s,'모든 단계는 03_코드의 스크립트로 다시 실행할 수 있고, 결과 표(02_정제데이터)를 읽어 문서와 서비스가 만들어진다 · 인터랙티브 지도: 06_서비스/데이터처리지도.html',{x:0.35,y:6.65,w:12.6,h:0.4,fontSize:11,color:MUTE});
+
 const RC=csv('2025승객수_기준차이_1118_A.csv'),ST=csv('체류시간요약_1118_A.csv');
-s=slide('숫자 맞추기: 보도 25.7만 명 vs 신고 24.9만 명','데이터 ③ 기준 차이 확인과 기항 유형');
+s=slide('숫자 맞추기: 보도 25.7만 명 vs 신고 24.9만 명','데이터 ④ 기준 차이 확인과 기항 유형');
 T(s,[[th('기준'),th('항차'),th('승객')],...RC.map(r=>[r['기준'],r['항차'],(+r['승객']).toLocaleString()])],{x:0.6,y:1.6,w:6.0,colW:[3.6,1.0,1.4],fontSize:13,rowH:0.55});
 tb(s,'보도치와 2.9% 차이(원인 미해명) — 발표에서는 신고 원자료 기준을 쓰고 차이를 공개',{x:0.6,y:3.95,w:6.0,h:0.8,fontSize:13,color:CORAL});
 T(s,[[th('기항 유형'),th('항차'),th('승객 비중'),th('상륙 가능 중앙값')],...ST.map(r=>[r['type'],r['항차'],r['승객비중%']+'%',r['상륙가능_중앙값h']+'시간'])],{x:7.0,y:1.6,w:5.7,colW:[1.8,1.0,1.3,1.6],fontSize:13,rowH:0.55});
@@ -143,7 +179,7 @@ card(s,7.0,4.55,5.7,1.6,NAVY);tb(s,[{text:'그래서 루트 설계 기준\n',opt
 s.addNotes('분석 전에 숫자부터 맞췄습니다. 언론의 25.7만 명과 신고 원자료 24.9만 명이 2.9% 차이가 나서 기준을 표로 공개했습니다. 기항 유형별로 보면 승객의 81%가 8~13시간 기항선이고 실제로 돌아다닐 수 있는 시간은 중앙값 8.5시간입니다.');
 
 const ND=csv('노드_실데이터대조_1118_B.csv').filter(r=>r['추정(이전)']);
-s=slide('추정치를 실제 데이터로: 가게 13곳 교체','데이터 ④ 부산시 맛집 API로 검증');
+s=slide('추정치를 실제 데이터로: 가게 13곳 교체','데이터 ⑤ 부산시 맛집 API로 검증');
 T(s,[[th('이전(추정)'),th('실제(부산시 맛집 API)'),th('위치 차이')],...ND.slice(0,7).map(r=>[r['추정(이전)'],r['실제(부산시 API)'],r['좌표 이동(m)']+'m'])],{x:0.6,y:1.55,w:12.1,colW:[4.7,5.6,1.8],fontSize:12,rowH:0.5});
 tb(s,'예: 원조18번완당 마감 22:00 → 19:30, 할매국밥 22:00 → 19:00, 동래할매파전 브레이크 15~17시 추가 · 골목 단위 좌표는 최대 3.3km 어긋나 있었다',{x:0.6,y:6.2,w:12.1,h:0.6,fontSize:13,color:CORAL});
 s.addNotes('처음에는 가게 영업시간을 웹 검색으로 추정했습니다. 부산시 맛집 API를 신청해 실제 값과 비교해 보니 마감 시각이 2시간 이상 다른 곳도 있었습니다. 19곳 중 13곳을 실제 가게 데이터로 바꿨고, 시장·마을 6곳과 줄 대기 시간은 공개 데이터가 없어 추정으로 남았습니다.');
@@ -255,17 +291,30 @@ T(s,[[th('문제'),th('해결책'),th('근거')],
  {x:0.6,y:1.6,w:12.1,colW:[4.3,4.0,3.8],fontSize:15,rowH:0.75});
 s.addNotes('정리하면 다섯 가지 문제가 각각 해결책과 수치 근거로 연결됩니다.');
 
+s=slide('실제로 쓰는 서비스: Busan Bite Pass','서비스 화면');
+s.addImage({path:R+'04_그림/그림10_서비스화면.png',x:0.6,y:1.5,w:7.9,h:4.95,sizing:{type:'cover',w:7.9,h:4.95}});
+tb(s,['터미널·하선 시각·승선 마감만 고르면 최적 루트와 시간표','154개 조건의 최적해를 미리 계산 → 바로 응답','한국어·English·中文·日本語, 가게 이름·메뉴는 부산시 공식 데이터','복귀 알림 시각과 “마지막 장소 출발 시각” 안내','상인용 수요 예보 · 데이터 처리 지도 탭'].map((x,j,a)=>({text:x,options:{bullet:true,breakLine:j<a.length-1}})),{x:8.8,y:1.6,w:4.0,h:4.8,fontSize:14,paraSpaceAfter:8});
 s=slide('누가 어떻게 실행하나','실행 계획과 한계');
 const who=[['부산항만공사','하선 안내 QR → 배 이름만 넣으면 맞춤 루트'],['상인회·전통시장','브레이크·줄 정보 제공, 분산 배정으로 손님 고르게'],['우리 팀','주요 가게 줄 대기 현장 측정, 리뷰로 가게 단위 수요점수']];
 who.forEach(([a,b],i)=>{const y=1.65+i*1.15;dot(s,i+1,0.6,y);tb(s,a,{x:1.4,y:y+0.03,w:3.2,h:0.5,fontSize:18,bold:true,color:NAVY});tb(s,b,{x:4.6,y:y+0.06,w:8.1,h:0.5,fontSize:15});});
 card(s,0.6,5.2,12.1,1.35,'F7F9FB');tb(s,[{text:'한계  ',options:{bold:true,color:CORAL}},{text:'줄 대기 시간은 추정(공개 데이터 없음) · 수요점수는 범주 단위·표본 작음 · 데이터랩은 월 단위라 기항일 효과는 일 단위 자료로 검증 필요'}],{x:0.85,y:5.35,w:11.6,h:1.1,fontSize:14});
 s.addNotes('부산항만공사는 하선 안내에 QR을, 상인회는 영업과 줄 정보를, 우리 팀은 현장 측정으로 추정치를 실제 값으로 바꿉니다. 한계도 분명히 말씀드립니다.');
 
+s=slide('원도심에서 부산 전역으로, 다른 방문객으로','확산 3단계');
+const steps3=[['분산','같은 배 승객을 그룹별 다른 루트로 → 원도심 안에서도 한 가게에 몰리지 않게 (상인 입력 수용 인원 반영)'],['체류 연장','오버나잇·24시간 터미널을 활용해 서면·동래·해운대까지 (S3·S5 루트)'],['재사용','출발점과 남은 시간만 바꾸면 KTX 당일 여행객·공연 관객·환승객에게도 같은 모델']];
+steps3.forEach(([a,b],i)=>{const x=0.6+i*4.1;card(s,x,1.7,3.9,3.2,i==0?ICE:(i==1?'DCEAF5':NAVY));dot(s,i+1,x+0.25,1.95,0.6,CORAL);tb(s,a,{x:x+1.05,y:2.0,w:2.7,h:0.55,fontSize:21,bold:true,color:i==2?WHITE:NAVY});tb(s,b,{x:x+0.25,y:2.85,w:3.4,h:1.9,fontSize:15,color:i==2?WHITE:INK});});
+card(s,0.6,5.2,12.1,1.15,'F7F9FB');tb(s,[{text:'확산을 재는 법  ',options:{bold:true,color:CORAL}},{text:'구별 확산지수 = 기항일 외국인 음식업 결제 중 원도심(터미널 3km) 밖 비중 → 도입 전후·대조군 비교'}],{x:0.85,y:5.35,w:11.6,h:0.85,fontSize:15});
+
 SEC='마무리';p.addSection({title:SEC});
 s=p.addSlide({masterName:'DARK',sectionTitle:SEC});
-s.addText('배에서 내린 8시간을\n부산의 맛으로',{placeholder:'title'});
+s.addText('배에서 내린 8시간을\n부산의 맛으로',{placeholder:'title'});REG.push(['마무리',s]);
 tb(s,'승객은 배를 놓치지 않고 더 먹고, 소비는 면세점 밖 부산 가게로',{x:0.8,y:4.3,w:11.5,h:0.5,fontSize:20,color:'C9DCEB'});
 tb(s,'감사합니다 · 코드와 데이터는 팀 GitHub 저장소(비공개)에 정리',{x:0.8,y:6.5,w:11.5,h:0.4,fontSize:13,color:'9FB8CC'});
 s.addNotes('배에서 내린 8시간을 부산의 맛으로 채우는 것이 우리 제안입니다. 감사합니다.');
 
+const SCRIPT=require('./대본.js')({S1,G1,N1,nvViol,late,ok,p5,gain,vk,DF,top,gr,ALLEY_FAIL});
+const md=['# 3주차 발표 대본 — 크루즈 승객의 부산 패싱 끊기','',`총 ${REG.length}장 · 슬라이드당 약 30~60초 · 노트와 같은 내용`,''];
+REG.forEach(([key,sl],i)=>{const hit=SCRIPT.find(([m])=>key.includes(m));if(!hit){console.log('대본 없음:',key);return;}
+ sl._slideObjects=sl._slideObjects.filter(o=>o._type!=='notes');sl.addNotes(hit[1]);md.push(`## ${i+1}. ${key.replace(/^§/,'[섹션] ')}`,'',hit[1],'');});
+fs.writeFileSync(R+'05_문서/3주차_발표대본.md',md.join('\n'));
 p.writeFile({fileName:process.env.DECK_OUT||R+'05_문서/3주차_발표자료.pptx'}).then(()=>console.log('deck ok'));
