@@ -56,3 +56,27 @@ ax.legend(h1 + h2, l1 + l2, loc="upper left", fontsize=9, frameon=False)
 ax.set_zorder(ax2.get_zorder() + 1); ax.patch.set_visible(False)
 ax.set_title("원도심 외국인 식음료 +76% vs 비교 지역 +57% (2025.10→2026.7)", fontsize=11)
 plt.tight_layout(); plt.savefig(ROOT / "04_그림/그림9_원도심비교.png", dpi=180); plt.close()
+
+# 교수님 피드백: 월·구·업종 카드소비 ↔ 월별 '기항 횟수'(입출항 신고 항차 수)
+# 업종은 데이터랩이 주는 전체·식음료(+비식음료 = 전체 − 식음료)와 방문자 수. 겹치는 달 10개뿐이라 상관·기울기는 참고용.
+ncall = calls.groupby(calls["arr"].dt.strftime("%Y%m")).size()
+d["기항횟수"] = d["ym"].map(ncall)
+d["foreign_card_nonfood"] = d["foreign_card_total"] - d["foreign_card_food"]
+rows = []
+for gu, g in d.dropna(subset=["기항횟수"]).groupby("gu", sort=False):
+    for col, lab in [("foreign_visitors", "방문자"), ("foreign_card_total", "카드소비 전체"), ("foreign_card_food", "식음료"), ("foreign_card_nonfood", "비식음료(쇼핑 등)")]:
+        y = g[col] / g[col].iloc[0] * 100                      # 첫 달 = 100 지수
+        slope = np.polyfit(g["기항횟수"], y, 1)[0]             # 기항 1회 늘 때 지수 변화
+        rows.append({"구": gu, "원도심": gu in ["중구", "동구", "영도구"], "지표": lab, "달 수": len(g),
+                     "기항횟수와 상관 r": round(g["기항횟수"].corr(g[col]), 2), "기항 10회당 지수 변화": round(slope * 10, 1)})
+rel = pd.DataFrame(rows)
+core = d[d["core"] == "원도심"].groupby("ym")[["foreign_card_food"]].sum().join(d[d["core"] == "비교"].groupby("ym")[["foreign_card_food"]].sum(), rsuffix="_비교")
+core["원도심 식음료 비중%"] = core["foreign_card_food"] / (core["foreign_card_food"] + core["foreign_card_food_비교"]) * 100
+core["기항횟수"] = core.index.map(ncall)
+core = core.dropna()
+rel.loc[len(rel)] = {"구": "원도심 vs 비교", "원도심": True, "지표": "원도심 식음료 비중%(차이)", "달 수": len(core),
+                     "기항횟수와 상관 r": round(core["기항횟수"].corr(core["원도심 식음료 비중%"]), 2),
+                     "기항 10회당 지수 변화": round(np.polyfit(core["기항횟수"], core["원도심 식음료 비중%"], 1)[0] * 10, 2)}
+rel.to_csv(ROOT / "02_정제데이터/기항횟수_소비관계_1120_A.csv", index=False, encoding="utf-8-sig")
+print("\n월별 기항 횟수:", ncall.reindex(sorted(d["ym"].unique())).to_dict())
+print(rel.to_string(index=False))

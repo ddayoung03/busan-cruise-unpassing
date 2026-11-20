@@ -47,6 +47,10 @@ FOOD_CAPS = (5, 6, 7)                  # 음식 수를 5·6·7곳으로 각각 �
 MAX_ATTR = 2                           # 볼거리(category='볼거리', 먹지 않는 노드) 최대 방문 수 — 소화 시간을 채운다
 ATTR_CAT = "볼거리"
 TAXI_OVERHEAD = 5.0                    # 택시 호출·승하차 (가정)
+# 점포 수용인원(시간당, 사람) = 창구·테이블 수 c × 60 / 처리 분 × 일행 크기 — 가정(현장 관측 후 food_nodes의 cap_hour 열로 덮어씀)
+PARTY = 3
+SERVICE = {"해산물": (12, None), "국밥": (15, None), "밀면": (20, None), "면": (10, None), "만두": (8, None), "고기": (15, None),
+           "치킨": (10, None), "디저트": (2, 2), "시장": (20, 3), "어묵": (4, 3), "카페": (3, 3)}   # (c, 처리 분; None = 체류시간)
 CROWD_WINDOW = 30.0                    # 분산 배정: 같은 노드 방문 시작이 30분 안에 겹치면 혼잡
 
 # 국적 가중치는 '대표 메뉴 키워드'가 노드 이름에 있을 때만 적용, 나머지 1.0.
@@ -100,6 +104,7 @@ class Scenario:
     must_far: bool = False                       # 원도심 밖 노드 1곳 이상 포함
     crowd: dict = field(default_factory=dict)    # 분산 배정: 노드별 다른 그룹의 (줄 서기 시각, 그룹 크기/100명)
     crowd_add: float = 8.0                       # 30분 안에 겹치는 100명당 추가 대기(분, 가정)
+    group: float = 0.0                           # 이 그룹 인원(명). >0 이면 점포 수용인원 제약을 건다(여러 그룹 배정 때)
 
     def deadline(self):
         return self.all_aboard - RETURN_BUFFER
@@ -121,6 +126,21 @@ class Problem:
                    for a in self.ids for b in self.ids}
         self.T = self._travel_matrix(travel)
         self.cands = [n for n in self.ids if not self.A[n]["category"].startswith("터미널")]
+        self.cap = {n: self._cap_hour(n) for n in self.ids}
+
+    def _cap_hour(self, n):
+        """시간당 수용 인원. food_nodes에 cap_hour(관측값)가 있으면 그 값, 없으면 SERVICE 가정, 볼거리·터미널은 제한 없음."""
+        if "cap_hour" in self.nodes and self.nodes.at[n, "cap_hour"] == self.nodes.at[n, "cap_hour"]:
+            return float(self.nodes.at[n, "cap_hour"])
+        a = self.A[n]
+        if a["category"] not in SERVICE:
+            return math.inf
+        c, m = SERVICE[a["category"]]
+        return c * 60.0 / (m or max(a["stay_min"], 1)) * PARTY
+
+    def load(self, n, s0, sc):
+        """s0 전후 30분(= 1시간 창) 안에 n에 줄 서는 인원: 이 그룹 + 다른 그룹."""
+        return sc.group + 100.0 * sum(wt for b, wt in sc.crowd.get(n, []) if abs(b - s0) < CROWD_WINDOW)
 
     def _travel_matrix(self, travel):
         """노드 쌍별 최소 이동시간(분). 택시는 호출·승하차 5분 추가. CSV가 없으면 직선거리 모형."""
@@ -222,6 +242,8 @@ class Problem:
         for s0 in sorted(set(starts)):
             q = self.wait(n, s0, sc, noise)
             begin = s0 + q
+            if sc.group > 0 and self.load(n, s0, sc) > self.cap[n] + 1e-9:   # 점포 수용인원 초과
+                continue
             if begin < lo - 1e-9 or not any(a <= begin <= b for a, b in windows):
                 continue
             end = begin + r["stay_min"]
@@ -464,7 +486,7 @@ class Problem:
         plan(최적화 시간표)이 있으면 계획한 줄 서기 시각보다 먼저 서지 않는다. 규칙을 지킬 수 없는 방문은
         도착 즉시 줄 선다고 보고 어떤 규칙이 깨졌는지 센다."""
         t, cur, st, lm, obj, queue = sc.start, sc.depot, 0.0, None, 0.0, 0.0
-        viol = {"영업·브레이크": 0, "위 용량": 0, "식사 간격·시간창": 0, "복귀 지각": 0,
+        viol = {"영업·브레이크": 0, "위 용량": 0, "식사 간격·시간창": 0, "복귀 지각": 0, "수용인원": 0,
                 "방문 수 초과": 0, "원도심 밖 필수": 0}
         visits, stops = [], []
         for i, n in enumerate(route):
@@ -482,6 +504,7 @@ class Problem:
                 begin, end = s0 + q, s0 + q + r["stay_min"]
                 st_b = max(0.0, st - (begin - t) / DIGEST_MIN) + r["stomach"]
                 viol["영업·브레이크"] += not self.open_ok(n, begin, end)
+                viol["수용인원"] += sc.group > 0 and self.load(n, s0, sc) > self.cap[n] + 1e-9
                 viol["위 용량"] += st_b > STOMACH_CAP + 1e-9
                 if r["meal_flag"] == 1:
                     viol["식사 간격·시간창"] += bool((lm is not None and begin - lm < MEAL_GAP)
@@ -539,7 +562,7 @@ class Problem:
         100명당 +crowd_add분. 배정 뒤에는 plans를 돌려준다(평가는 joint_eval)."""
         crowd, plans = {}, []
         for g in range(groups):
-            s = Scenario(**{**sc.__dict__, "start": sc.start + stagger * g, "crowd": crowd, "crowd_add": crowd_add})
+            s = Scenario(**{**sc.__dict__, "start": sc.start + stagger * g, "crowd": crowd, "crowd_add": crowd_add, "group": size})
             r = (self.solve(s, k=1) or [{"route": [], "timeline": []}])[0]   # 해 없음 = 방문 없음
             plans.append((Scenario(**{**s.__dict__, "crowd": {}}), r["route"], r["timeline"], size))
             crowd = {k: list(v) for k, v in crowd.items()}
@@ -564,7 +587,7 @@ class Problem:
 
     def same_route_plans(self, sc: Scenario, route, groups=6, stagger=10.0, crowd_add=8.0, size=100.0):
         """대조: 모든 그룹이 같은 최적 루트를 따른다."""
-        return [(Scenario(**{**sc.__dict__, "start": sc.start + stagger * g, "crowd_add": crowd_add}), route, None, size)
+        return [(Scenario(**{**sc.__dict__, "start": sc.start + stagger * g, "crowd_add": crowd_add, "group": size}), route, None, size)
                 for g in range(groups)]
 
     def joint_eval(self, plans, iters=20):

@@ -73,6 +73,13 @@ evs = P.joint_eval(plans)
 assert evs[0]["converged"]
 s1, s2 = evs[0]["visits"][0][1], evs[1]["visits"][0][1]
 assert (abs(s1 - s2) < 30) == (evs[0]["queue_min"] > 0), (s1, s2, evs[0]["queue_min"])
+# 수용인원: 시간당 50명 가게에 30명 그룹이 이미 있으면, 같은 30분 안에 또 30명은 못 들어간다(60 > 50)
+P = problem([{"node_id": "C", "name_ko": "c", "cap_hour": 50}])
+busy = Scenario("t", "D", 600, 800, crowd={"C": [(601.0, 0.3)]}, group=30)
+assert P.solve(busy, k=1) == [] or all("C" not in r["route"] for r in P.solve(busy, k=1)), "수용인원 초과 방문 금지"
+free_ = Scenario("t", "D", 600, 800, crowd={"C": [(500.0, 0.3)]}, group=30)
+assert P.solve(free_, k=1)[0]["route"] == ["C"], "1시간 창 밖이면 방문 가능"
+
 # 계획 안전 여유: 여유 20분이면 마감 20분 전까지 돌아오는 루트만 나온다
 M.PLAN_SAFETY = 20.0
 P = problem([{"node_id": "L", "name_ko": "l", "stay_min": 50}])

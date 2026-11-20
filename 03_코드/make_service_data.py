@@ -102,9 +102,14 @@ for c in routes:
     if c["stops"]:
         b = best.loc[(c["stops"][-1]["node"], c["depot"])]
         c["back_mode"], c["back_move"] = ("walk" if b["mode"] == "walk" else "taxi"), round(b["eff"])
+PB = OUT / "plan_b.json"   # analysis_E_robustness.py: 하선 20분 지연 시 뺄 장소(B안)
+if PB.exists():
+    pb = {(x["depot"], x["start"], x["hours"]): x["drop"] for x in json.loads(PB.read_text(encoding="utf-8"))}
+    for c in routes:
+        c["plan_b"] = pb.get((c["depot"], c["start"], c["hours"]), [])
 
 # 상인 예보(예시): 2척 동시 기항일 가게별·시간대별 예상 인원
-fc = pd.read_csv(D / "골목방문시나리오_20260508_B.csv", index_col=0)
+fc = pd.read_csv(D / ("상인예보_20260508_B.csv" if (D / "상인예보_20260508_B.csv").exists() else "골목방문시나리오_20260508_B.csv"), index_col=0)   # 앱 추천 방문 계획 전체
 name2id = {re.sub(r"\(.*\)", "", r.name_ko).strip(): r.node_id for r in nodes.itertuples()}
 name2id.update({r.name_ko: r.node_id for r in nodes.itertuples()})
 forecast = {name2id[k]: {h: int(v) for h, v in row.items() if v} for k, row in fc.iterrows() if k in name2id}

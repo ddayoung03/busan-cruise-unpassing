@@ -184,6 +184,7 @@ const T={
   D1:"북항 크루즈터미널",D2:"영도 크루즈터미널",m_core:"원도심",m_wide:"부산 전체",
   s_back:"터미널 복귀",s_slack:"승선 마감까지 여유",s_stops:"방문",s_spend:"예상 지출(1인)",min:"분",places:"곳",
   depart:"하선",ret:"복귀",walk:"도보",taxi:"택시",queue:"줄",real:"부산시 공식 데이터",est:"영업시간 추정",hours:"영업",
+  planb:d=>`<br><b>하선이 20분 늦어지면 B안:</b> ${d} 빼고 가세요.`,
   alert:(a,b)=>`<b>복귀 알림 ${a}</b> 이 시각에 남은 일정을 확인하세요. 마지막 장소에서는 늦어도 <b>${b}</b>에 출발해야 합니다.`,
   nofit:"이 조건에 맞는 루트가 없습니다. 하선 시각을 앞당기거나 승선 마감을 늦춰 보세요.",
   snapped:(s,h)=>`가장 가까운 계산 조건(하선 ${s}, 이용 가능 ${h}시간)의 루트입니다.`,
@@ -198,6 +199,7 @@ const T={
   D1:"North Port Cruise Terminal",D2:"Yeongdo Cruise Terminal",m_core:"Old town",m_wide:"All Busan",
   s_back:"Back at terminal",s_slack:"Spare before all-aboard",s_stops:"Stops",s_spend:"Est. spend (pp)",min:"min",places:"",
   depart:"Off the ship",ret:"Back",walk:"Walk",taxi:"Taxi",queue:"Queue",real:"City data",est:"Hours estimated",hours:"Open",
+  planb:d=>`<br><b>Off the ship 20 min late? Plan B:</b> skip ${d}.`,
   alert:(a,b)=>`<b>Return reminder ${a}</b> Check what is left at this time. Leave your last stop by <b>${b}</b> at the latest.`,
   nofit:"No route fits these times. Try getting off earlier or boarding later.",
   snapped:(s,h)=>`Showing the closest planned case (off at ${s}, ${h} h available).`,
@@ -212,6 +214,7 @@ const T={
   D1:"北港邮轮码头",D2:"影岛邮轮码头",m_core:"老城区",m_wide:"釜山全域",
   s_back:"返回码头",s_slack:"距登船截止",s_stops:"站点",s_spend:"预计消费(人)",min:"分钟",places:"处",
   depart:"下船",ret:"返回",walk:"步行",taxi:"出租车",queue:"排队",real:"市政数据",est:"营业时间为估计",hours:"营业",
+  planb:d=>`<br><b>若晚20分钟下船 · B方案：</b>跳过 ${d}。`,
   alert:(a,b)=>`<b>返船提醒 ${a}</b> 请在此时确认剩余行程。最晚 <b>${b}</b> 从最后一站出发。`,
   nofit:"没有符合该时间的路线。请提前下船或延后登船时间。",
   snapped:(s,h)=>`显示最接近的计算条件（${s} 下船，可用 ${h} 小时）。`,
@@ -226,6 +229,7 @@ const T={
   D1:"北港クルーズターミナル",D2:"影島クルーズターミナル",m_core:"旧市街",m_wide:"釜山全体",
   s_back:"ターミナル帰着",s_slack:"乗船締切までの余裕",s_stops:"立ち寄り",s_spend:"予想支出(1人)",min:"分",places:"か所",
   depart:"下船",ret:"帰着",walk:"徒歩",taxi:"タクシー",queue:"行列",real:"釜山市データ",est:"営業時間は推定",hours:"営業",
+  planb:d=>`<br><b>下船が20分遅れたら B案：</b>${d} を省いてください。`,
   alert:(a,b)=>`<b>帰船リマインド ${a}</b> この時刻に残りの予定を確認してください。最後の店は遅くとも <b>${b}</b> に出発。`,
   nofit:"この条件に合うルートがありません。下船を早めるか乗船締切を遅らせてください。",
   snapped:(s,h)=>`最も近い計算条件（${s} 下船、${h} 時間）のルートです。`,
@@ -283,7 +287,7 @@ function renderRoute(){
   h+=`<li><time>${hm(ret)}</time><span class="pin end">⚓</span><div><h3>${nm(c.depot)}</h3><div class="menu">${t('ret')} · ${t(c.back_mode)} ${c.back_move}${t('min')}</div></div></li>`;
   if(x.snapped)h+=`<li><span></span><span></span><p class="note">${t('snapped')(hm(c.start),c.hours)}</p></li>`;
   tl.innerHTML=h;
-  al.hidden=false;al.innerHTML=`<span aria-hidden="true">⏰</span><div>${t('alert')(hm(x.b-120),hm(deadline-c.back_move))}</div>`;
+  al.hidden=false;al.innerHTML=`<span aria-hidden="true">⏰</span><div>${t('alert')(hm(x.b-120),hm(deadline-c.back_move))}${c.plan_b&&c.plan_b.length?t('planb')(c.plan_b.map(nm).join(', ')):''}</div>`;
   MAPK=c.stops.some(s=>!['중구','동구','영도구','서구','사하구'].includes(P[s.node].gu))?'wide':'core';   // 원도심 밖까지 가면 부산 전체 지도
   drawMap(c);
 }

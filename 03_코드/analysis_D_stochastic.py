@@ -5,7 +5,7 @@
 |---|---|---|
 | 루트·시간표·만족도 | OPTW v4 (S1 북항 당일 기항, 상위 K개) | 모델 결과 |
 | 배경 가동률(앱 없을 때) | 0.3 + 0.5 × 모델의 시간대 혼잡계수 | 가정 |
-| 좌석(서버) 수 c | SEATS (업종별) | 가정 |
+| 창구·테이블 수 c, 처리 분 | cruise_route_optw.SERVICE (업종별, 모델 수용인원과 같은 표) | 가정 |
 | 앱 이용 승객 수·하선 간격 | N_APP, 100명씩 10분 간격 | 가정 |
 | 순위별 선택 확률 | RANK_P (검색 결과 위치 편향 형태) | 가정 |
 | 미분방정식 α·κ·β·δ·s | ODE | 가정 (γ만 대기행렬 결과로 보정) |
@@ -39,7 +39,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "03_코드"))
-from cruise_route_optw import LAMBDA, Problem, Scenario, congestion, fmt  # noqa: E402
+from cruise_route_optw import LAMBDA, PARTY, SERVICE, Problem, Scenario, congestion, fmt   # 창구 수·처리 분·일행 크기 가정은 모델과 공유  # noqa: E402
 
 plt.rcParams["font.family"] = "Malgun Gothic" if platform.system() == "Windows" else "NanumGothic"
 plt.rcParams["axes.unicode_minus"] = False
@@ -47,10 +47,7 @@ D, F = ROOT / "02_정제데이터", ROOT / "04_그림"
 save = lambda df, name: df.to_csv(D / name, index=False, encoding="utf-8-sig")
 
 # ---------------- 가정 ----------------
-SEATS = {"해산물": 12, "국밥": 15, "밀면": 20, "면": 10, "만두": 8, "고기": 12, "치킨": 10}   # 앉아 먹는 곳: 테이블 수 c, 서비스 = 체류시간 — 가정
-TAKEAWAY = {"디저트": (2, 2), "시장": (20, 3), "어묵": (4, 3), "카페": (3, 3)}             # 포장·노점: (주문 창구 수, 1팀 처리 분) — 가정
 RHO_BG = (0.3, 0.5)                                # 앱 없을 때 배경 가동률 = 0.3 + 0.5 × 시간대 혼잡계수(점심 피크 0.8) — 가정
-PARTY = 3                                          # 일행 크기(명) — 가정. 줄·좌석은 일행 단위
 N_APP = 60                                         # 출시 초기: 한 배 약 3,000명 × 앱 이용 2% — 가정 (6그룹, 10분 간격 하선)
 SWEEP = [30, 60, 90, 120, 150, 210, 300]           # 수용 한계 곡선용 앱 이용자 수
 GROUPS, STAGGER = 6, 10
@@ -117,10 +114,8 @@ def wq_min(lam, mu, c):
 
 def mu_c(n):
     a = P.A[n]
-    if a["category"] in TAKEAWAY:
-        c, m = TAKEAWAY[a["category"]]
-        return 60.0 / m, c
-    return 60.0 / max(a["stay_min"], 1), SEATS.get(a["category"], 12)
+    c, m = SERVICE.get(a["category"], (12, None))
+    return 60.0 / (m or max(a["stay_min"], 1)), c
 
 
 def lam_bg(n, h):

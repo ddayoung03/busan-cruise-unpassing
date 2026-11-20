@@ -19,6 +19,8 @@ const s1n=S1['루트'].split(' → '),s1a=s1n.filter(isAttr).length,s1f=s1n.leng
 const AB=csv('확률모델_AB시뮬레이션_1120_D.csv'),ODE=csv('확률모델_미분방정식_1120_D.csv'),BAL=csv('확률모델_밸런싱확률_1120_D.csv'),CAP=csv('확률모델_수용한계_1120_D.csv');
 const MK=Object.fromEntries(csv('확률모델_마르코프정상분포_1120_D.csv').filter(r=>r['상태'].startsWith('(')).map(r=>[r['배정'],+r['정상분포 π']]));
 const ab=k=>AB.find(r=>r['배정'].startsWith(k)),abW=k=>Math.round(+ab(k)['평균 추가 대기(분) (mean)']);
+const POP=csv('인기순비교_1120_E.csv'),STR=csv('스트레스테스트_1120_E.csv'),CALL=csv('기항횟수_소비관계_1120_A.csv');
+const PB=JSON.parse(fs.readFileSync(R+'06_서비스/plan_b.json','utf8'));const pbN=PB.filter(x=>x.drop.length).length;
 
 // ---------- 테마: 항구의 밤(네이비) + 바다(청록) + 음식(코랄) ----------
 const NAVY='0B3C5D',SEA='328CC1',CORAL='E8573F',ICE='EAF2F8',INK='1D2B36',MUTE='5B6B78',WHITE='FFFFFF';
@@ -225,6 +227,15 @@ tb(s,[{text:'역사 음식이 아니라\n“먹고 싶은 것” 기준\n\n',opt
  {text:'수요점수 = 50 + 50·ln(1+언급)/ln(87)\n해산물 100점 … 어묵 62점',options:{fontSize:13,color:MUTE}}],{x:8.45,y:1.95,w:4.0,h:4.2});
 s.addNotes('어디를 갈지는 팀 취향이 아니라 외국인 데이터로 정했습니다. 부산 음식 영상의 영어·중국어·일본어 댓글을 모아 음식 범주별 언급을 셌더니 해산물과 회가 압도적이었습니다. 이 언급 수를 50~100점의 수요점수로 바꿔 모델의 만족도로 씁니다.');
 
+s=slide('기항이 많은 달엔 부산 전체가 같이 늘었다','분석 ③-2 월별 기항 횟수 × 구·업종 카드소비 (10개월)');
+const cr=(g,k)=>CALL.find(r=>r['구']==g&&r['지표']==k);
+T(s,[[th('구'),th('식음료 r'),th('비식음료(쇼핑 등) r'),th('식음료: 기항 10회당 지수')],...['중구','동구','영도구','서구','부산진구','해운대구'].map(g=>[g+(['중구','동구','영도구'].includes(g)?' (원도심)':''),cr(g,'식음료')['기항횟수와 상관 r'],cr(g,'비식음료(쇼핑 등)')['기항횟수와 상관 r'],'+'+cr(g,'식음료')['기항 10회당 지수 변화']])],
+ {x:0.6,y:1.55,w:7.4,colW:[2.0,1.5,2.1,1.8],fontSize:13,rowH:0.5});
+const crD=CALL.find(r=>r['구'].startsWith('원도심 vs'));
+card(s,8.3,1.6,4.4,2.3,NAVY);tb(s,[{text:'원도심만의 효과는?\n',options:{bold:true,fontSize:16}},{text:`원도심 식음료 비중(원도심 − 비교)과\n기항 횟수의 상관 r = ${crD['기항횟수와 상관 r']}`,options:{fontSize:14}}],{x:8.5,y:1.75,w:4.0,h:2.0,color:WHITE});
+card(s,8.3,4.1,4.4,2.2,'F7F9FB');tb(s,[{text:'해석  ',options:{bold:true,color:CORAL}},{text:'월 단위로는 크루즈 효과와 부산 전체 관광 성수기가 섞여 떼어 낼 수 없다 → 기항일·비기항일 차이는 일별 판매 기록이나 현장 관측으로 비교한다 (실행 계획 참고)'}],{x:8.5,y:4.25,w:4.0,h:1.95,fontSize:13});
+tb(s,'자료: 한국관광데이터랩 구·월·업종 외국인 카드소비(2025.10~2026.7) × 입출항 신고 월별 항차 수 · 겹치는 달 10개라 상관은 참고용',{x:0.6,y:6.5,w:12.1,h:0.35,fontSize:11,color:MUTE});
+
 s=slide('먹기만 하면 배가 찬다 — 사이사이 볼거리','분석 ④ 볼거리 수요 (부산 여행 영상 외국인 댓글 1,503개)');
 const AT=[...ATTR].sort((a,b)=>b['mentions']-a['mentions']).slice(0,8);
 s.addChart(p.ChartType.bar,[{name:'댓글 언급 수',labels:AT.map(a=>a['name_ko']),values:AT.map(a=>+a['mentions'])}],
@@ -240,10 +251,10 @@ tb(s,'좌표 OSM · 운영시간 OSM·운영사 안내(일부 추정) · 머무�
 
 // ===== ⑤ 모델과 검토 =====
 section(5,'모델과 검토','시간창 오리엔티어링(OPTW) · 검토 3회 · 버전 4개');
-s=slide('모델: 만족은 최대로, 위험은 제약으로 막는다','시간창 오리엔티어링 문제 (OPTW)');
-card(s,0.6,1.6,12.1,1.0,NAVY);tb(s,'최대화   Σ 수요점수 × 국적 가중치  −  0.8 × (줄 대기 + 이동 시간)',{x:0.9,y:1.6,w:11.5,h:1.0,fontSize:22,bold:true,color:WHITE,valign:'middle'});
-const cons=[['승선 30분 전 복귀 (계획은 +20분 여유)','배를 놓침'],['영업·브레이크타임','도착했는데 문 닫음'],['시간대 혼잡 줄 대기','줄에 시간 낭비'],['위 용량·식사 간격','배불러 못 먹음'],['음식 7곳 + 볼거리 2곳','무리한 일정']];
-cons.forEach(([a,b],i)=>{const x=0.6+i*2.47;card(s,x,2.95,2.27,2.0);tb(s,a,{x:x+0.15,y:3.1,w:1.97,h:0.85,fontSize:15,bold:true,color:NAVY});tb(s,[{text:'막는 문제\n',options:{fontSize:11,color:MUTE}},{text:b,options:{fontSize:14,color:CORAL,bold:true}}],{x:x+0.15,y:3.95,w:1.97,h:0.9});});
+s=slide('모델: 시간창 제약을 적용한 경로 선택','시간창 오리엔티어링 문제 (OPTW)');
+card(s,0.6,1.5,12.1,1.1,NAVY);tb(s,[{text:'max  Σᵢ uᵢ yᵢ  −  0.8 × Σ(대기 + 이동)      s.t.  a복귀 ≤ T승선 마감 − 30분\n',options:{fontSize:21,bold:true}},{text:'yᵢ = 점포 i 방문 여부(0/1) · uᵢ = 방문 효용(외국인 수요점수 × 국적 가중치) · 계획할 때는 a복귀 ≤ T − 50분(20분 여유)',options:{fontSize:13,color:'C9DCEB'}}],{x:0.9,y:1.55,w:11.5,h:1.0,color:WHITE,valign:'middle'});
+const cons=[['aⱼ ≥ aᵢ + wᵢ + sᵢ + tᵢⱼ','다음 도착 = 앞 도착 + 대기·체류·이동','순서·시간 꼬임'],['oᵢ ≤ aᵢ+wᵢ, aᵢ+wᵢ+sᵢ ≤ cᵢ','영업·브레이크 안에 대기·체류 마침','문 닫은 가게'],['wᵢ = f(시각, 크루즈 혼잡)','시간대별 줄 대기','줄에 시간 낭비'],['Σ 인원(1시간) ≤ Capᵢ','점포별 수용인원 이내','한 가게에 몰림'],['포만도 ≤ 4, 식사 간격 120분','위 용량·소화','배불러 못 먹음'],['음식 ≤ 7, 볼거리 ≤ 2','방문 수 상한','무리한 일정']];
+cons.forEach(([f,a,b],i)=>{const x=0.6+i*2.05;card(s,x,2.85,1.9,2.25);tb(s,f,{x:x+0.1,y:2.95,w:1.7,h:0.7,fontSize:12,bold:true,color:NAVY});tb(s,a,{x:x+0.1,y:3.65,w:1.7,h:0.65,fontSize:11});tb(s,[{text:'막는 문제\n',options:{fontSize:10,color:MUTE}},{text:b,options:{fontSize:12,color:CORAL,bold:true}}],{x:x+0.1,y:4.35,w:1.7,h:0.7});});
 tb(s,`풀이: ① 음식만 분기한정(5·6·7곳) → ② 볼거리 끼워 넣기 → ③ 지역탐색(탐욕 해에서도 출발) — 탐욕법보다 나빠지지 않음, 결합 최적은 보장 안 함\n제약을 무시하면? ${N1['방문 수']}곳을 돌고 ${N1['복귀']} 복귀 — 배를 놓치고 규칙 위반 ${nvViol}건`,{x:0.6,y:5.25,w:12.1,h:1.0,fontSize:15,color:INK});
 s.addNotes(`목표는 수요점수 합에서 줄과 이동 시간을 뺀 값을 최대로 하는 것입니다. 다섯 가지 제약이 각각 현실의 실패를 막습니다. 수업에서 배운 탐욕법은 가까운 곳부터 고르지만 최적을 보장하지 않습니다. 제약을 무시한 계획은 ${N1['복귀']}에 돌아와 배를 놓칩니다.`);
 
@@ -279,12 +290,25 @@ tb(s,'6개 시나리오 모두 최적화 > 탐욕법,\n규칙 위반 0건',{x:7.
 s.addNotes('하선 터미널, 머무는 시간, 크루즈 혼잡, 국적에 따라 6개 상황을 만들었습니다. 모든 상황에서 우리 최적화가 수업의 탐욕법보다 점수가 높고, 시간표로 다시 확인해도 규칙 위반이 없었습니다. 이어서 각 상황의 실제 루트를 보겠습니다.');
 ks.slice(1).forEach(k=>{const t=top(k);routeSlide(k,`${t['시나리오'].replace(/\(.*\)/,'').trim()}: ${t['복귀']} 복귀`,'결과 ② 시나리오별 루트',NOTE[k]);});
 
-s=slide('흔들어도 배는 놓치지 않는다 — 계획에 20분 여유','결과 ③ 검증 (대기 ±30%, 이동 ±20%, 1,000회)');
+s=slide(`핵심 질문: 승선 30분 전까지 돌아오나 — 지각 ${late}%`,'결과 ③ 검증 (대기 ±30%, 이동 ±20%, 1,000회)');
 stat(s,0.6,1.8,3.9,late+'%','복귀 지각 확률',NAVY);stat(s,4.75,1.8,3.9,ok+'%','전체 규칙 준수율',SEA);stat(s,8.9,1.8,3.9,p5+'분','복귀 여유 하위 5%',CORAL);
 card(s,0.6,4.2,12.1,1.9);tb(s,[{text:'그래서 운영은 이렇게  ',options:{bold:true,color:NAVY}},{text:`점수만 올리면 복귀 직전까지 일정을 채워 지각이 61%까지 올랐다 → 계획에 복귀 여유 20분을 의무로 넣었다. 줄이 바뀌면 최적 방문 집합도 자주 바뀐다(재최적화 20회 중 ${Math.round(vk('최적 방문집합')*100)}% 유지) → 그래서 154개 조건을 미리 풀어 두고 상황에 맞는 루트를 고르며, 승선 2시간 전 복귀 알림을 준다.`}],{x:0.9,y:4.4,w:11.5,h:1.5,fontSize:16});
 s.addNotes(`줄과 이동시간을 무작위로 흔들어 1,000번 시뮬레이션했습니다. 지각 확률은 ${late}%이지만 하위 5%의 여유는 ${p5}분으로 빠듯합니다. 그래서 먼 구간은 선택형으로 두고 복귀 알림을 줍니다.`);
 
-s=slide('한꺼번에 내려도 나눠 보내면 줄이 준다','결과 ④ 혼잡 분산 (같은 배 6그룹, 100명씩)');
+const pp=(sc,k)=>POP.find(r=>r['시나리오'].startsWith(sc)&&r['경로']==k);
+s=slide('인기순으로 돌면 기다리다 끝난다 — 최적 경로와 비교','결과 ③-2 인기순 경로 vs 최적 경로 (같은 규칙)');
+s.addImage({path:R+'04_그림/그림15_인기순비교.png',x:0.5,y:1.45,w:12.3,h:3.6,sizing:{type:'contain',w:12.3,h:3.6}});
+T(s,[[th('S1 북항 당일'),th('방문 점포'),th('총 대기(줄 + 기다림)'),th('복귀 여유')],...['최적 경로','인기순 경로'].map(k=>{const r=pp('S1',k);return [k,r['방문 점포 수']+'곳',Math.round(r['총 대기(분)'])+'분',Math.round(r['복귀 여유(분)'])+'분']})],{x:0.6,y:5.2,w:7.4,colW:[2.0,1.5,2.4,1.5],fontSize:13,rowH:0.4});
+tb(s,'인기순 경로 = 수요점수 높은 곳부터 규칙만 지키며 차례로 방문(동선 최적화 없음). 문 열기·식사 간격을 기다리느라 시간을 버리고 적게 들른다. 현장에서는 다른 기항일·답사로 같은 비교를 확인할 예정',{x:8.3,y:5.15,w:4.4,h:1.4,fontSize:12,color:MUTE});
+
+const sr=(sc,k)=>STR.find(r=>r['시나리오'].startsWith(sc)&&r['경로']=='최적 경로'&&r['상황']==k);
+const cell=r=>r['규칙 준수']==='True'?`○ 여유 ${Math.round(r['복귀 여유(분)'])}분`:`× → ${r['예비 경로'].replace('빼기: ','')} 빼면 ${r['예비 경로 복귀']}`;
+s=slide('20분 늦어도, 점심 단체가 와도 — 예비 경로','결과 ③-3 스트레스 테스트 (최적 경로)');
+T(s,[[th('시나리오'),th('기본'),th('하선 20분 지연'),th('점심 단체 도착(200명)')],...['S1','S2','S3','S4','S5','S6'].map(k=>[k,cell(sr(k,'기본')),cell(sr(k,'하선 20분 지연')),cell(sr(k,'점심 단체 도착'))])],{x:0.6,y:1.55,w:12.1,colW:[1.3,2.6,4.1,4.1],fontSize:12,rowH:0.5});
+card(s,0.6,5.3,12.1,1.2,'F7F9FB');tb(s,[{text:'예비 경로(B안)  ',options:{bold:true,color:CORAL}},{text:`복귀 조건을 못 지키면 장소를 하나씩 빼서 돌아올 수 있는 경로를 미리 만든다. 서비스 154칸 중 ${pbN}칸은 하선이 20분 늦으면 B안이 필요해, 화면에 “20분 늦어지면 ○○ 빼고 가세요”로 알려 준다.`}],{x:0.85,y:5.45,w:11.6,h:0.95,fontSize:14});
+tb(s,'○ = 승선 마감 30분 전까지 복귀·모든 규칙 준수 · × = 규칙 위반 → 예비 경로 · 점심 단체 = 11:30~13:30 모든 식당·시장에 200명(겹침 100명당 +8분, 가정)',{x:0.6,y:6.6,w:12.1,h:0.35,fontSize:10,color:MUTE});
+
+s=slide('한꺼번에 내려도 나눠 보내면 줄이 준다','결과 ④ 혼잡 분산 (같은 배 6그룹, 30명씩, 점포 수용인원 반영)');
 const d4=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('4')),d8=DF.filter(r=>r['겹침당 추가대기(분)'].startsWith('8'));
 const ALLEY_FAIL=Math.round(+split(fs.readFileSync(R+'02_정제데이터/골목방문시나리오_20260508_B.csv','utf8').trim().split(/\r?\n/).pop())[1]);   // 마지막 행 = 규칙 위반으로 제외된 인원
 s.addChart(p.ChartType.bar,[{name:'겹침 100명당 +4분',labels:d4.map(r=>r['배정']),values:d4.map(r=>+r['그룹 평균 줄대기(분)'])},
@@ -293,9 +317,9 @@ s.addChart(p.ChartType.bar,[{name:'겹침 100명당 +4분',labels:d4.map(r=>r['�
   catAxisLabelFontFace:FONT,catAxisLabelFontSize:14,catAxisLabelColor:INK,valAxisHidden:true,valGridLine:{style:'none'},showLegend:true,legendPos:'t',legendFontFace:FONT,legendFontSize:12,
   showTitle:true,title:'그룹 평균 줄 대기(분)',titleFontFace:FONT,titleFontSize:14,titleColor:INK});
 card(s,7.4,1.7,5.3,4.5);tb(s,[{text:'같은 루트로 몰리면\n',options:{bold:true,color:NAVY,fontSize:17}},{text:`평균 ${Math.round(d4[0]['그룹 평균 줄대기(분)'])}~${Math.round(d8[0]['그룹 평균 줄대기(분)'])}분 줄, 6그룹 모두 위반\n\n`},
- {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${Math.round(d4[1]['그룹 평균 줄대기(분)'])}~${Math.round(d8[1]['그룹 평균 줄대기(분)'])}분, 위반 +4분 ${d4[1]['규칙 위반 그룹']}그룹 · +8분 ${d8[1]['규칙 위반 그룹']}그룹\n\n`},
- {text:'2척 동시 기항일 (2026.5.8, 7,831명)\n',options:{bold:true,color:NAVY,fontSize:14}},{text:`앱 이용자 중 ${ALLEY_FAIL}명은 갈 수 있는 루트 없음\n→ 가게 확충 필요\n\n`,options:{fontSize:14}},
- {text:'순서대로 배정해 결과가 배정 순서에 따라 달라진다 → 동시 배정은 다음 과제'+(DISP_NEW?'':'\n(가게 변경 전 모델로 계산한 결과)'),options:{fontSize:12,color:MUTE}}],{x:7.7,y:1.95,w:4.8,h:4.1,fontSize:15});
+ {text:'그룹마다 다른 루트로 보내면\n',options:{bold:true,color:CORAL,fontSize:17}},{text:`평균 ${[...new Set([d4[1],d8[1]].map(r=>Math.round(r['그룹 평균 줄대기(분)'])))].join('~')}분, 위반 +4분 ${d4[1]['규칙 위반 그룹']}그룹 · +8분 ${d8[1]['규칙 위반 그룹']}그룹\n\n`},
+ {text:'2척 동시 기항일 (2026.5.8, 7,831명)\n',options:{bold:true,color:NAVY,fontSize:14}},{text:`앱 이용 ${ALLEY_FAIL}명을 점포 수용인원 안에서 안정적으로 배정하지 못함\n→ 시간 분산·예약·가게 확충 필요\n\n`,options:{fontSize:14}},
+ {text:'점포 수용인원(시간당, 가정) 이내로만 배정 · 순서대로 배정해 결과가 배정 순서에 따라 달라질 수 있다 → 동시 배정은 다음 과제'+(DISP_NEW?'':'\n(가게 변경 전 모델로 계산한 결과)'),options:{fontSize:12,color:MUTE}}],{x:7.7,y:1.95,w:4.8,h:4.1,fontSize:15});
 s.addNotes(`같은 배의 승객 6그룹이 한 루트로 몰리면 평균 ${d4[0]['그룹 평균 줄대기(분)']}~${d8[0]['그룹 평균 줄대기(분)']}분을 줄 서고 모든 그룹이 배 시간을 놓칩니다. 그룹마다 다른 루트를 배정하면 평균 ${d4[1]['그룹 평균 줄대기(분)']}~${d8[1]['그룹 평균 줄대기(분)']}분으로 줄고, 상인에게는 손님이 고르게 갑니다. 다만 그룹을 차례로 배정하는 방식이라 결과가 순서에 따라 달라지고, 더 약한 혼잡(+4분)에서 오히려 2그룹이 규칙을 어겼습니다. 모든 그룹을 동시에 배정하는 방식은 다음 과제입니다.`+(DISP_NEW?'':' 이 결과는 가게를 실제 데이터로 바꾸기 전 모델로 계산한 것입니다.'));
 
 const fig=(sl,f,x,y,w,h)=>sl.addImage({path:R+'04_그림/'+f,x,y,w,h,sizing:{type:'contain',w,h}});
@@ -347,10 +371,16 @@ s=slide('실제로 쓰는 서비스: Busan Bite Pass','서비스 화면');
 s.addImage({path:R+'04_그림/그림10_서비스화면.png',x:0.6,y:1.5,w:7.9,h:4.95,sizing:{type:'cover',w:7.9,h:4.95}});
 tb(s,['터미널·하선 시각·승선 마감만 고르면 최적 루트와 시간표','154개 조건의 최적해를 미리 계산 → 바로 응답','한국어·English·中文·日本語, 가게 이름·메뉴는 부산시 공식 데이터','복귀 알림 시각과 “마지막 장소 출발 시각” 안내','먹는 사이 볼거리(초록 번호)도 함께 추천','상인용 수요 예보 · 데이터 처리 지도 탭'].map((x,j,a)=>({text:x,options:{bullet:true,breakLine:j<a.length-1}})),{x:8.8,y:1.6,w:4.0,h:4.8,fontSize:14,paraSpaceAfter:8});
 s=slide('누가 어떻게 실행하나','실행 계획과 한계');
-const who=[['부산항만공사','하선 안내 QR → 배 이름만 넣으면 맞춤 루트'],['상인회·전통시장','브레이크·줄 정보 제공, 분산 배정으로 손님 고르게'],['우리 팀','주요 가게 줄 대기 현장 측정, 리뷰로 가게 단위 수요점수']];
+const who=[['부산항만공사','하선 안내 QR → 배 이름만 넣으면 맞춤 루트'],['상인회·전통시장','브레이크·줄 정보 제공, 분산 배정으로 손님 고르게'],['우리 팀','점포 5곳 대기열 관측(기항일·비기항일), 리뷰로 가게 단위 수요점수']];
 who.forEach(([a,b],i)=>{const y=1.65+i*1.15;dot(s,i+1,0.6,y);tb(s,a,{x:1.4,y:y+0.03,w:3.2,h:0.5,fontSize:18,bold:true,color:NAVY});tb(s,b,{x:4.6,y:y+0.06,w:8.1,h:0.5,fontSize:15});});
 card(s,0.6,5.2,12.1,1.35,'F7F9FB');tb(s,[{text:'한계  ',options:{bold:true,color:CORAL}},{text:'줄 대기·좌석 수는 추정(공개 데이터 없음) → 확률모델 숫자는 경향만 · 볼거리 머무는 시간 추정 · 수요점수 표본 작음 · 데이터랩은 월 단위'}],{x:0.85,y:5.35,w:11.6,h:1.1,fontSize:14});
 s.addNotes('부산항만공사는 하선 안내에 QR을, 상인회는 영업과 줄 정보를, 우리 팀은 현장 측정으로 추정치를 실제 값으로 바꿉니다. 한계도 분명히 말씀드립니다.');
+
+s=slide('현장 관측: 가정을 실측으로 바꾼다','실행 ① 점포 5곳 대기열 관측 설계');
+T(s,[[th('점포'),th('추천 루트 등장')],['국제시장 먹자골목','154칸 중 151'],['BIFF광장 씨앗호떡','150'],['부평깡통시장','133'],['원조18번완당','97'],['성일집(자갈치)','49']],{x:0.6,y:1.55,w:4.6,colW:[2.9,1.7],fontSize:13,rowH:0.45});
+card(s,5.5,1.55,7.2,2.6);tb(s,[{text:'무엇을 (한 줄 = 한 일행)\n',options:{bold:true,color:NAVY,fontSize:15}},{text:'도착 · 처리 시작 · 처리 종료 · 퇴장 시각, 인원, 열린 창구 수, 크루즈 승객 여부\n\n',options:{fontSize:13}},{text:'언제\n',options:{bold:true,color:NAVY,fontSize:15}},{text:'같은 요일 2일: 기항일 1일 + 비기항일 1일, 10:30~14:30 (관측일은 부산항만공사 크루즈 스케줄로 자동 추천)',options:{fontSize:13}}],{x:5.75,y:1.7,w:6.8,h:2.35});
+card(s,5.5,4.35,7.2,1.85,NAVY);tb(s,[{text:'그다음\n',options:{bold:true,fontSize:15}},{text:'도착률 λ · 처리율 μ · 창구 수 c 추정 → Erlang C 대기, 시간당 수용인원 → 모델의 줄 대기·수용인원에 넣고 “승선 30분 전 복귀”를 실측값으로 다시 확인. 기항일 vs 비기항일 대기 차이도 같은 자료로',options:{fontSize:13}}],{x:5.75,y:4.5,w:6.8,h:1.6,color:WHITE});
+tb(s,'기록지 05_문서/현장관측_기록지.csv · 계획 05_문서/현장관측_계획.md · 추정 03_코드/analysis_F_observation.py (가상 표본으로 추정식 점검 완료)',{x:0.6,y:6.5,w:12.1,h:0.35,fontSize:11,color:MUTE});
 
 s=slide('원도심에서 부산 전역으로, 다른 방문객으로','확산 3단계');
 const steps3=[['분산','같은 배 승객을 그룹별 다른 루트로 → 원도심 안에서도 한 가게에 몰리지 않게 (상인 입력 수용 인원 반영)'],['체류 연장','오버나잇·24시간 터미널을 활용해 서면·동래·해운대까지 (S3·S5 루트)'],['재사용','출발점과 남은 시간만 바꾸면 KTX 당일 여행객·공연 관객·환승객에게도 같은 모델']];
