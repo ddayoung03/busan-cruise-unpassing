@@ -31,6 +31,17 @@ MANUAL = {
     "N10": ("Huinnyeoul Culture Village", "白浅滩文化村", "ヒンヨウル文化マウル"),
     "N11": ("Bongnae-dong Warehouse Cafés", "凤莱洞仓库咖啡街", "蓬莱洞 倉庫カフェ"),
     "N15": ("Haeundae Market", "海云台市场", "海雲台市場"),
+    # 볼거리(v4)
+    "A01": ("Busan North Port Waterfront Park", "北港亲水公园", "北港親水公園"),
+    "A02": ("Yongdusan Park · Busan Tower", "龙头山公园·釜山塔", "龍頭山公園・釜山タワー"),
+    "A03": ("Gamcheon Culture Village", "甘川洞文化村", "甘川文化村"),
+    "A04": ("40 Steps Culture Street", "40阶梯文化观光街", "40階段文化観光通り"),
+    "A05": ("Bosu-dong Book Street", "宝水洞旧书街", "宝水洞古本屋通り"),
+    "A06": ("Choryang Ibagu-gil (168 Steps)", "草梁故事路(168阶梯)", "草梁イバグキル(168階段)"),
+    "A07": ("Haeundae Beach", "海云台海水浴场", "海雲台海水浴場"),
+    "A08": ("Gwangalli Beach", "广安里海水浴场", "広安里海水浴場"),
+    "A09": ("Taejongdae", "太宗台", "太宗台"),
+    "A10": ("Songdo Marine Cable Car", "松岛海上缆车", "松島海上ケーブルカー"),
 }
 ZH = {"N01": "伽耶小麦冷面", "N02": "60年传统奶奶汤饭", "N03": "新发园(唐人街饺子)", "N07": "盛一家(札嘎其烤鳗鱼)", "N08": "元祖18号馄饨",
       "N09": "三进鱼糕总店", "N12": "东莱奶奶葱饼", "N13": "Hytte咖啡田浦店", "N14": "松亭三代汤饭", "N16": "海云台牛排骨",
@@ -38,7 +49,8 @@ ZH = {"N01": "伽耶小麦冷面", "N02": "60年传统奶奶汤饭", "N03": "新
 CAT = {"밀면": ("Cold wheat noodles", "小麦冷面", "ミルミョン"), "국밥": ("Pork rice soup", "猪肉汤饭", "テジクッパ"), "만두": ("Dumplings", "饺子", "餃子"),
        "디저트": ("Street dessert", "街头甜点", "屋台スイーツ"), "시장": ("Market food", "市场小吃", "市場グルメ"), "해산물": ("Seafood", "海鲜", "海鮮"),
        "면": ("Noodles · wonton", "面·馄饨", "麺・ワンタン"), "어묵": ("Fish cake", "鱼糕", "おでん"), "카페": ("Café", "咖啡", "カフェ"),
-       "고기": ("Korean BBQ", "韩式烤肉", "焼肉"), "치킨": ("Fried chicken", "炸鸡", "フライドチキン"), "터미널": ("Terminal", "码头", "ターミナル")}
+       "고기": ("Korean BBQ", "韩式烤肉", "焼肉"), "치킨": ("Fried chicken", "炸鸡", "フライドチキン"), "터미널": ("Terminal", "码头", "ターミナル"),
+       "볼거리": ("Sightseeing (no food)", "观光(不吃)", "観光(食事なし)")}
 hm = lambda m: "" if pd.isna(m) else f"{int(m) // 60:02d}:{int(m) % 60:02d}"
 
 

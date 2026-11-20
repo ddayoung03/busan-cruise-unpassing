@@ -17,7 +17,8 @@ Colab 기본 라이브러리(pandas, numpy)만 사용. 파일을 Colab에 올린
 목적: max  Σ 만족도_i − λ·(이동 + 오픈·식사창·소화 대기 + 줄 대기)   (λ = 0.8 점/분)
       만족도_i = demand_score_i(외국인 댓글 수요점수) × 국적 가중치(노드의 대표 메뉴)
 제약: 터미널 출발 / 승선 마감 30분 전 복귀 / 영업시간 / 도착 시각별 줄 대기 /
-      위 용량(포만도 ≤ 4, 100분에 1단위 소화, 체류 중에도 소화) / 식사 간 120분 / 식사 시간창
+      위 용량(포만도 ≤ 4, 100분에 1단위 소화, 체류 중에도 소화) / 식사 간 120분 / 식사 시간창 /
+      음식 최대 7곳 + 볼거리 최대 2곳(볼거리는 포만도 0 → 머무는 동안 소화)
 대기 결정: 각 노드에서 '가능해지는 가장 이른 시각'과, 그 뒤 90분 안의 혼잡 구간 경계(줄이 줄어드는 시각)까지
            기다리는 선택지를 모두 탐색한다(시간 이산화 정책 안에서의 정확해).
 해법: 분기한정 깊이우선탐색. 상한 = 남은 노드의 (만족도 − λ·최소 유입 이동시간) 상위 합.
@@ -40,7 +41,11 @@ CRUISE_WEIGHT = 1.6
 CRUISE_RADIUS_KM = 3.0                 # 크루즈 혼잡 가중이 걸리는 터미널 반경
 CORE_GU = {"중구", "동구", "영도구"}    # 원도심 3구. 이 밖 = '원도심 밖'(확산 대상). 확산 지표는 모두 이 정의
 RETURN_BUFFER = 30.0
-MAX_STOPS = 7
+PLAN_SAFETY = 20.0                     # 계획할 때만: 복귀 마감보다 20분 일찍 돌아오는 루트만 허용(대기·이동 오차 대비). 지각 판정은 원래 마감
+MAX_STOPS = 7                          # 음식 노드 최대 방문 수
+FOOD_CAPS = (5, 6, 7)                  # 음식 수를 5·6·7곳으로 각각 풀고 볼거리 삽입 후 최선을 고른다
+MAX_ATTR = 2                           # 볼거리(category='볼거리', 먹지 않는 노드) 최대 방문 수 — 소화 시간을 채운다
+ATTR_CAT = "볼거리"
 TAXI_OVERHEAD = 5.0                    # 택시 호출·승하차 (가정)
 CROWD_WINDOW = 30.0                    # 분산 배정: 같은 노드 방문 시작이 30분 안에 겹치면 혼잡
 
@@ -138,6 +143,17 @@ class Problem:
     def dist_from(self, depot, nid):
         return self._d[depot, nid]
 
+    def is_attr(self, nid):
+        return self.A[nid]["category"] == ATTR_CAT
+
+    def can_add(self, route, n):
+        """음식 7곳·볼거리 2곳 상한을 따로 센다(볼거리가 음식 자리를 빼앗지 않게)."""
+        if n in route:
+            return False
+        if self.is_attr(n):
+            return sum(map(self.is_attr, route)) < MAX_ATTR
+        return sum(not self.is_attr(m) for m in route) < getattr(self, "food_cap", MAX_STOPS)
+
     def is_far(self, nid):
         return self.A[nid]["gu"] not in CORE_GU
 
@@ -179,7 +195,7 @@ class Problem:
         return target
 
     # ---------- 한 노드로 가는 선택지 (DFS·탐욕·평가가 모두 같은 규칙을 쓴다) ----------
-    def options(self, cur, t, st, lm, n, sc, noise=None, tnoise=1.0, wait_choice=True, not_before=-1e9):
+    def options(self, cur, t, st, lm, n, sc, noise=None, tnoise=1.0, wait_choice=True, not_before=-1e9, slack=0.0):
         """현재 (위치 cur, 시각 t, 포만도 st, 마지막 식사 시작 lm)에서 n을 방문하는 실행가능한 선택지들."""
         r = self.A[n]
         arr = t + self.T[cur, n] * tnoise
@@ -200,7 +216,7 @@ class Problem:
                 s0 = self.first_queue_time(n, bs0, target, sc, noise)   # begin ≥ target 이 되는 가장 이른 줄 서기
                 if s0 is not None and s0 + self.wait(n, s0, sc, noise) <= b:
                     starts.append(s0)
-        if wait_choice:
+        if wait_choice and r["wait_peak_min"] > 0:   # 줄이 없는 곳(볼거리)은 혼잡 경계까지 기다려도 얻는 게 없다
             starts += [e for s0 in list(starts) for e in CONGESTION_EDGES if s0 < e <= s0 + 90]
         out = []
         for s0 in sorted(set(starts)):
@@ -209,7 +225,7 @@ class Problem:
             if begin < lo - 1e-9 or not any(a <= begin <= b for a, b in windows):
                 continue
             end = begin + r["stay_min"]
-            if not self.open_ok(n, begin, end) or end + self.T[n, sc.depot] * tnoise > sc.deadline():
+            if not self.open_ok(n, begin, end) or end + self.T[n, sc.depot] * tnoise > sc.deadline() - slack:
                 continue
             st_b = max(0.0, st - (begin - t) / DIGEST_MIN) + r["stomach"]
             if st_b > STOMACH_CAP + 1e-9:
@@ -222,7 +238,28 @@ class Problem:
 
     # ---------------- 분기한정 ----------------
     def solve(self, sc: Scenario, k=3, noise=None):
-        depot, cands = sc.depot, self.cands
+        has_attr = any(map(self.is_attr, self.cands))
+        out = []
+        for cap in (FOOD_CAPS if has_attr else (MAX_STOPS,)):   # 1단계를 음식 상한별로 따로 (가지치기 기준을 섞지 않는다)
+            self.food_cap = cap
+            try:
+                out += self._solve_food(sc, k, noise)
+            finally:
+                self.food_cap = MAX_STOPS
+        out = [self.insert_attractions(d, sc, noise) for d in out]   # 2단계: 볼거리 삽입
+        if has_attr:   # 3단계: 2단계 해들과 같은 제약의 탐욕 해에서 각각 지역탐색 → 탐욕법보다 나빠질 수 없다
+            g = self.greedy(sc) if noise is None else None
+            starts = out + ([g] if g and g.get("meets_must_far", True) else [])
+            out = [self.local_search(d, sc, noise) for d in starts]
+        uniq = {}
+        for d in sorted(out, key=lambda d: -d["objective"]):
+            uniq.setdefault(frozenset(d["route"]), d)
+        return list(uniq.values())[:k]
+
+    def _solve_food(self, sc: Scenario, k=3, noise=None):
+        """1단계: 음식 노드만, 음식 상한 self.food_cap 으로 분기한정."""
+        cap = self.food_cap
+        depot, cands = sc.depot, [n for n in self.cands if not self.is_attr(n)]
         scores = {n: self.score(n, sc) for n in cands}
         opt = {n: scores[n] - LAMBDA * min(self.T[m, n] for m in self.ids if m != n) for n in cands}
         min_step = min(self.A[n]["stay_min"] for n in cands) + min(self.T.values())
@@ -248,21 +285,117 @@ class Problem:
         def dfs(cur, t, st, lm, route, obj, tl):
             if route:
                 record(obj - LAMBDA * self.T[cur, depot], route, tl)
-            if len(route) >= MAX_STOPS:
+            if len(route) >= cap:
                 return
-            slots = min(MAX_STOPS - len(route), int((sc.deadline() - t) // max(1.0, min_step)))
-            rest = sorted((opt[n] for n in cands if n not in route and opt[n] > 0), reverse=True)
+            slots = min(cap - len(route), int((sc.deadline() - t) // max(1.0, min_step)))
+            nf = cap - sum(not self.is_attr(m) for m in route)
+            na = MAX_ATTR - sum(map(self.is_attr, route))
+            restF = sorted((opt[n] for n in cands if n not in route and opt[n] > 0 and not self.is_attr(n)), reverse=True)[:nf]
+            restA = sorted((opt[n] for n in cands if n not in route and opt[n] > 0 and self.is_attr(n)), reverse=True)[:na]
+            rest = sorted(restF + restA, reverse=True)      # 음식·볼거리 상한을 따로 지킨 낙관적 상한
             if obj + sum(rest[:slots]) <= kth():
                 return
             for n in cands:
-                if n in route:
+                if not self.can_add(route, n):
                     continue
-                for o in self.options(cur, t, st, lm, n, sc, noise):
+                for o in self.options(cur, t, st, lm, n, sc, noise, slack=PLAN_SAFETY):
                     dfs(n, o["end"], o["st"], o["lm"], route + [n], obj + o["gain"],
                         tl + [(n, o["arr"], o["idle"], o["q"], o["begin"], o["end"])])
 
         dfs(depot, sc.start, 0.0, None, [], 0.0, [])
         return [self.describe(o, r, tl, sc) for o, r, tl in best]
+
+    def insert_attractions(self, base, sc, noise=None):
+        """2단계: 음식 최적 루트의 순서·계획 줄 서기 시각은 그대로 두고, 그 사이(소화 시간)에 볼거리 0~MAX_ATTR곳을
+        끼워 넣는 모든 경우를 같은 규칙(evaluate)으로 평가해 목적함수가 가장 큰 실행가능 루트를 고른다.
+        (음식+볼거리를 한꺼번에 분기한정하면 31노드에서 30분 넘게 걸려, 볼거리는 삽입으로 푼다 — 결합 최적은 보장하지 않음)"""
+        attrs = [n for n in self.cands if self.is_attr(n)]
+        if not attrs:
+            return base
+        route, plan = base["route"], base["timeline"]
+        free = lambda n: (n, 0.0, 0.0, 0.0, -1e9, 0.0)          # 볼거리는 계획 시각 제약 없음
+        best = (self.evaluate(route, sc, noise, plan=plan)["objective"], route, plan)
+        cands = [([], [])]
+        for a in attrs:
+            for i in range(len(route) + 1):
+                cands.append(([a], [i]))
+                for b in attrs:
+                    if b != a:
+                        for j in range(i, len(route) + 1):
+                            cands.append(([a, b], [i, j]))
+        for adds, pos in cands[1:]:
+            r, pl = list(route), list(plan)
+            for a, i in sorted(zip(adds, pos), key=lambda x: -x[1]):   # 뒤 위치부터 넣어야 앞 인덱스가 안 밀린다
+                r.insert(i, a); pl.insert(i, free(a))
+            if len(adds) == 2 and pos[0] == pos[1]:
+                k = pos[0]; r[k], r[k + 1] = adds[0], adds[1]; pl[k], pl[k + 1] = free(adds[0]), free(adds[1])
+            if sc.must_far and not any(self.is_far(n) for n in r):
+                continue
+            ev = self.evaluate(r, sc, noise, plan=pl)
+            if self._plan_ok(ev, sc) and ev["objective"] > best[0] + 1e-9:
+                best = (ev["objective"], r, pl)
+        if best[1] is route:
+            return base
+        return self._described(best[1], best[2], sc, noise)
+
+    def _plan_ok(self, ev, sc):
+        return ev["feasible"] and ev["return_min"] <= sc.deadline() - PLAN_SAFETY + 1e-9
+
+    def _described(self, route, plan, sc, noise=None):
+        ev = self.evaluate(route, sc, noise, plan=plan)
+        tl = [(x["node"], x["leave"] + self.T[x["from"], x["node"]], x["queue_start"] - x["leave"] - self.T[x["from"], x["node"]],
+               x["queue"], x["begin"], x["end"]) for x in ev["stops"]]
+        return self.describe(ev["objective"], route, tl, sc)
+
+    def local_search(self, base, sc, noise=None, max_iter=50):
+        """3단계 지역탐색: 넣기·빼기·바꾸기·옮기기 중 목적함수를 가장 많이 올리는 실행가능한 수를 더 좋아지지 않을 때까지 둔다.
+        평가는 evaluate(같은 규칙). 남는 노드의 계획 줄 서기 시각은 유지한 경우와 버린 경우(가장 이른 시각)를 모두 본다."""
+        free = lambda n: (n, 0.0, 0.0, 0.0, -1e9, 0.0)
+        route, plan = list(base["route"]), [tuple(x) for x in base["timeline"]]
+
+        def score(r, pl):
+            best = None
+            for q in (pl, None):
+                ev = self.evaluate(r, sc, noise, plan=q)
+                if self._plan_ok(ev, sc) and (best is None or ev["objective"] > best[0]):
+                    best = (ev["objective"], q)
+            return best
+
+        cur = score(route, plan)
+        if cur is None:
+            return base
+        cur_obj = cur[0]
+        for _ in range(max_iter):
+            out = [n for n in self.cands if n not in route]
+            moves = []
+            for i in range(len(route) + 1):
+                moves += [("ins", i, n) for n in out]
+            for i in range(len(route)):
+                moves.append(("del", i, None))
+                moves += [("rep", i, n) for n in out]
+                moves += [("mov", i, j) for j in range(len(route)) if j != i]
+            best = None
+            for kind, i, x in moves:
+                r, pl = list(route), list(plan)
+                if kind == "ins":
+                    r.insert(i, x); pl.insert(i, free(x))
+                elif kind == "del":
+                    del r[i]; del pl[i]
+                elif kind == "rep":
+                    r[i], pl[i] = x, free(x)
+                else:
+                    n = r.pop(i); pl.pop(i); r.insert(x, n); pl.insert(x, free(n))
+                if not r:
+                    continue
+                sc_ = score(r, pl)
+                if sc_ and sc_[0] > cur_obj + 1e-6 and (best is None or sc_[0] > best[0]):
+                    best = (sc_[0], r, pl if sc_[1] is not None else [free(n) for n in r])
+            if best is None:
+                break
+            cur_obj, route, plan = best
+        if cur_obj <= base["objective"] + 1e-9:
+            return base
+        return self._described(route, plan, sc, noise)
 
     def describe(self, obj, route, tl, sc):
         last = tl[-1][5]
@@ -284,12 +417,12 @@ class Problem:
         """같은 제약·같은 목적함수의 근시안적 탐욕법(수업 recommend_course_under_budget 방식에 제약 추가).
         매 단계 '이득 ÷ 소요시간'이 가장 큰 실행가능 노드를 고르고 되돌아보지 않는다."""
         cur, t, st, lm, route, tl, obj = sc.depot, sc.start, 0.0, None, [], [], 0.0
-        while len(route) < MAX_STOPS:
+        while len(route) < MAX_STOPS + MAX_ATTR:
             pick = None
             for n in self.cands:
-                if n in route:
+                if not self.can_add(route, n):
                     continue
-                for o in self.options(cur, t, st, lm, n, sc):
+                for o in self.options(cur, t, st, lm, n, sc, slack=PLAN_SAFETY):
                     eff = o["gain"] / max(1.0, o["end"] - t)
                     if o["gain"] > 0 and (pick is None or eff > pick[0]):
                         pick = (eff, n, o)
@@ -362,7 +495,7 @@ class Problem:
             t, cur, st, lm = end, n, st_n, lm_n
         back = t + self.T[cur, sc.depot] * tnoise
         viol["복귀 지각"] = int(back > sc.deadline() + 1e-9)
-        viol["방문 수 초과"] = int(len(route) > MAX_STOPS)
+        viol["방문 수 초과"] = int(sum(not self.is_attr(n) for n in route) > MAX_STOPS or sum(map(self.is_attr, route)) > MAX_ATTR)
         viol["원도심 밖 필수"] = int(sc.must_far and not any(self.is_far(n) for n in route))
         return {"route": route, "names": [self.A[n]["name_ko"] for n in route],
                 "objective": round(obj - LAMBDA * (back - t), 1), "queue_min": round(queue, 1),

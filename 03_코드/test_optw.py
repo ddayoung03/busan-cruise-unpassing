@@ -5,7 +5,10 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent))
+import cruise_route_optw as M  # noqa: E402
 from cruise_route_optw import Problem, Scenario
+
+M.PLAN_SAFETY = 0.0   # 규칙 테스트는 안전 여유 없이(여유 테스트는 맨 끝)
 
 BASE = dict(category="시장", lat=35.1, lon=129.04, open_min=0, close_min=1440, meal_flag=0, stomach=0.5,
             stay_min=30, price_krw=10000, wait_peak_min=0, busan_score=80, gu="중구")
@@ -70,4 +73,10 @@ evs = P.joint_eval(plans)
 assert evs[0]["converged"]
 s1, s2 = evs[0]["visits"][0][1], evs[1]["visits"][0][1]
 assert (abs(s1 - s2) < 30) == (evs[0]["queue_min"] > 0), (s1, s2, evs[0]["queue_min"])
+# 계획 안전 여유: 여유 20분이면 마감 20분 전까지 돌아오는 루트만 나온다
+M.PLAN_SAFETY = 20.0
+P = problem([{"node_id": "L", "name_ko": "l", "stay_min": 50}])
+assert P.solve(Scenario("t", "D", 600, 600 + 50 + 2 + 30), k=1) == [], "마감 직전 복귀는 계획하면 안 됨"
+r = P.solve(Scenario("t", "D", 600, 600 + 50 + 2 + 30 + 20), k=1)
+assert r and r[0]["return_min"] <= 600 + 50 + 2 + 20 - 20 + 1e-9 + 20, r
 print("OK")

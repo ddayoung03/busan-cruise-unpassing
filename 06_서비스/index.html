@@ -66,6 +66,7 @@ ol.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tl time{color:var(--tide)}}
 .pin{width:26px;height:26px;border-radius:50%;background:var(--sea);color:#fff;display:grid;place-items:center;font:700 13px var(--f-body)}
 .pin.end{background:var(--coral)}
+.pin.see{background:#2E8B57}   /* 볼거리(먹지 않는 곳) */
 .tl h3{margin:0;font-size:16px;line-height:1.35}
 .tl .menu{color:var(--mute);font-size:13px;margin:2px 0 6px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
@@ -276,7 +277,7 @@ function renderRoute(){
     .map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
   let h=`<li><time>${hm(c.start)}</time><span class="pin end">⚓</span><div><h3>${nm(c.depot)}</h3><div class="menu">${t('depart')}</div></div></li>`;
   c.stops.forEach((s,i)=>{const p=P[s.node];
-    h+=`<li><time>${hm(s.begin)}</time><span class="pin">${i+1}</span><div><h3>${nm(s.node)}</h3><div class="menu">${menu(s.node)}</div>
+    h+=`<li><time>${hm(s.begin)}</time><span class="pin${p.cat==='볼거리'?' see':''}">${i+1}</span><div><h3>${nm(s.node)}</h3><div class="menu">${menu(s.node)}</div>
       <div class="tags"><span class="tag">${t(s.mode)} ${s.move}${t('min')}</span>${s.queue?`<span class="tag q">${t('queue')} ${s.queue}${t('min')}</span>`:''}
       <span class="tag">₩${p.price.toLocaleString()}</span><span class="tag">${t('hours')} ${p.hours.replace('브레이크','break')}</span>${p.real?`<span class="tag">${t('real')}</span>`:`<span class="tag est">${t('est')}</span>`}</div></div></li>`});
   h+=`<li><time>${hm(ret)}</time><span class="pin end">⚓</span><div><h3>${nm(c.depot)}</h3><div class="menu">${t('ret')} · ${t(c.back_mode)} ${c.back_move}${t('min')}</div></div></li>`;
@@ -304,7 +305,7 @@ async function drawMap(c){
   g.lineWidth=5;g.strokeStyle='#E8573F';g.lineJoin='round';g.beginPath();pts.forEach(([a,b],i)=>i?g.lineTo(a,b):g.moveTo(a,b));g.stroke();
   for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[e,f]=pts[i],ang=Math.atan2(f-b,e-a),mx=(a+e)/2,my=(b+f)/2;g.fillStyle='#E8573F';g.beginPath();g.moveTo(mx+12*Math.cos(ang),my+12*Math.sin(ang));g.lineTo(mx-9*Math.cos(ang-0.6),my-9*Math.sin(ang-0.6));g.lineTo(mx-9*Math.cos(ang+0.6),my-9*Math.sin(ang+0.6));g.fill()}
   const[tx,ty]=pts[0];g.fillStyle='#1D2B36';g.fillRect(tx-11,ty-11,22,22);g.strokeStyle='#fff';g.lineWidth=2;g.strokeRect(tx-11,ty-11,22,22);
-  c.stops.forEach((s,i)=>{const[a,b]=pts[i+1];g.beginPath();g.arc(a,b,17,0,7);g.fillStyle='#0B3C5D';g.fill();g.lineWidth=3;g.strokeStyle='#fff';g.stroke();
+  c.stops.forEach((s,i)=>{const[a,b]=pts[i+1];g.beginPath();g.arc(a,b,17,0,7);g.fillStyle=P[s.node].cat==='볼거리'?'#2E8B57':'#0B3C5D';g.fill();g.lineWidth=3;g.strokeStyle='#fff';g.stroke();
     g.fillStyle='#fff';g.font='700 18px "Noto Sans KR",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(i+1,a,b+1)});
 }
 document.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{MAPK=b.dataset.map;drawMap()});
