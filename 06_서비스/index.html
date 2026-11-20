@@ -284,7 +284,7 @@ function renderRoute(){
   if(x.snapped)h+=`<li><span></span><span></span><p class="note">${t('snapped')(hm(c.start),c.hours)}</p></li>`;
   tl.innerHTML=h;
   al.hidden=false;al.innerHTML=`<span aria-hidden="true">⏰</span><div>${t('alert')(hm(x.b-120),hm(deadline-c.back_move))}</div>`;
-  MAPK=c.stops.some(s=>!['중구','영도구','서구'].includes(P[s.node].gu))?'wide':'core';   // 원도심 밖까지 가면 부산 전체 지도
+  MAPK=c.stops.some(s=>!['중구','동구','영도구','서구','사하구'].includes(P[s.node].gu))?'wide':'core';   // 원도심 밖까지 가면 부산 전체 지도
   drawMap(c);
 }
 // ----- 지도(배경 이미지 + 웹 메르카토르) -----

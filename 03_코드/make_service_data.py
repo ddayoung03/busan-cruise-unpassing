@@ -143,7 +143,7 @@ def basemap(name, lon0, lat0, lon1, lat1, z):
 
 
 maps = {"wide": basemap("wide", 129.005, 35.07, 129.185, 35.215, 13),
-        "core": basemap("core", 129.012, 35.078, 129.092, 35.127, 15)}
+        "core": basemap("core", 129.000, 35.054, 129.095, 35.127, 15)}   # 감천(129.009)·태종대(35.059)·송도까지
 
 data = json.dumps({"places": places, "routes": routes, "forecast": forecast, "maps": maps,
                    "credit": "© OpenStreetMap contributors"}, ensure_ascii=False)

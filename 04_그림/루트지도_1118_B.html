@@ -16,7 +16,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_89d0ef9311b54faf000ad0ca0e7d0ce1 {
+                #map_3e9d5738baaa49aa13aee475a1c6a5f0 {
                     position: relative;
                     width: 100.0vw;
                     height: 100.0vh;
@@ -254,29 +254,23 @@
             </script>
 
         
-    
-            
-        
-    
-            
-        
 </head>
 <body>
     
     
-            <div class="folium-map" id="map_89d0ef9311b54faf000ad0ca0e7d0ce1" ></div>
+            <div class="folium-map" id="map_3e9d5738baaa49aa13aee475a1c6a5f0" ></div>
         
 </body>
 <script>
     
     
-            var map_89d0ef9311b54faf000ad0ca0e7d0ce1 = L.map(
-                "map_89d0ef9311b54faf000ad0ca0e7d0ce1",
+            var map_3e9d5738baaa49aa13aee475a1c6a5f0 = L.map(
+                "map_3e9d5738baaa49aa13aee475a1c6a5f0",
                 {
-                    center: [35.105, 129.04],
+                    center: [35.13, 129.07],
                     crs: L.CRS.EPSG3857,
                     ...{
-  "zoom": 13,
+  "zoom": 12,
   "zoomControl": true,
   "preferCanvas": false,
 }
@@ -288,15 +282,15 @@
 
         
     
-            var tile_layer_dc360020472485d487b110077cfb0a6c = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            var tile_layer_75bdadec96d270f64b2c6d447266f515 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
-  "maxZoom": 20,
-  "maxNativeZoom": 20,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
   "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-  "subdomains": "abcd",
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
   "detectRetina": false,
   "tms": false,
   "opacity": 1,
@@ -305,28 +299,811 @@
             );
         
     
-            tile_layer_dc360020472485d487b110077cfb0a6c.addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
+            tile_layer_75bdadec96d270f64b2c6d447266f515.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
         
     
-            var marker_2813e16bb7311352c428182754d93c55 = L.marker(
-                [35.117439, 129.048962],
+            var feature_group_8d0ef7cb77ddb90731caa721e759ab1f = L.featureGroup(
                 {
-}
-            ).addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
-        
-    
-            var icon_666e558e958e7e8cc97ec673d39c26a8 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "black",
-  "iconColor": "white",
-  "icon": "ship",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
 }
             );
         
     
-            marker_2813e16bb7311352c428182754d93c55.bindTooltip(
+            var poly_line_962ddfcb1ca3dc6d5ef9b5d072c60566 = L.polyline(
+                [[35.117439, 129.048962], [35.1039013, 129.0346592], [35.101164, 129.028192], [35.10131, 129.025817], [35.098508, 129.026638], [35.099426, 129.03749], [35.0963371, 129.0087897], [35.105713, 129.02045], [35.096863, 129.044241], [35.117439, 129.048962]],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            var circle_marker_865c6f72a099030c333a97745e7d7b29 = L.circleMarker(
+                [35.1039013, 129.0346592],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_865c6f72a099030c333a97745e7d7b29.bindTooltip(
+                `<div>
+                     1. 40계단 | 도착 08:40 · 줄 0분 · 식사 08:40~09:00
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a09c799ccebe3c6850d9bd7b322588cd = L.circleMarker(
+                [35.101164, 129.028192],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_a09c799ccebe3c6850d9bd7b322588cd.bindTooltip(
+                `<div>
+                     2. 국제시장 먹자골목(유부주머니·비빔당면) | 도착 09:06 · 줄 3분 · 식사 09:09~09:49
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3446cc1e91328fadf81604e3b952fde3 = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_3446cc1e91328fadf81604e3b952fde3.bindTooltip(
+                `<div>
+                     3. 부평깡통시장(어묵·야시장) | 도착 09:53 · 줄 3분 · 식사 09:56~10:41
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c6a974b72ec77dab8395cb6990ccada0 = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_c6a974b72ec77dab8395cb6990ccada0.bindTooltip(
+                `<div>
+                     4. BIFF광장 씨앗호떡 | 도착 10:47 · 줄 13분 · 식사 11:00~11:15
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_25ffdca819b55028892147ac2c05e1d3 = L.circleMarker(
+                [35.099426, 129.03749],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_25ffdca819b55028892147ac2c05e1d3.bindTooltip(
+                `<div>
+                     5. 성일집(자갈치, 곰장어) | 도착 11:22 · 줄 13분 · 식사 11:35~12:35
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_61033420da39e3077cb2fb7fadb71d8a = L.circleMarker(
+                [35.0963371, 129.0087897],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_61033420da39e3077cb2fb7fadb71d8a.bindTooltip(
+                `<div>
+                     6. 감천문화마을 | 도착 12:46 · 줄 0분 · 식사 12:46~13:46
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8f17b28a778eb0905e3f8641753b98f1 = L.circleMarker(
+                [35.105713, 129.02045],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_8f17b28a778eb0905e3f8641753b98f1.bindTooltip(
+                `<div>
+                     7. 원조18번완당(부평동, 완당) | 도착 13:55 · 줄 18분 · 식사 14:12~14:42
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2549217980cf4f0afe32c19e7b545e88 = L.circleMarker(
+                [35.096863, 129.044241],
+                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_8d0ef7cb77ddb90731caa721e759ab1f);
+        
+    
+            circle_marker_2549217980cf4f0afe32c19e7b545e88.bindTooltip(
+                `<div>
+                     8. 봉래동 창고카페(물양장) | 도착 14:52 · 줄 6분 · 식사 14:57~15:37
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_8d0ef7cb77ddb90731caa721e759ab1f.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var feature_group_884179cee4c0216b7f9c841ca2359d92 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_bd2b6f67011c85d7b1644773d2748fbd = L.polyline(
+                [[35.083607, 129.082779], [35.1039013, 129.0346592], [35.0963371, 129.0087897], [35.10131, 129.025817], [35.098508, 129.026638], [35.083607, 129.082779]],
+                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_884179cee4c0216b7f9c841ca2359d92);
+        
+    
+            var circle_marker_b519bd70c008e42a6c3fb5815660b6be = L.circleMarker(
+                [35.1039013, 129.0346592],
+                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_884179cee4c0216b7f9c841ca2359d92);
+        
+    
+            circle_marker_b519bd70c008e42a6c3fb5815660b6be.bindTooltip(
+                `<div>
+                     1. 40계단 | 도착 12:14 · 줄 0분 · 식사 12:14~12:34
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b01d09f3d6b2d679be21ed9b97d6e9ce = L.circleMarker(
+                [35.0963371, 129.0087897],
+                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_884179cee4c0216b7f9c841ca2359d92);
+        
+    
+            circle_marker_b01d09f3d6b2d679be21ed9b97d6e9ce.bindTooltip(
+                `<div>
+                     2. 감천문화마을 | 도착 12:44 · 줄 0분 · 식사 12:44~13:44
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b95512680c13e399a3d82cf755bd086c = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_884179cee4c0216b7f9c841ca2359d92);
+        
+    
+            circle_marker_b95512680c13e399a3d82cf755bd086c.bindTooltip(
+                `<div>
+                     3. 부평깡통시장(어묵·야시장) | 도착 13:53 · 줄 6분 · 식사 13:58~14:43
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_77db3c5b6b14b1055982cfe9212ee9c6 = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_884179cee4c0216b7f9c841ca2359d92);
+        
+    
+            circle_marker_77db3c5b6b14b1055982cfe9212ee9c6.bindTooltip(
+                `<div>
+                     4. BIFF광장 씨앗호떡 | 도착 14:49 · 줄 5분 · 식사 14:54~15:09
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_884179cee4c0216b7f9c841ca2359d92.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var feature_group_08a5c5fefb77287c5eb9766dabf393a2 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_2f9f62f394610e0957ff435ef256e672 = L.polyline(
+                [[35.117439, 129.048962], [35.101164, 129.028192], [35.10131, 129.025817], [35.098508, 129.026638], [35.099426, 129.03749], [35.0963371, 129.0087897], [35.105713, 129.02045], [35.1508879, 129.1167806], [35.160353, 129.162027], [35.155567, 129.05853], [35.117439, 129.048962]],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            var circle_marker_6c058ac7c39c7b3fdb38eddf8445367d = L.circleMarker(
+                [35.101164, 129.028192],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_6c058ac7c39c7b3fdb38eddf8445367d.bindTooltip(
+                `<div>
+                     1. 국제시장 먹자골목(유부주머니·비빔당면) | 도착 09:11 · 줄 3분 · 식사 09:14~09:54
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e07f70966136a2aec5a761a08e508cf7 = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_e07f70966136a2aec5a761a08e508cf7.bindTooltip(
+                `<div>
+                     2. 부평깡통시장(어묵·야시장) | 도착 09:58 · 줄 3분 · 식사 10:01~10:46
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_30f65b54d269c8202ea555551d2595c4 = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_30f65b54d269c8202ea555551d2595c4.bindTooltip(
+                `<div>
+                     3. BIFF광장 씨앗호떡 | 도착 10:52 · 줄 13분 · 식사 11:05~11:20
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e96fcd25409b35bfae027fbf45a7bc7b = L.circleMarker(
+                [35.099426, 129.03749],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_e96fcd25409b35bfae027fbf45a7bc7b.bindTooltip(
+                `<div>
+                     4. 성일집(자갈치, 곰장어) | 도착 11:26 · 줄 13분 · 식사 11:40~12:40
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_39dd24167998f25c8f12ea458bbc3f88 = L.circleMarker(
+                [35.0963371, 129.0087897],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_39dd24167998f25c8f12ea458bbc3f88.bindTooltip(
+                `<div>
+                     5. 감천문화마을 | 도착 12:50 · 줄 0분 · 식사 12:50~13:50
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_23cc52d0e351d8592bd2d81b2ac5fcc5 = L.circleMarker(
+                [35.105713, 129.02045],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_23cc52d0e351d8592bd2d81b2ac5fcc5.bindTooltip(
+                `<div>
+                     6. 원조18번완당(부평동, 완당) | 도착 13:59 · 줄 18분 · 식사 14:17~14:47
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b90c711d760b5fd3a9cbff6dbd82cc58 = L.circleMarker(
+                [35.1508879, 129.1167806],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_b90c711d760b5fd3a9cbff6dbd82cc58.bindTooltip(
+                `<div>
+                     7. 광안리해수욕장 | 도착 15:05 · 줄 0분 · 식사 15:05~15:45
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b1b8ce8425bd8fca67b5fa0318777bb7 = L.circleMarker(
+                [35.160353, 129.162027],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_b1b8ce8425bd8fca67b5fa0318777bb7.bindTooltip(
+                `<div>
+                     8. 해운대시장 | 도착 15:58 · 줄 4분 · 식사 16:01~16:41
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6b5153b1f324aacc686eb5a10a8340c3 = L.circleMarker(
+                [35.155567, 129.05853],
+                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_08a5c5fefb77287c5eb9766dabf393a2);
+        
+    
+            circle_marker_6b5153b1f324aacc686eb5a10a8340c3.bindTooltip(
+                `<div>
+                     9. 송정3대국밥(서면, 돼지국밥) | 도착 17:02 · 줄 5분 · 식사 17:07~17:37
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_08a5c5fefb77287c5eb9766dabf393a2.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var feature_group_5e23fc349ebb3bea6d2f365035dafcbe = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_90e47a4c02b159dd569505718d81d3c0 = L.polyline(
+                [[35.117439, 129.048962], [35.101164, 129.028192], [35.098508, 129.026638], [35.0963371, 129.0087897], [35.1013015, 129.0322296], [35.10131, 129.025817], [35.117439, 129.048962]],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            var circle_marker_c9ad826e1b340c1e7ece4b14d5251edf = L.circleMarker(
+                [35.101164, 129.028192],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            circle_marker_c9ad826e1b340c1e7ece4b14d5251edf.bindTooltip(
+                `<div>
+                     1. 국제시장 먹자골목(유부주머니·비빔당면) | 도착 10:11 · 줄 3분 · 식사 10:14~10:54
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_93bf0363b626e9c37fb5e80d52209392 = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            circle_marker_93bf0363b626e9c37fb5e80d52209392.bindTooltip(
+                `<div>
+                     2. BIFF광장 씨앗호떡 | 도착 11:00 · 줄 13분 · 식사 11:13~11:28
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d19f59c26af65395867446901bbda26c = L.circleMarker(
+                [35.0963371, 129.0087897],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            circle_marker_d19f59c26af65395867446901bbda26c.bindTooltip(
+                `<div>
+                     3. 감천문화마을 | 도착 11:37 · 줄 0분 · 식사 11:37~12:37
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2e7c03dc83d8727e7e4552a66df3d576 = L.circleMarker(
+                [35.1013015, 129.0322296],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            circle_marker_2e7c03dc83d8727e7e4552a66df3d576.bindTooltip(
+                `<div>
+                     4. 용두산공원·부산타워 | 도착 12:47 · 줄 0분 · 식사 12:47~13:27
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_33ff694b9290c0e923e66e4d5f900962 = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_5e23fc349ebb3bea6d2f365035dafcbe);
+        
+    
+            circle_marker_33ff694b9290c0e923e66e4d5f900962.bindTooltip(
+                `<div>
+                     5. 부평깡통시장(어묵·야시장) | 도착 13:33 · 줄 9분 · 식사 13:42~14:27
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_5e23fc349ebb3bea6d2f365035dafcbe.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var feature_group_77e8b9a21a718c8b6dd29c173a54ab0b = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_4caacdc8564419b5c4038980df739bd5 = L.polyline(
+                [[35.117439, 129.048962], [35.1039013, 129.0346592], [35.101164, 129.028192], [35.10131, 129.025817], [35.098508, 129.026638], [35.099426, 129.03749], [35.0963371, 129.0087897], [35.105713, 129.02045], [35.096863, 129.044241], [35.092953, 129.04279], [35.117439, 129.048962]],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            var circle_marker_2cd2bbaac562a6401a01509d5221f2ce = L.circleMarker(
+                [35.1039013, 129.0346592],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_2cd2bbaac562a6401a01509d5221f2ce.bindTooltip(
+                `<div>
+                     1. 40계단 | 도착 08:40 · 줄 0분 · 식사 08:40~09:00
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b79fffd0d61c41ced7f40a29d2db1eb0 = L.circleMarker(
+                [35.101164, 129.028192],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_b79fffd0d61c41ced7f40a29d2db1eb0.bindTooltip(
+                `<div>
+                     2. 국제시장 먹자골목(유부주머니·비빔당면) | 도착 09:06 · 줄 2분 · 식사 09:08~09:48
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_46cd8e9ae79cd72f2737aab708c0115a = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_46cd8e9ae79cd72f2737aab708c0115a.bindTooltip(
+                `<div>
+                     3. 부평깡통시장(어묵·야시장) | 도착 09:52 · 줄 2분 · 식사 09:54~10:39
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d0dfe4d3d2009404938cbc7085dfc2da = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_d0dfe4d3d2009404938cbc7085dfc2da.bindTooltip(
+                `<div>
+                     4. BIFF광장 씨앗호떡 | 도착 10:45 · 줄 8분 · 식사 10:53~11:08
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0f3ce36ea445fa8b941bd82f02df006c = L.circleMarker(
+                [35.099426, 129.03749],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_0f3ce36ea445fa8b941bd82f02df006c.bindTooltip(
+                `<div>
+                     5. 성일집(자갈치, 곰장어) | 도착 11:14 · 줄 8분 · 식사 11:23~12:23
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1d15e04dedd9eb5480303701903a2ef8 = L.circleMarker(
+                [35.0963371, 129.0087897],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_1d15e04dedd9eb5480303701903a2ef8.bindTooltip(
+                `<div>
+                     6. 감천문화마을 | 도착 12:34 · 줄 0분 · 식사 12:34~13:34
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cacef23472618148686289d15c297ccf = L.circleMarker(
+                [35.105713, 129.02045],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_cacef23472618148686289d15c297ccf.bindTooltip(
+                `<div>
+                     7. 원조18번완당(부평동, 완당) | 도착 13:42 · 줄 11분 · 식사 13:53~14:23
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4da43d7786551aaf6da16baba07819e5 = L.circleMarker(
+                [35.096863, 129.044241],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_4da43d7786551aaf6da16baba07819e5.bindTooltip(
+                `<div>
+                     8. 봉래동 창고카페(물양장) | 도착 14:33 · 줄 4분 · 식사 14:36~15:16
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_83d67f6f5b9597d409e24e5c50c8df36 = L.circleMarker(
+                [35.092953, 129.04279],
+                {"bubblingMouseEvents": true, "color": "#c0392b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c0392b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_77e8b9a21a718c8b6dd29c173a54ab0b);
+        
+    
+            circle_marker_83d67f6f5b9597d409e24e5c50c8df36.bindTooltip(
+                `<div>
+                     9. 삼진어묵 본점(봉래동) | 도착 15:22 · 줄 4분 · 식사 15:26~15:56
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_77e8b9a21a718c8b6dd29c173a54ab0b.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var feature_group_b23ec97ba5693dad06e2ee50fb89d5a0 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_85139d0f26331d540c08ffa486b28100 = L.polyline(
+                [[35.117439, 129.048962], [35.1039013, 129.0346592], [35.10131, 129.025817], [35.101164, 129.028192], [35.155567, 129.05853], [35.15574, 129.06819], [35.1508879, 129.1167806], [35.141018, 129.05618], [35.098508, 129.026638], [35.096863, 129.044241], [35.117439, 129.048962]],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            var circle_marker_7aeedbfe71659bfc46c7ecc49a8b5b2e = L.circleMarker(
+                [35.1039013, 129.0346592],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_7aeedbfe71659bfc46c7ecc49a8b5b2e.bindTooltip(
+                `<div>
+                     1. 40계단 | 도착 08:40 · 줄 0분 · 식사 08:40~09:00
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d12290f1936ee290b489328de4f38cca = L.circleMarker(
+                [35.10131, 129.025817],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_d12290f1936ee290b489328de4f38cca.bindTooltip(
+                `<div>
+                     2. 부평깡통시장(어묵·야시장) | 도착 09:06 · 줄 3분 · 식사 09:10~09:55
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dc807c432745ec94ed89ddd8950ee96c = L.circleMarker(
+                [35.101164, 129.028192],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_dc807c432745ec94ed89ddd8950ee96c.bindTooltip(
+                `<div>
+                     3. 국제시장 먹자골목(유부주머니·비빔당면) | 도착 09:58 · 줄 3분 · 식사 10:02~10:42
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b77b9af0f1cb28718b18cc810bbad480 = L.circleMarker(
+                [35.155567, 129.05853],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_b77b9af0f1cb28718b18cc810bbad480.bindTooltip(
+                `<div>
+                     4. 송정3대국밥(서면, 돼지국밥) | 도착 10:55 · 줄 8분 · 식사 11:03~11:33
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2043967ba4944257f08e93d465b4b00a = L.circleMarker(
+                [35.15574, 129.06819],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_2043967ba4944257f08e93d465b4b00a.bindTooltip(
+                `<div>
+                     5. 히떼로스터리 전포점(카페) | 도착 11:40 · 줄 10분 · 식사 11:50~12:30
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5fbcacd79bec46b7cbf85cecf8cedd50 = L.circleMarker(
+                [35.1508879, 129.1167806],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_5fbcacd79bec46b7cbf85cecf8cedd50.bindTooltip(
+                `<div>
+                     6. 광안리해수욕장 | 도착 12:43 · 줄 0분 · 식사 12:43~13:23
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_76d2533d19ad0dee6504719e578bcc42 = L.circleMarker(
+                [35.141018, 129.05618],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_76d2533d19ad0dee6504719e578bcc42.bindTooltip(
+                `<div>
+                     7. 60년 전통 할매국밥(범일동, 돼지국밥) | 도착 13:37 · 줄 13분 · 식사 13:50~14:20
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3827fb5eeaabbf9f03758b7b7ba95e50 = L.circleMarker(
+                [35.098508, 129.026638],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_3827fb5eeaabbf9f03758b7b7ba95e50.bindTooltip(
+                `<div>
+                     8. BIFF광장 씨앗호떡 | 도착 14:31 · 줄 8분 · 식사 14:40~14:55
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f0789d4f6d854da8b61ed34483609cce = L.circleMarker(
+                [35.096863, 129.044241],
+                {"bubblingMouseEvents": true, "color": "#16a085", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#16a085", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
+            ).addTo(feature_group_b23ec97ba5693dad06e2ee50fb89d5a0);
+        
+    
+            circle_marker_f0789d4f6d854da8b61ed34483609cce.bindTooltip(
+                `<div>
+                     9. 봉래동 창고카페(물양장) | 도착 15:03 · 줄 6분 · 식사 15:09~15:49
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_b23ec97ba5693dad06e2ee50fb89d5a0.addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            var marker_a2c8f005ed5a6fd59740478eba73f270 = L.marker(
+                [35.117439, 129.048962],
+                {
+}
+            ).addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
+        
+    
+            marker_a2c8f005ed5a6fd59740478eba73f270.bindTooltip(
                 `<div>
                      부산항국제여객터미널(북항 크루즈)
                  </div>`,
@@ -336,37 +1113,14 @@
             );
         
     
-                {
-                    const element = marker_2813e16bb7311352c428182754d93c55.getElement();
-                    if (element) {
-                        element.style.width = "";
-                        element.style.height = "";
-                        element.style.marginLeft = "";
-                        element.style.marginTop = "";
-                    }
-                }
-                marker_2813e16bb7311352c428182754d93c55.setIcon(icon_666e558e958e7e8cc97ec673d39c26a8);
-            
-    
-            var marker_f15364aa16d4817e5d703cdf64988028 = L.marker(
+            var marker_375ab1f933656b0725902f1a244f22a9 = L.marker(
                 [35.083607, 129.082779],
                 {
 }
-            ).addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
+            ).addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
         
     
-            var icon_008296e1691d0be3f96d0e13da12ae2e = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "black",
-  "iconColor": "white",
-  "icon": "ship",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-            marker_f15364aa16d4817e5d703cdf64988028.bindTooltip(
+            marker_375ab1f933656b0725902f1a244f22a9.bindTooltip(
                 `<div>
                      영도 크루즈터미널(동삼동)
                  </div>`,
@@ -376,514 +1130,28 @@
             );
         
     
-                {
-                    const element = marker_f15364aa16d4817e5d703cdf64988028.getElement();
-                    if (element) {
-                        element.style.width = "";
-                        element.style.height = "";
-                        element.style.marginLeft = "";
-                        element.style.marginTop = "";
-                    }
-                }
-                marker_f15364aa16d4817e5d703cdf64988028.setIcon(icon_008296e1691d0be3f96d0e13da12ae2e);
-            
-    
-            var feature_group_eaaf871a9ade5e0e85002c0a5ac7de35 = L.featureGroup(
-                {
-}
-            );
-        
-    
-            var poly_line_4f5728b475be47ca3da12445750734ba = L.polyline(
-                [[35.117439, 129.048962], [35.1039013, 129.0346592], [35.101164, 129.028192], [35.10131, 129.025817], [35.098508, 129.026638], [35.099426, 129.03749], [35.0963371, 129.0087897], [35.105713, 129.02045], [35.096863, 129.044241], [35.117439, 129.048962]],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 4}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            var circle_marker_add072cb9e14d18409f9ebc081d5cb7f = L.circleMarker(
-                [35.1039013, 129.0346592],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_add072cb9e14d18409f9ebc081d5cb7f.bindTooltip(
-                `<div>
-                     1. 40계단 08:40 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_f6c33fe6620b8209abdc014cb5c5ca85 = L.circleMarker(
-                [35.101164, 129.028192],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_f6c33fe6620b8209abdc014cb5c5ca85.bindTooltip(
-                `<div>
-                     2. 국제시장 먹자골목(유부주머니·비빔당면) 09:09 (줄 3분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_e100f55475be7b9d80c26deddf7dbe37 = L.circleMarker(
-                [35.10131, 129.025817],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_e100f55475be7b9d80c26deddf7dbe37.bindTooltip(
-                `<div>
-                     3. 부평깡통시장(어묵·야시장) 09:56 (줄 3분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_84e1557c547e551c199b5b35d1ac07ee = L.circleMarker(
-                [35.098508, 129.026638],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_84e1557c547e551c199b5b35d1ac07ee.bindTooltip(
-                `<div>
-                     4. BIFF광장 씨앗호떡 11:00 (줄 13분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_8eb2a1e59354edf9700d3a49dec83edb = L.circleMarker(
-                [35.099426, 129.03749],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_8eb2a1e59354edf9700d3a49dec83edb.bindTooltip(
-                `<div>
-                     5. 성일집(자갈치, 곰장어) 11:35 (줄 13분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_ae95f2b79b05495e72e677992c8ff8d3 = L.circleMarker(
-                [35.0963371, 129.0087897],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_ae95f2b79b05495e72e677992c8ff8d3.bindTooltip(
-                `<div>
-                     6. 감천문화마을 12:46 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_fd387c93b906dcfe23651919d1a7d86c = L.circleMarker(
-                [35.105713, 129.02045],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_fd387c93b906dcfe23651919d1a7d86c.bindTooltip(
-                `<div>
-                     7. 원조18번완당(부평동, 완당) 14:12 (줄 18분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_463119b127512bbe1a4c9edec2b1a992 = L.circleMarker(
-                [35.096863, 129.044241],
-                {"bubblingMouseEvents": true, "color": "#1f3b63", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#1f3b63", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_eaaf871a9ade5e0e85002c0a5ac7de35);
-        
-    
-            circle_marker_463119b127512bbe1a4c9edec2b1a992.bindTooltip(
-                `<div>
-                     8. 봉래동 창고카페(물양장) 14:57 (줄 6분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            feature_group_eaaf871a9ade5e0e85002c0a5ac7de35.addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
-        
-    
-            var feature_group_9e3d6dd46f164140c24e654b3e949bc7 = L.featureGroup(
-                {
-}
-            );
-        
-    
-            var poly_line_77e7c7d776b695060359738f2d34581f = L.polyline(
-                [[35.083607, 129.082779], [35.1039013, 129.0346592], [35.0963371, 129.0087897], [35.10131, 129.025817], [35.098508, 129.026638], [35.083607, 129.082779]],
-                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 4}
-            ).addTo(feature_group_9e3d6dd46f164140c24e654b3e949bc7);
-        
-    
-            var circle_marker_a8ff34d770c978343e047084dd0bcdc2 = L.circleMarker(
-                [35.1039013, 129.0346592],
-                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_9e3d6dd46f164140c24e654b3e949bc7);
-        
-    
-            circle_marker_a8ff34d770c978343e047084dd0bcdc2.bindTooltip(
-                `<div>
-                     1. 40계단 12:14 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_280878829269a2a55bfd1f97d129ee11 = L.circleMarker(
-                [35.0963371, 129.0087897],
-                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_9e3d6dd46f164140c24e654b3e949bc7);
-        
-    
-            circle_marker_280878829269a2a55bfd1f97d129ee11.bindTooltip(
-                `<div>
-                     2. 감천문화마을 12:44 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_c5b9f9695b1d58e03db28615b9c528c1 = L.circleMarker(
-                [35.10131, 129.025817],
-                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_9e3d6dd46f164140c24e654b3e949bc7);
-        
-    
-            circle_marker_c5b9f9695b1d58e03db28615b9c528c1.bindTooltip(
-                `<div>
-                     3. 부평깡통시장(어묵·야시장) 13:58 (줄 6분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_d9d69505b697201d6d0f545296eb15a8 = L.circleMarker(
-                [35.098508, 129.026638],
-                {"bubblingMouseEvents": true, "color": "#e07a2f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e07a2f", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_9e3d6dd46f164140c24e654b3e949bc7);
-        
-    
-            circle_marker_d9d69505b697201d6d0f545296eb15a8.bindTooltip(
-                `<div>
-                     4. BIFF광장 씨앗호떡 14:54 (줄 5분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            feature_group_9e3d6dd46f164140c24e654b3e949bc7.addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
-        
-    
-            var feature_group_0fa536b4358edf3d455672ab95e3227a = L.featureGroup(
-                {
-}
-            );
-        
-    
-            var poly_line_94f75e682286501dc78c01625eea4ef5 = L.polyline(
-                [[35.117439, 129.048962], [35.101164, 129.028192], [35.10131, 129.025817], [35.098508, 129.026638], [35.099426, 129.03749], [35.0963371, 129.0087897], [35.105713, 129.02045], [35.1508879, 129.1167806], [35.160353, 129.162027], [35.155567, 129.05853], [35.117439, 129.048962]],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 4}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            var circle_marker_77b67740897fc1701d076553a71e90be = L.circleMarker(
-                [35.101164, 129.028192],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_77b67740897fc1701d076553a71e90be.bindTooltip(
-                `<div>
-                     1. 국제시장 먹자골목(유부주머니·비빔당면) 09:14 (줄 3분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_1d73694b6a3cf9c44cda8d760fa6e181 = L.circleMarker(
-                [35.10131, 129.025817],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_1d73694b6a3cf9c44cda8d760fa6e181.bindTooltip(
-                `<div>
-                     2. 부평깡통시장(어묵·야시장) 10:01 (줄 3분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_57dbbce472813c44153795181a523feb = L.circleMarker(
-                [35.098508, 129.026638],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_57dbbce472813c44153795181a523feb.bindTooltip(
-                `<div>
-                     3. BIFF광장 씨앗호떡 11:05 (줄 13분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_21078006e88ca41f33475a2af31c24ee = L.circleMarker(
-                [35.099426, 129.03749],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_21078006e88ca41f33475a2af31c24ee.bindTooltip(
-                `<div>
-                     4. 성일집(자갈치, 곰장어) 11:40 (줄 13분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_0b6ccdc602fbf5fe174447c3e0279790 = L.circleMarker(
-                [35.0963371, 129.0087897],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_0b6ccdc602fbf5fe174447c3e0279790.bindTooltip(
-                `<div>
-                     5. 감천문화마을 12:50 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_ba645ba89277513496dceaae2d1ab1fd = L.circleMarker(
-                [35.105713, 129.02045],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_ba645ba89277513496dceaae2d1ab1fd.bindTooltip(
-                `<div>
-                     6. 원조18번완당(부평동, 완당) 14:17 (줄 18분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_68dce91a72ae966a23c98c3ce111d231 = L.circleMarker(
-                [35.1508879, 129.1167806],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_68dce91a72ae966a23c98c3ce111d231.bindTooltip(
-                `<div>
-                     7. 광안리해수욕장 15:05 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_944f4c12f00981c45ab3f00950c61772 = L.circleMarker(
-                [35.160353, 129.162027],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_944f4c12f00981c45ab3f00950c61772.bindTooltip(
-                `<div>
-                     8. 해운대시장 16:01 (줄 4분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_6adf9d4e15c494d6d996d163f8d2f9ac = L.circleMarker(
-                [35.155567, 129.05853],
-                {"bubblingMouseEvents": true, "color": "#2e8b57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2e8b57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_0fa536b4358edf3d455672ab95e3227a);
-        
-    
-            circle_marker_6adf9d4e15c494d6d996d163f8d2f9ac.bindTooltip(
-                `<div>
-                     9. 송정3대국밥(서면, 돼지국밥) 17:07 (줄 5분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            feature_group_0fa536b4358edf3d455672ab95e3227a.addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
-        
-    
-            var feature_group_7913e2fd6489bc36e66508255a7beaad = L.featureGroup(
-                {
-}
-            );
-        
-    
-            var poly_line_b01f28dd37350ba236d29314e7a894dd = L.polyline(
-                [[35.117439, 129.048962], [35.101164, 129.028192], [35.098508, 129.026638], [35.0963371, 129.0087897], [35.1013015, 129.0322296], [35.10131, 129.025817], [35.117439, 129.048962]],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 4}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            var circle_marker_7d6db98682851e5c783dcf041cad894d = L.circleMarker(
-                [35.101164, 129.028192],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            circle_marker_7d6db98682851e5c783dcf041cad894d.bindTooltip(
-                `<div>
-                     1. 국제시장 먹자골목(유부주머니·비빔당면) 10:14 (줄 3분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_33c3cfb2f2673b841a5851b3a32a8b16 = L.circleMarker(
-                [35.098508, 129.026638],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            circle_marker_33c3cfb2f2673b841a5851b3a32a8b16.bindTooltip(
-                `<div>
-                     2. BIFF광장 씨앗호떡 11:13 (줄 13분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_5530b2786a8371bcb6d288bd996e0b50 = L.circleMarker(
-                [35.0963371, 129.0087897],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            circle_marker_5530b2786a8371bcb6d288bd996e0b50.bindTooltip(
-                `<div>
-                     3. 감천문화마을 11:37 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_d7c8756c105a45a6e1d690d80b7d4e0d = L.circleMarker(
-                [35.1013015, 129.0322296],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            circle_marker_d7c8756c105a45a6e1d690d80b7d4e0d.bindTooltip(
-                `<div>
-                     4. 용두산공원·부산타워 12:47 (줄 0분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var circle_marker_7b14d8411e683cc1c3bf6f545b71dde0 = L.circleMarker(
-                [35.10131, 129.025817],
-                {"bubblingMouseEvents": true, "color": "#8e44ad", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8e44ad", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 3}
-            ).addTo(feature_group_7913e2fd6489bc36e66508255a7beaad);
-        
-    
-            circle_marker_7b14d8411e683cc1c3bf6f545b71dde0.bindTooltip(
-                `<div>
-                     5. 부평깡통시장(어묵·야시장) 13:42 (줄 9분)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            feature_group_7913e2fd6489bc36e66508255a7beaad.addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
-        
-    
-            var layer_control_43bcb4be1b1a811a209cd5442682260a_layers = {
+            var layer_control_d22233b1aedae8d116112e11f5615ccf_layers = {
                 base_layers : {
-                    "cartodbpositron" : tile_layer_dc360020472485d487b110077cfb0a6c,
+                    "openstreetmap" : tile_layer_75bdadec96d270f64b2c6d447266f515,
                 },
                 overlays :  {
-                    "S1 \ubd81\ud56d \ub2f9\uc77c \uae30\ud56d(07~18\uc2dc)" : feature_group_eaaf871a9ade5e0e85002c0a5ac7de35,
-                    "S2 \uc601\ub3c4 \uc9e7\uc740 \uae30\ud56d(10:30~17:15)" : feature_group_9e3d6dd46f164140c24e654b3e949bc7,
-                    "S3 \uc624\ubc84\ub098\uc787 2\uc77c\ucc28(\uc6d0\ub3c4\uc2ec \ubc16 1\uacf3 \ud544\uc218)" : feature_group_0fa536b4358edf3d455672ab95e3227a,
-                    "S4 \ubaa8\ud56d \uc2b9\uc120 \uc804(\uccb4\ud06c\uc778 15:30)" : feature_group_7913e2fd6489bc36e66508255a7beaad,
+                    "S1 \ubd81\ud56d \ub2f9\uc77c \uae30\ud56d(07~18\uc2dc)" : feature_group_8d0ef7cb77ddb90731caa721e759ab1f,
+                    "S2 \uc601\ub3c4 \uc9e7\uc740 \uae30\ud56d(10:30~17:15)" : feature_group_884179cee4c0216b7f9c841ca2359d92,
+                    "S3 \uc624\ubc84\ub098\uc787 2\uc77c\ucc28(\uc6d0\ub3c4\uc2ec \ubc16 1\uacf3 \ud544\uc218)" : feature_group_08a5c5fefb77287c5eb9766dabf393a2,
+                    "S4 \ubaa8\ud56d \uc2b9\uc120 \uc804(\uccb4\ud06c\uc778 15:30)" : feature_group_5e23fc349ebb3bea6d2f365035dafcbe,
+                    "S5 \ube44\uae30\ud56d\uc77c(\ud06c\ub8e8\uc988 \ud63c\uc7a1 \uc5c6\uc74c)" : feature_group_77e8b9a21a718c8b6dd29c173a54ab0b,
+                    "S6 S1 + \ub300\ub9cc \uc120\ud638 \uac00\uc911(\uc608\uc2dc)" : feature_group_b23ec97ba5693dad06e2ee50fb89d5a0,
                 },
             };
-            let layer_control_43bcb4be1b1a811a209cd5442682260a = L.control.layers(
-                layer_control_43bcb4be1b1a811a209cd5442682260a_layers.base_layers,
-                layer_control_43bcb4be1b1a811a209cd5442682260a_layers.overlays,
+            let layer_control_d22233b1aedae8d116112e11f5615ccf = L.control.layers(
+                layer_control_d22233b1aedae8d116112e11f5615ccf_layers.base_layers,
+                layer_control_d22233b1aedae8d116112e11f5615ccf_layers.overlays,
                 {
   "position": "topright",
   "collapsed": true,
   "autoZIndex": true,
 }
-            ).addTo(map_89d0ef9311b54faf000ad0ca0e7d0ce1);
+            ).addTo(map_3e9d5738baaa49aa13aee475a1c6a5f0);
 
         
 </script>
