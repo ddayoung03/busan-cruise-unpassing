@@ -84,7 +84,8 @@ def plan(schedule_csv, today=pd.Timestamp.today().normalize()):
     s = s[s["d"] >= today]
     days = s.groupby("d").agg(척=("d", "size"), 승객=(pick(["승객", "passenger"]), "sum"), 선박=(pick(["선명", "ship"]), lambda x: ", ".join(map(str, x))))
     rows = []
-    for d, r in days.sort_values("승객", ascending=False).head(10).iterrows():
+    soon = days[days.index < today + pd.Timedelta(weeks=6)]   # 관측은 앞으로 6주 안에
+    for d, r in soon.sort_values("승객", ascending=False).head(10).iterrows():
         free = [d + pd.Timedelta(days=7 * k) for k in (-1, 1, 2) if d + pd.Timedelta(days=7 * k) not in days.index and d + pd.Timedelta(days=7 * k) >= today]
         rows.append({"기항일": d.date(), "요일": "월화수목금토일"[d.weekday()], "척": r["척"], "승객": int(r["승객"]), "선박": r["선박"],
                      "비교용 비기항일(같은 요일)": free[0].date() if free else "없음"})
