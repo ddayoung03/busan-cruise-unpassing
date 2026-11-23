@@ -121,7 +121,7 @@ footer{color:var(--mute);font-size:12px;padding-block:24px;border-top:1px solid 
   <div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#E8573F"/><path d="M7 17h14l-2 4H9z" fill="#fff"/><path d="M13 6v10M13 7l6 6h-6" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
     <span>Busan Bite Pass<br><small data-t="tag"></small></span></div>
   <div class="lang" role="group" aria-label="Language">
-    <button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="zh">中</button><button data-lang="ja">日</button>
+    <button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="zh" aria-label="简体中文">简</button><button data-lang="tw" aria-label="繁體中文">繁</button><button data-lang="ja">日</button>
   </div>
 </div></header>
 <nav><div class="wrap">
@@ -194,7 +194,7 @@ const T={
   alert:(a,b)=>`<b>복귀 알림 ${a}</b> 이 시각에 남은 일정을 확인하세요. 마지막 장소에서는 늦어도 <b>${b}</b>에 출발해야 합니다.`,
   nofit:"이 조건에 맞는 루트가 없습니다. 하선 시각을 앞당기거나 승선 마감을 늦춰 보세요.",
   snapped:(s,h)=>`가장 가까운 계산 조건(하선 ${s}, 이용 가능 ${h}시간)의 루트입니다.`,
-  note_route:"줄 대기 시간은 공개 데이터가 없어 추정치입니다. 크루즈 승객이 몰리는 날 기준으로 계산했습니다. 1,000회 모의 실험에서 지각 확률 1.2%.",
+  note_route:"줄 대기 시간은 공개 데이터가 없어 추정치입니다. 크루즈 승객이 몰리는 날 기준으로 계산했습니다. 1,000회 모의 실험에서 지각 0%(계획에 20분 여유를 둠).",
   h_merchant:"오늘 몇 시에 손님이 올까",lead_merchant:"같은 입항 정보로 가게별·시간대별 예상 크루즈 손님을 미리 알려 드립니다. 아래는 큰 배 두 척이 겹친 2026년 5월 8일(7,831명) 예시입니다.",
   f_store:"가게",fcnote:(n)=>`하루 예상 ${n}명 (앱 이용 10%, 상륙 80% 가정)`,note_merchant:"표의 행을 누르면 그 가게의 시간대별 그래프가 나옵니다. 앱 이용률이 올라가면 숫자도 커집니다.",
   h_data:"데이터가 서비스가 되기까지",lead_data:"원데이터 6종이 처리 코드를 거쳐 정제 표가 되고, 분석과 최적화 모델을 지나 이 서비스가 됩니다. 상자를 누르면 무엇을 했는지, 어떤 파일인지 보입니다.",
@@ -209,7 +209,7 @@ const T={
   alert:(a,b)=>`<b>Return reminder ${a}</b> Check what is left at this time. Leave your last stop by <b>${b}</b> at the latest.`,
   nofit:"No route fits these times. Try getting off earlier or boarding later.",
   snapped:(s,h)=>`Showing the closest planned case (off at ${s}, ${h} h available).`,
-  note_route:"Queue times are estimates (no public data). Planned for busy cruise days. In 1,000 simulations the chance of missing the ship was 1.2%.",
+  note_route:"Queue times are estimates (no public data). Planned for busy cruise days. In 1,000 simulations no one missed the ship (plans keep a 20-min buffer).",
   h_merchant:"When will cruise guests arrive?",lead_merchant:"From the same port schedule, each shop sees expected cruise guests by hour. Below: 8 May 2026, two ships, 7,831 passengers (example).",
   f_store:"Shop",fcnote:(n)=>`About ${n} guests that day (10% app use, 80% going ashore)`,note_merchant:"Tap a row to chart that shop by hour. Numbers grow with app use.",
   h_data:"From raw data to this service",lead_data:"Six raw datasets go through processing code into clean tables, then analysis and the optimisation model, and end up here. Tap a box for what was done and which file it is.",
@@ -224,11 +224,26 @@ const T={
   alert:(a,b)=>`<b>返船提醒 ${a}</b> 请在此时确认剩余行程。最晚 <b>${b}</b> 从最后一站出发。`,
   nofit:"没有符合该时间的路线。请提前下船或延后登船时间。",
   snapped:(s,h)=>`显示最接近的计算条件（${s} 下船，可用 ${h} 小时）。`,
-  note_route:"排队时间无公开数据，为估计值。按邮轮客流高峰日计算。1,000 次模拟中误船概率为 1.2%。",
+  note_route:"排队时间无公开数据，为估计值。按邮轮客流高峰日计算。1,000 次模拟中误船概率为 0%（计划预留20分钟）。",
   h_merchant:"今天几点会有客人？",lead_merchant:"根据同一港口时刻表，按店铺和时段预测邮轮客人数。示例：2026年5月8日两艘船同时停靠（7,831人）。",
   f_store:"店铺",fcnote:(n)=>`当天约 ${n} 人（假设10%使用应用、80%上岸）`,note_merchant:"点击表格行查看该店铺分时段图表。",
   h_data:"从原始数据到服务",lead_data:"六类原始数据经处理代码变成整理表，再经过分析与优化模型，最终成为本服务。点击方框查看详情。",
   foot:"2026 产学研创意马拉松「釜山之味，从本地到全球」 · 邮轮美食路线团队 · 地图 © OpenStreetMap contributors · 店铺信息：釜山广域市"},
+ tw:{tag:"郵輪旅客的釜山美食路線",tab_route:"我的路線",tab_merchant:"店家客流預測",tab_data:"資料流程圖",
+  h_route:"吃遍釜山，準時登船",lead_route:"選擇碼頭、下船時間和登船截止時間。我們會結合旅客最愛的釜山美食、營業時間、排隊和交通時間，給出最佳路線。",
+  f_term:"下船碼頭",f_start:"下船時間",f_board:"登船截止",go:"查看路線",ex:"範例",ex1:"北港一日停靠",ex2:"影島短停靠",ex3:"半天",
+  D1:"北港郵輪碼頭",D2:"影島郵輪碼頭",m_core:"舊城區",m_wide:"釜山全區",
+  s_back:"返回碼頭",s_slack:"距登船截止",s_stops:"站點",s_spend:"預計消費(每人)",min:"分鐘",places:"處",
+  depart:"下船",ret:"返回",walk:"步行",taxi:"計程車",queue:"排隊",real:"市府資料",est:"營業時間為估計",hours:"營業",
+  planb:d=>`<br><b>若晚20分鐘下船 · B方案：</b>跳過 ${d}。`,
+  alert:(a,b)=>`<b>返船提醒 ${a}</b> 請在此時確認剩餘行程。最晚 <b>${b}</b> 從最後一站出發。`,
+  nofit:"沒有符合該時間的路線。請提早下船或延後登船時間。",
+  snapped:(s,h)=>`顯示最接近的計算條件（${s} 下船，可用 ${h} 小時）。`,
+  note_route:"排隊時間無公開資料，為估計值。按郵輪客流高峰日計算。1,000 次模擬中誤船機率為 0%（計畫預留20分鐘）。",
+  h_merchant:"今天幾點會有客人？",lead_merchant:"根據同一港口時刻表，按店家和時段預測郵輪客人數。範例：2026年5月8日兩艘船同時停靠（7,831人）。",
+  f_store:"店家",fcnote:(n)=>`當天約 ${n} 人（假設10%使用App、80%上岸）`,note_merchant:"點選表格列查看該店家分時段圖表。",
+  h_data:"從原始資料到服務",lead_data:"六類原始資料經處理程式變成整理表，再經過分析與最佳化模型，最終成為本服務。點選方框查看詳情。",
+  foot:"2026 產學研創意馬拉松「釜山之味，從在地到全球」 · 郵輪美食路線團隊 · 地圖 © OpenStreetMap contributors · 店家資訊：釜山廣域市"},
  ja:{tag:"クルーズ客のための釜山グルメルート",tab_route:"マイルート",tab_merchant:"お店の来客予報",tab_data:"データ処理マップ",
   h_route:"船に遅れず、釜山を味わう",lead_route:"ターミナル、下船時刻、乗船締切を選ぶだけ。人気の釜山グルメ、営業時間、行列、移動時間をまとめて計算した最適ルートを表示します。",
   f_term:"下船ターミナル",f_start:"下船時刻",f_board:"乗船締切",go:"ルートを見る",ex:"例",ex1:"北港 日帰り寄港",ex2:"影島 短時間寄港",ex3:"半日",
@@ -239,7 +254,7 @@ const T={
   alert:(a,b)=>`<b>帰船リマインド ${a}</b> この時刻に残りの予定を確認してください。最後の店は遅くとも <b>${b}</b> に出発。`,
   nofit:"この条件に合うルートがありません。下船を早めるか乗船締切を遅らせてください。",
   snapped:(s,h)=>`最も近い計算条件（${s} 下船、${h} 時間）のルートです。`,
-  note_route:"行列時間は公開データがないため推定値です。クルーズ客が多い日を想定。1,000回のシミュレーションで乗り遅れ確率1.2%。",
+  note_route:"行列時間は公開データがないため推定値です。クルーズ客が多い日を想定。1,000回のシミュレーションで乗り遅れ確率0%（計画に20分の余裕）。",
   h_merchant:"今日は何時にお客さんが来る？",lead_merchant:"同じ入港情報から、お店ごと・時間帯ごとのクルーズ客数を予報します。例：2026年5月8日、大型船2隻（7,831人）。",
   f_store:"お店",fcnote:(n)=>`当日 約${n}人（アプリ利用10%、上陸80%と仮定）`,note_merchant:"表の行をタップすると時間帯別グラフが出ます。",
   h_data:"データがサービスになるまで",lead_data:"6種類の元データが処理コードで整理表になり、分析と最適化モデルを経てこのサービスになります。箱をタップすると詳細が見られます。",
@@ -254,7 +269,7 @@ const nm=id=>P[id].name[L]||P[id].name.en||P[id].name.ko;
 const menu=id=>P[id].menu[L]||P[id].menu.en||P[id].menu.ko;
 
 function applyLang(){
-  document.documentElement.lang=L;
+  document.documentElement.lang={zh:'zh-Hans',tw:'zh-Hant'}[L]||L;
   document.querySelectorAll('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
   document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));
   document.querySelectorAll('#term option').forEach(o=>o.textContent=t(o.value));
@@ -355,7 +370,7 @@ function renderMerchant(){
 }
 const tot=id=>Object.values(DATA.forecast[id]).reduce((a,b)=>a+b,0);
 // ----- 데이터 처리 지도 -----
-const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델","결과물"],en:["Raw data","Processing","Clean tables","Analysis · model","Outputs"],zh:["原始数据","处理代码","整理表","分析·模型","成果"],ja:["元データ","処理コード","整理表","分析・モデル","成果物"]},
+const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델","결과물"],en:["Raw data","Processing","Clean tables","Analysis · model","Outputs"],zh:["原始数据","处理代码","整理表","分析·模型","成果"],tw:["原始資料","處理程式","整理表","分析·模型","成果"],ja:["元データ","処理コード","整理表","分析・モデル","成果物"]},
  nodes:[
   ["r1",0,"크루즈 입출항 신고","Cruise port calls","공공데이터포털 15164568 · CSV(cp949) · 656행×34열 · 2023.1~2026.7","01_원천데이터/data.go.kr/busan_cruise_report/",["p1"]],
   ["r2",0,"외국인 카드소비","Foreign card spending","한국관광데이터랩 외래객 지역별 방한현황 · 6개 구×12개월 · 업종별","01_원천데이터/datalab/",["p2"]],
@@ -378,7 +393,7 @@ const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델"
   ["a1",3,"문제 진단","Problem","부산 패싱: 승객 +175.7%, 소비의 약 66%가 쇼핑","05_문서/3주차_발표자료.pptx",["o2"]],
   ["a2",3,"수요점수","Demand","외국인이 실제로 말하는 음식 → 만족도","03_코드/collect_C_youtube.py",["a3"]],
   ["a3",3,"OPTW 최적화","OPTW model","목적: 수요점수 − 0.8×(줄+이동) · 제약: 승선 마감·영업·혼잡 줄·위 용량·식사 간격 · 분기한정 최적해","03_코드/cruise_route_optw.py",["a4","o1","o3"]],
-  ["a4",3,"검증·분산","Validation","1,000회 모의(지각 1.2%) · 6그룹 분산 배정 · 2척 동시 기항일","03_코드/run_B_model.py · run_dispersion.py",["o2","o3"]],
+  ["a4",3,"검증·분산","Validation","1,000회 모의(지각 0%) · 6그룹 분산 배정 · 2척 동시 기항일","03_코드/run_B_model.py · run_dispersion.py",["o2","o3"]],
   ["o1",4,"루트 시간표·지도","Itineraries","6개 시나리오 시간표 · 실제 지도","03_코드/make_itinerary.py",[]],
   ["o2",4,"보고서·발표자료","Report · slides","CSV를 읽어 자동 생성 · 발표 대본 포함","03_코드/문서빌드/",[]],
   ["o3",4,"Busan Bite Pass","This service","154개 조건 최적 루트 사전 계산 · 상인 예보 · 4개 언어","03_코드/make_service_routes.py · make_service_data.py",[]]

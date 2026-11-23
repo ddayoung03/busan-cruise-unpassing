@@ -46,6 +46,9 @@ MANUAL = {
 ZH = {"N01": "伽耶小麦冷面", "N02": "60年传统奶奶汤饭", "N03": "新发园(唐人街饺子)", "N07": "盛一家(札嘎其烤鳗鱼)", "N08": "元祖18号馄饨",
       "N09": "三进鱼糕总店", "N12": "东莱奶奶葱饼", "N13": "Hytte咖啡田浦店", "N14": "松亭三代汤饭", "N16": "海云台牛排骨",
       "N17": "88猪排骨", "N18": "P.Ark咖啡烘焙", "N19": "巨人炸鸡"}
+# 간체 → 번체: 가게·볼거리 이름과 메뉴에 쓰인 글자만
+S2T = str.maketrans("国际码头邮岛麦面传统汤饭发园饺广场坚饼鳗鱼鲜号馄饨进总浅凤莱仓东葱云韩猪鸡观亲龙宝旧书阶缆车点烘焙运轮滩库",
+                    "國際碼頭郵島麥麵傳統湯飯發園餃廣場堅餅鰻魚鮮號餛飩進總淺鳳萊倉東蔥雲韓豬雞觀親龍寶舊書階纜車點烘焙運輪灘庫")
 CAT = {"밀면": ("Cold wheat noodles", "小麦冷面", "ミルミョン"), "국밥": ("Pork rice soup", "猪肉汤饭", "テジクッパ"), "만두": ("Dumplings", "饺子", "餃子"),
        "디저트": ("Street dessert", "街头甜点", "屋台スイーツ"), "시장": ("Market food", "市场小吃", "市場グルメ"), "해산물": ("Seafood", "海鲜", "海鮮"),
        "면": ("Noodles · wonton", "面·馄饨", "麺・ワンタン"), "어묵": ("Fish cake", "鱼糕", "おでん"), "카페": ("Café", "咖啡", "カフェ"),
@@ -85,6 +88,7 @@ for r in nodes.itertuples():
     menu.setdefault("ko", sub.group(1) if sub else r.category)
     cen, czh, cja = CAT.get(r.category, (r.category,) * 3)
     menu.setdefault("en", cen); menu.setdefault("ja", cja); menu["zh"] = czh
+    name["tw"], menu["tw"] = name["zh"].translate(S2T), menu["zh"].translate(S2T)   # 번체(대만·홍콩 승객)
     brk = f" (브레이크 {hm(r.break_start)}–{hm(r.break_end)})" if pd.notna(r.break_start) else ""
     places.append({"id": r.node_id, "gu": r.gu, "cat": r.category, "lat": r.lat, "lon": r.lon, "price": int(r.price_krw),
                    "hours": f"{hm(r.open_min)}–{hm(r.close_min)}{brk}" if r.category != "터미널" else "",
