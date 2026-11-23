@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Busan Bite Pass</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +54,11 @@ button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(
 .result{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:16px;align-items:start}
 .result>*,.fc>*,.sum>*,form.ask>*{min-width:0}
 .mapbox{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--foam)}
-.mapbox canvas{display:block;width:100%;height:auto}
+.mapbox canvas{display:block;width:100%;height:auto;touch-action:pan-y;cursor:grab}
+.mapbox canvas.zoomed{touch-action:none}
+.mapbox canvas:active{cursor:grabbing}
+.zoomtools{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:4px}
+.zoomtools button{width:34px;height:34px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:700 18px var(--f-body);border-radius:8px;cursor:pointer}
 .maptools{position:absolute;top:8px;left:8px;display:flex;gap:4px}
 .maptools button{border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 12px var(--f-body);padding:4px 10px;border-radius:999px;cursor:pointer}
 .maptools button[aria-pressed="true"]{background:var(--sea);color:#fff;border-color:var(--sea)}
@@ -147,6 +152,7 @@ footer{color:var(--mute);font-size:12px;padding-block:24px;border-top:1px solid 
     <div>
       <div class="mapbox"><canvas id="map" width="1040" height="860" role="img" aria-label="route map"></canvas>
         <div class="maptools"><button data-map="core" data-t="m_core"></button><button data-map="wide" data-t="m_wide"></button></div>
+        <div class="zoomtools"><button data-zoom="1.5" aria-label="zoom in">+</button><button data-zoom="0.667" aria-label="zoom out">−</button><button data-zoom="0" aria-label="reset map">⟲</button></div>
         <span class="credit" id="credit"></span></div>
       <div class="alert" id="alert"></div>
     </div>
@@ -175,7 +181,7 @@ footer{color:var(--mute);font-size:12px;padding-block:24px;border-top:1px solid 
 </main>
 <footer><div class="wrap" data-t="foot"></div></footer>
 
-<script src="data.js"></script>
+<script src="data.js" charset="utf-8"></script>
 <script>
 const T={
  ko:{tag:"크루즈 승객을 위한 부산 한 끼 루트",tab_route:"내 루트",tab_merchant:"상인 수요 예보",tab_data:"데이터 처리 지도",
@@ -295,16 +301,19 @@ function renderRoute(){
 const IMG={};
 function loadImg(k){return new Promise(r=>{if(IMG[k])return r(IMG[k]);const i=new Image();i.onload=()=>{IMG[k]=i;r(i)};i.onerror=()=>r(null);i.src=DATA.maps[k].img})}
 const merc=(lon,lat)=>[lon*Math.PI/180*6378137,Math.log(Math.tan(Math.PI/4+lat*Math.PI/360))*6378137];
-let lastRoute=null;
+let lastRoute=null,V={z:1,x:0,y:0};   // 지도 보기: 확대 배율 z, 왼쪽 위 (x,y) = 캔버스 좌표
 async function drawMap(c){
-  if(c!==undefined)lastRoute=c;c=lastRoute;
+  if(c!==undefined){lastRoute=c;V={z:1,x:0,y:0}}c=lastRoute;
   document.querySelectorAll('[data-map]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.map===MAPK));
   const cv=document.getElementById('map'),g=cv.getContext('2d'),m=DATA.maps[MAPK],img=await loadImg(MAPK);
   cv.width=1040;cv.height=Math.round(1040*m.h/m.w);
   const css=getComputedStyle(document.documentElement);
+  clampV(cv);cv.classList.toggle('zoomed',V.z>1);
+  g.setTransform(V.z,0,0,V.z,-V.x*V.z,-V.y*V.z);
   if(img)g.drawImage(img,0,0,cv.width,cv.height);else{g.fillStyle=css.getPropertyValue('--foam');g.fillRect(0,0,cv.width,cv.height)}
+  g.setTransform(1,0,0,1,0,0);   // 경로·번호는 화면 좌표로 그려 확대해도 같은 크기
   if(!c)return;
-  const xy=id=>{const[a,b]=merc(P[id].lon,P[id].lat);return[(a-m.x0)/(m.x1-m.x0)*cv.width,(m.y1-b)/(m.y1-m.y0)*cv.height]};
+  const xy=id=>{const[a,b]=merc(P[id].lon,P[id].lat);return[((a-m.x0)/(m.x1-m.x0)*cv.width-V.x)*V.z,((m.y1-b)/(m.y1-m.y0)*cv.height-V.y)*V.z]};
   const pts=[c.depot,...c.stops.map(s=>s.node),c.depot].map(xy);
   g.lineWidth=5;g.strokeStyle='#E8573F';g.lineJoin='round';g.beginPath();pts.forEach(([a,b],i)=>i?g.lineTo(a,b):g.moveTo(a,b));g.stroke();
   for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[e,f]=pts[i],ang=Math.atan2(f-b,e-a),mx=(a+e)/2,my=(b+f)/2;g.fillStyle='#E8573F';g.beginPath();g.moveTo(mx+12*Math.cos(ang),my+12*Math.sin(ang));g.lineTo(mx-9*Math.cos(ang-0.6),my-9*Math.sin(ang-0.6));g.lineTo(mx-9*Math.cos(ang+0.6),my-9*Math.sin(ang+0.6));g.fill()}
@@ -312,7 +321,22 @@ async function drawMap(c){
   c.stops.forEach((s,i)=>{const[a,b]=pts[i+1];g.beginPath();g.arc(a,b,17,0,7);g.fillStyle=P[s.node].cat==='볼거리'?'#2E8B57':'#0B3C5D';g.fill();g.lineWidth=3;g.strokeStyle='#fff';g.stroke();
     g.fillStyle='#fff';g.font='700 18px "Noto Sans KR",sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(i+1,a,b+1)});
 }
-document.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{MAPK=b.dataset.map;drawMap()});
+document.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{MAPK=b.dataset.map;V={z:1,x:0,y:0};drawMap()});
+// 지도 이동·확대: 드래그/스와이프로 이동, 두 손가락·휠·버튼으로 확대
+function clampV(cv){V.z=Math.min(4,Math.max(1,V.z));V.x=Math.min(cv.width*(1-1/V.z),Math.max(0,V.x));V.y=Math.min(cv.height*(1-1/V.z),Math.max(0,V.y))}
+function zoomAt(f,px,py){const z=Math.min(4,Math.max(1,V.z*f));V.x+=px/V.z-px/z;V.y+=py/V.z-py/z;V.z=z}
+let drawing=false;const redraw=()=>{if(!drawing){drawing=true;requestAnimationFrame(()=>{drawing=false;drawMap()})}};
+(()=>{const cv=document.getElementById('map'),pts=new Map();let pinch=0;
+  const loc=e=>{const r=cv.getBoundingClientRect(),k=cv.width/r.width;return[(e.clientX-r.left)*k,(e.clientY-r.top)*k]};
+  cv.addEventListener('pointerdown',e=>{pts.set(e.pointerId,loc(e));cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const[a,b]=pts.get(e.pointerId),[c,d]=loc(e);pts.set(e.pointerId,[c,d]);
+    if(pts.size===1){V.x-=(c-a)/V.z;V.y-=(d-b)/V.z}
+    else if(pts.size===2){const[[x1,y1],[x2,y2]]=[...pts.values()],dist=Math.hypot(x2-x1,y2-y1);if(pinch)zoomAt(dist/pinch,(x1+x2)/2,(y1+y2)/2);pinch=dist}
+    redraw()});
+  const up=e=>{pts.delete(e.pointerId);pinch=0};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('wheel',e=>{e.preventDefault();const[x,y]=loc(e);zoomAt(e.deltaY<0?1.25:0.8,x,y);redraw()},{passive:false});
+  document.querySelectorAll('[data-zoom]').forEach(b=>b.onclick=()=>{const f=+b.dataset.zoom;if(f)zoomAt(f,cv.width/2,cv.height/2);else V={z:1,x:0,y:0};redraw()});
+})();
 // ----- 상인 예보 -----
 let STORE=null;
 function renderMerchant(){
