@@ -369,6 +369,7 @@ s.addNotes('정리하면 다섯 가지 문제가 각각 해결책과 수치 근�
 
 s=slide('실제로 쓰는 서비스: Busan Bite Pass','서비스 화면');
 s.addImage({path:R+'04_그림/그림10_서비스화면.png',x:0.6,y:1.5,w:7.9,h:4.95,sizing:{type:'cover',w:7.9,h:4.95}});
+tb(s,[{text:'직접 써 보기  ',options:{bold:true,color:CORAL}},{text:'ddayoung03.github.io/busan-bite-pass',options:{hyperlink:{url:'https://ddayoung03.github.io/busan-bite-pass/'},color:NAVY,underline:true}}],{x:0.6,y:6.55,w:7.9,h:0.4,fontSize:14});
 tb(s,['터미널·하선 시각·승선 마감만 고르면 최적 루트와 시간표','154개 조건의 최적해를 미리 계산 → 바로 응답','한국어·English·中文·日本語, 가게 이름·메뉴는 부산시 공식 데이터','복귀 알림 시각과 “마지막 장소 출발 시각” 안내','먹는 사이 볼거리(초록 번호)도 함께 추천','상인용 수요 예보 · 데이터 처리 지도 탭'].map((x,j,a)=>({text:x,options:{bullet:true,breakLine:j<a.length-1}})),{x:8.8,y:1.6,w:4.0,h:4.8,fontSize:14,paraSpaceAfter:8});
 s=slide('누가 어떻게 실행하나','실행 계획과 한계');
 const who=[['부산항만공사','하선 안내 QR → 배 이름만 넣으면 맞춤 루트'],['상인회·전통시장','브레이크·줄 정보 제공, 분산 배정으로 손님 고르게'],['우리 팀','점포 5곳 대기열 관측(기항일·비기항일), 리뷰로 가게 단위 수요점수']];
@@ -391,7 +392,7 @@ SEC='마무리';p.addSection({title:SEC});
 s=p.addSlide({masterName:'DARK',sectionTitle:SEC});
 s.addText('배에서 내린 8시간을\n부산의 맛으로',{placeholder:'title'});REG.push(['마무리',s]);
 tb(s,'승객은 배를 놓치지 않고 더 먹고, 소비는 면세점 밖 부산 가게로',{x:0.8,y:4.3,w:11.5,h:0.5,fontSize:20,color:'C9DCEB'});
-tb(s,'감사합니다 · 코드와 데이터는 팀 GitHub 저장소(비공개)에 정리',{x:0.8,y:6.5,w:11.5,h:0.4,fontSize:13,color:'9FB8CC'});
+tb(s,'감사합니다 · 서비스 직접 써 보기: ddayoung03.github.io/busan-bite-pass',{x:0.8,y:6.5,w:11.5,h:0.4,fontSize:13,color:'9FB8CC'});
 s.addNotes('배에서 내린 8시간을 부산의 맛으로 채우는 것이 우리 제안입니다. 감사합니다.');
 
 const SCRIPT=require('./대본.js')({S1,G1,N1,nvViol,late,ok,p5,gain,vk,DF,top,gr,ALLEY_FAIL,s1f,s1a,abW});
