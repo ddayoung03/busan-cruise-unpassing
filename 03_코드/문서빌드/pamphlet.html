@@ -1,0 +1,251 @@
+<!doctype html>
+<!--
+  북항에 직항 티켓형 팜플렛 (A4 가로, 앞·뒤 티켓 2장). 언어: ?lang=ko|en|ja|zhs|zht
+  PDF 출력:
+    for l in ko en ja zhs zht; do chrome --headless=new --no-pdf-header-footer \
+      --print-to-pdf=out_$l.pdf "file:///.../pamphlet.html?lang=$l"; done
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>북항에 직항 팜플렛</title>
+<style>
+  @page { size: 297mm 210mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0f1f33; --ink: #1d2a3a; --muted: #6b7380;
+    --paper: #f6f1e6; --gold: #b8873a; --line: #d9cfbd;
+    --title: 27mm;
+  }
+  html, body { width: 297mm; height: 210mm; }
+  body {
+    font-family: Pretendard, "Malgun Gothic", sans-serif;
+    color: var(--ink); background: #fff;
+    display: grid; grid-template-columns: 1fr 1fr; position: relative;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    line-height: 1.4;
+  }
+  body.ko  { word-break: keep-all; }
+  body.ja  { font-family: "Yu Gothic", "YuGothic", sans-serif; }
+  body.zhs { font-family: "Microsoft YaHei", sans-serif; }
+  body.zht { font-family: "Microsoft JhengHei", sans-serif; }
+  body.en  { --title: 17mm; }
+  body.ja { --title: 21mm; }
+  body.ja .head h1 { font-size: 4.5mm; }
+  body.zhs, body.zht { --title: 19mm; }
+  body.en .sub { display: none; }
+  body.en .compare div { grid-template-columns: 27mm 1fr; padding: 1.8mm 0; }
+  body.en .compare, body.en .features { margin-top: 4mm; }
+  body.en .features li { padding: 2mm 0; }
+
+  /* 가운데 재단선 */
+  body::after {
+    content: ""; position: absolute; left: 50%; top: 6mm; bottom: 6mm;
+    border-left: 0.25mm dashed #b9c2cc;
+  }
+  .half { display: grid; place-items: center; }
+
+  .ticket {
+    width: 92mm; height: 196mm; border-radius: 4mm; overflow: hidden;
+    display: flex; flex-direction: column; background: var(--paper);
+  }
+  .main { flex: 1; padding: 9mm 8mm 7mm; display: flex; flex-direction: column; }
+  /* 절취선 + 양옆 반원 홈 */
+  .stub {
+    height: 50mm; flex: none; background: var(--navy); color: #fff; position: relative;
+    padding: 8mm 8mm 7mm; display: flex; gap: 5mm; align-items: center;
+    border-top: 0.4mm dashed rgba(255,255,255,.35);
+  }
+  .stub::before, .stub::after {
+    content: ""; position: absolute; top: -3mm; width: 6mm; height: 6mm;
+    border-radius: 50%; background: #fff;
+  }
+  .stub::before { left: -3mm; } .stub::after { right: -3mm; }
+  .qr { width: 27mm; height: 27mm; background: #fff; padding: 1.5mm; border-radius: 1.5mm; flex: none; }
+  .qr img { width: 100%; height: 100%; display: block; }
+  .stub-text { flex: 1; min-width: 0; }
+
+  .label {
+    font-family: Pretendard, sans-serif; font-size: 2.3mm; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  }
+  .stub .label { margin-bottom: 2mm; }
+
+  /* 앞면 */
+  .top { display: flex; justify-content: space-between; }
+  .top .label:first-child { color: var(--navy); }
+  .title {
+    margin-top: auto; font-weight: 900; color: var(--navy);
+    font-size: var(--title); line-height: 1.02; letter-spacing: -.02em;
+  }
+  body.ja .title, body.zhs .title, body.zht .title { font-weight: 700; }
+  .title span { display: block; }
+  .title span + span { color: var(--gold); }
+  .sub { margin-top: 4mm; font-family: Pretendard, sans-serif; font-size: 3mm; font-weight: 600; letter-spacing: .18em; color: var(--navy); }
+  .fields {
+    margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 0.3mm solid var(--navy); padding-top: 3mm; gap: 2mm;
+  }
+  .fields b { display: block; font-size: 3.1mm; margin-top: 1mm; line-height: 1.25; }
+  .stub h2 { font-size: 4.3mm; line-height: 1.35; font-weight: 700; }
+  .stub p { margin-top: 2.5mm; font-size: 2.9mm; color: #d9c49c; }
+
+  /* 뒷면 */
+  .head h1 { font-size: 5.4mm; line-height: 1.32; margin-top: 2mm; color: var(--navy); }
+  .compare { margin-top: 6mm; border-top: 0.25mm solid var(--line); }
+  .compare div { display: grid; grid-template-columns: 22mm 1fr; gap: 3mm; padding: 2.4mm 0; border-bottom: 0.25mm solid var(--line); font-size: 3mm; }
+  .compare .before { color: var(--muted); }
+  .compare .after { font-weight: 700; color: var(--navy); }
+  .compare .after span:first-child { color: var(--gold); }
+  .features { list-style: none; margin-top: 6mm; counter-reset: f; }
+  .features li { counter-increment: f; display: grid; grid-template-columns: 7mm 1fr; padding: 2.6mm 0; }
+  .features li::before { content: "0" counter(f); font-family: Pretendard, sans-serif; font-weight: 700; font-size: 3.2mm; color: var(--gold); }
+  .features b { display: block; font-size: 3.5mm; color: var(--navy); }
+  .features p { font-size: 2.8mm; color: #4a5361; margin-top: .8mm; }
+  .steps { margin-top: auto; }
+  .steps ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-top: 2.5mm; border-top: 0.3mm solid var(--navy); padding-top: 3mm; counter-reset: s; }
+  .steps li { counter-increment: s; font-size: 2.9mm; font-weight: 600; line-height: 1.35; color: var(--navy); }
+  .steps li::before { content: counter(s); display: block; font-family: Pretendard, sans-serif; font-size: 6mm; font-weight: 800; color: var(--gold); line-height: 1; margin-bottom: 1.5mm; }
+  .back .stub { height: 56mm; flex-wrap: wrap; align-content: center; row-gap: 3mm; padding-top: 6mm; padding-bottom: 5mm; }
+  .back .stub h2 { font-size: 3.6mm; }
+  .langs { margin-top: 2.5mm; font-size: 2.6mm; color: #c9d0d9; }
+  .foot { flex-basis: 100%; padding-top: 2mm; border-top: 0.25mm solid rgba(255,255,255,.2); font-size: 2.5mm; color: #c9d0d9; display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5mm 2mm; }
+  .foot > * { white-space: nowrap; }
+  .foot b { color: #fff; }
+</style>
+</head>
+<body>
+<section class="half">
+  <article class="ticket">
+    <div class="main">
+      <div class="top"><span class="label">Busan Bite Pass</span><span class="label">Boarding Pass</span></div>
+      <h1 class="title" data-t="title"></h1>
+      <div class="sub">DIRECT TO NORTH PORT</div>
+      <div class="fields">
+        <div><span class="label">Waiting</span><b data-t="f1"></b></div>
+        <div><span class="label">Return</span><b data-t="f2"></b></div>
+        <div><span class="label">Heritage</span><b data-t="f3"></b></div>
+      </div>
+    </div>
+    <div class="stub">
+      <div class="stub-text">
+        <h2 data-t="frontCta"></h2>
+        <p data-t="frontSub"></p>
+      </div>
+      <div class="qr"><img src="../../05_문서/QR/QR_BusanBitePass.svg" alt="QR"></div>
+    </div>
+  </article>
+</section>
+
+<section class="half">
+  <article class="ticket back">
+    <div class="main">
+      <div class="head">
+        <div class="label">Welcome to Busan North Port</div>
+        <h1 data-t="headline"></h1>
+      </div>
+      <div class="compare">
+        <div class="before"><span data-t="beforeK"></span><span data-t="before"></span></div>
+        <div class="after"><span data-t="afterK"></span><span data-t="after"></span></div>
+      </div>
+      <ol class="features">
+        <li><div><b data-t="ft1"></b><p data-t="fd1"></p></div></li>
+        <li><div><b data-t="ft2"></b><p data-t="fd2"></p></div></li>
+        <li><div><b data-t="ft3"></b><p data-t="fd3"></p></div></li>
+      </ol>
+      <div class="steps">
+        <div class="label" data-t="howto"></div>
+        <ol><li data-t="s1"></li><li data-t="s2"></li><li data-t="s3"></li></ol>
+      </div>
+    </div>
+    <div class="stub">
+      <div class="stub-text">
+        <h2 data-t="backCta"></h2>
+        <div class="langs">한국어 · EN · 日本語 · 简体 · 繁體</div>
+      </div>
+      <div class="qr"><img src="../../05_문서/QR/QR_BusanBitePass.svg" alt="QR"></div>
+      <div class="foot"><span data-t="help"></span><b data-t="org"></b></div>
+    </div>
+  </article>
+</section>
+
+<script>
+const T = {
+  ko: {
+    title: "<span>북항에</span><span>직항</span>",
+    f1: "기다림 없는 추천", f2: "100% 정시 복귀", f3: "바다 건너온 부산맛",
+    frontCta: "북항의 진짜 맛집과<br>이야기를 만나보세요", frontSub: "스캔 한 번으로 맞춤 루트 발급",
+    headline: "크루즈에서 내리는 순간,<br>북항의 진짜 맛집을 방문해보세요",
+    beforeK: "아쉬운 기항 시간", before: "면세점 쇼핑이나 긴 줄 서기로 허비",
+    afterK: "북항에 직항", after: "대기 없이 바로 입장, 북항 찐맛집 정복",
+    ft1: "출항 시간 맞춤 · 100% 정시 복귀", fd1: "크루즈 출항 시각을 역산해 배 놓칠 걱정 없는 안전 동선만 추천합니다.",
+    ft2: "인파 분산 · 기다림 없는 입장", fd2: "한 가게에 몰리지 않도록 지금 바로 식사 가능한 로컬 맛집으로 안내합니다.",
+    ft3: "부산 이야기 & 다국어 메뉴판", fd3: "개항·항구의 음식 스토리와 사진 메뉴판으로 누구나 반갑게 즐기세요.",
+    howto: "서비스 사용법", s1: "QR 스캔 &<br>출항 시각 입력", s2: "나만의 맞춤<br>루트 확인", s3: "북항 골목<br>미식 출발",
+    backCta: "지금 스캔하고 나만의 북항<br>미식 탑승권을 무료로 받으세요",
+    help: "관광통역 ☎ 1330", org: "부산대 북항에 직항"
+  },
+  en: {
+    title: "<span>Direct to</span><span>North Port</span>",
+    f1: "Zero-Wait Picks", f2: "100% On-Time Back", f3: "150-Yr Port Flavors",
+    frontCta: "Discover Authentic<br>North Port Eateries", frontSub: "Scan once for your custom route",
+    headline: "Step off your cruise &amp; visit true local gems at North Port",
+    beforeK: "Typical port call", before: "Duty-free rush or 1-hour food queues",
+    afterK: "Direct to North Port", after: "Walk right in to the best local spots",
+    ft1: "On-Time Return Guaranteed", fd1: "Calculated backward from ship departure so you never miss boarding.",
+    ft2: "Smart Crowd Dispersion", fd2: "Avoid packed tourist traps with real-time seating at local favorites.",
+    ft3: "Port Stories & Visual Menus", fd3: "Read the maritime history behind each dish and order with photo menus.",
+    howto: "How to use", s1: "Scan QR &amp;<br>set departure", s2: "Get your custom<br>food route", s3: "Enjoy Busan's<br>local gems",
+    backCta: "Scan now to claim your free North Port food boarding pass",
+    help: "Helpline ☎ 1330", org: "PNU · Busan Bite Pass"
+  },
+  ja: {
+    title: "<span>北港へ</span><span>直行便</span>",
+    f1: "待ち時間なし案内", f2: "100%定時帰船保証", f3: "港町の歴史グルメ",
+    frontCta: "釜山・北港の本物の<br>名店と物語に出会おう", frontSub: "スキャンひとつで最適ルート発券",
+    headline: "クルーズを下船した瞬間から、<br>北港の本当の名店を訪ねてみよう",
+    beforeK: "従来の寄港観光", before: "免税店めぐりや長い行列で時間消費",
+    afterK: "北港へ直行便", after: "待ち時間ゼロで入店、北港の隠れた名店へ",
+    ft1: "出港時間連動 · 100%定時帰船", fd1: "出港時刻から逆算し、乗り遅れの心配がない安全な動線だけをご案内します。",
+    ft2: "混雑分散 · 並ばずスムーズ入店", fd2: "一店舗への集中を防ぎ、今すぐ食事ができる地元の老舗へスマートに誘導します。",
+    ft3: "港の物語 & 多言語写真メニュー", fd3: "開港と港町の食ストーリーと写真付きメニューで、言葉の壁なく楽しめます。",
+    howto: "サービスの使い方", s1: "QRスキャン&amp;<br>出港時間入力", s2: "あなた専用の<br>ルート確認", s3: "北港路地裏<br>グルメ出発",
+    backCta: "今すぐスキャンして<br>北港グルメ搭乗券を<br>無料で受け取ろう",
+    help: "観光通訳 ☎ 1330", org: "釜山大 北港へ直行便"
+  },
+  zhs: {
+    title: "<span>直航</span><span>釜山北港</span>",
+    f1: "免排队智能推荐", f2: "100%准时返船", f3: "百年海港地道味",
+    frontCta: "探索釜山北港真正的<br>地道美食与故事", frontSub: "一扫即获专属定制美食路线",
+    headline: "走下邮轮的那一刻，<br>快来探访北港真正的宝藏美食店",
+    beforeK: "传统停靠观光", before: "只逛免税店或排长队浪费时间",
+    afterK: "直航釜山北港", after: "无需等待直接入座，畅享北港地道老店",
+    ft1: "精准匹配离港 · 100%准时返船", fd1: "根据邮轮离港时间智能倒推，只推荐安全可控的往返路线，绝不误船。",
+    ft2: "客流智能分流 · 告别漫长排队", fd2: "避免千人扎堆同一家店，为您精准匹配此刻即可入座的本地口碑老店。",
+    ft3: "海港人文故事 & 中文图文菜单", fd3: "了解开港历史背后的美食故事，配合中文图文菜单轻松点餐无障碍。",
+    howto: "服务使用方法", s1: "扫码并输入<br>邮轮离港时间", s2: "查看专属定制<br>美食路线", s3: "出发探索北港<br>地道老街",
+    backCta: "立即扫码免费领取您的<br>釜山北港美食登船通行证",
+    help: "旅游热线 ☎ 1330", org: "釜山大 直航釜山北港"
+  },
+  zht: {
+    title: "<span>直航</span><span>釜山北港</span>",
+    f1: "免排隊智慧推薦", f2: "100%準時返船", f3: "百年海港道地味",
+    frontCta: "探索釜山北港真正的<br>道地美食與故事", frontSub: "一掃即獲專屬客製美食路線",
+    headline: "走下郵輪的那一刻，<br>快來探訪北港真正的寶藏美食店",
+    beforeK: "傳統停靠觀光", before: "只逛免稅店或排長隊浪費時間",
+    afterK: "直航釜山北港", after: "無需等待直接入座，暢享北港道地老店",
+    ft1: "精準匹配離港 · 100%準時返船", fd1: "根據郵輪離港時間智慧倒推，只推薦安全可控的往返路線，絕不誤船。",
+    ft2: "人潮智慧分流 · 告別漫長排隊", fd2: "避免千人擠在同一家店，為您精準匹配此刻即可入座的在地口碑老店。",
+    ft3: "海港人文故事 & 繁中圖文菜單", fd3: "了解開港歷史背後的美食故事，搭配繁體中文圖文菜單輕鬆點餐無障礙。",
+    howto: "服務使用方法", s1: "掃碼並輸入<br>郵輪離港時間", s2: "查看專屬客製<br>美食路線", s3: "出發探索北港<br>道地老街",
+    backCta: "立即掃碼免費領取您的<br>釜山北港美食登船通行證",
+    help: "旅遊熱線 ☎ 1330", org: "釜山大 直航釜山北港"
+  }
+};
+const lang = new URLSearchParams(location.search).get("lang") || "ko";
+document.body.className = lang;
+document.documentElement.lang = { ko: "ko", en: "en", ja: "ja", zhs: "zh-Hans", zht: "zh-Hant" }[lang];
+for (const el of document.querySelectorAll("[data-t]")) el.innerHTML = T[lang][el.dataset.t];
+</script>
+</body>
+</html>
