@@ -399,6 +399,7 @@ const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델"
   ["o3",4,"Busan Bite Pass","This service","154개 조건 최적 루트 사전 계산 · 상인 예보 · 4개 언어","03_코드/make_service_routes.py · make_service_data.py",[]]
  ]};
 let DMSEL='a3';
+const DML={ko:['한 일','파일','다음 단계'],en:['What','File','Feeds into'],zh:['做了什么','文件','下一步'],tw:['做了什麼','檔案','下一步'],ja:['内容','ファイル','次の段階']};
 function renderDM(){
   const grid=document.getElementById('dmgrid');
   grid.innerHTML=DM.cols[L].map((h,i)=>`<div class="dm-col"><h4>${h}</h4>${DM.nodes.filter(n=>n[1]===i).map(n=>`<button class="dm-node" data-id="${n[0]}">${L==='ko'?n[2]:(n[3]||n[2])}<small>${(L==='ko'?n[4]:n[4]).split(' · ')[0]}</small></button>`).join('')}</div>`).join('');
@@ -421,7 +422,7 @@ function drawDM(){
   svg.innerHTML=s;
   grid.querySelectorAll('.dm-node').forEach(b=>{const id=b.dataset.id;b.classList.toggle('on',id===DMSEL);b.classList.toggle('rel',up.has(id)||down.has(id));b.classList.toggle('dim',!(id===DMSEL||up.has(id)||down.has(id)))});
   const n=by[DMSEL];
-  document.getElementById('dmd').innerHTML=`<h3>${n[2]}${n[3]&&n[3]!==n[2]?` <small style="color:var(--mute);font-weight:500">${n[3]}</small>`:''}</h3><dl><dt>${L==='ko'?'한 일':'What'}</dt><dd>${n[4]}</dd><dt>${L==='ko'?'파일':'File'}</dt><dd><code>${n[5]}</code></dd><dt>${L==='ko'?'다음 단계':'Feeds into'}</dt><dd>${n[6].map(x=>by[x][2]).join(', ')||'—'}</dd></dl>`;
+  document.getElementById('dmd').innerHTML=`<h3>${n[2]}${n[3]&&n[3]!==n[2]?` <small style="color:var(--mute);font-weight:500">${n[3]}</small>`:''}</h3><dl><dt>${DML[L][0]}</dt><dd>${n[4]}</dd><dt>${DML[L][1]}</dt><dd><code>${n[5]}</code></dd><dt>${DML[L][2]}</dt><dd>${n[6].map(x=>by[x][2]).join(', ')||'—'}</dd></dl>`;
 }
 window.addEventListener('resize',()=>{if(!document.getElementById('v-data').hidden)drawDM()});
 // ----- 탭(해시) -----
