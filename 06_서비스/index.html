@@ -121,7 +121,7 @@ footer{color:var(--mute);font-size:12px;padding-block:24px;border-top:1px solid 
   <div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#E8573F"/><path d="M7 17h14l-2 4H9z" fill="#fff"/><path d="M13 6v10M13 7l6 6h-6" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
     <span>Busan Bite Pass<br><small data-t="tag"></small></span></div>
   <div class="lang" role="group" aria-label="Language">
-    <button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="zh" aria-label="简体中文">简</button><button data-lang="tw" aria-label="繁體中文">繁</button><button data-lang="ja">日</button>
+    <button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="zh" aria-label="简体中文">简</button><button data-lang="tw" aria-label="繁體中文">繁</button><button data-lang="ja">日</button><button data-lang="vi" aria-label="Tiếng Việt">VI</button><button data-lang="th" aria-label="ภาษาไทย">TH</button><button data-lang="id" aria-label="Bahasa Indonesia">ID</button>
   </div>
 </div></header>
 <nav><div class="wrap">
@@ -258,7 +258,52 @@ const T={
   h_merchant:"今日は何時にお客さんが来る？",lead_merchant:"同じ入港情報から、お店ごと・時間帯ごとのクルーズ客数を予報します。例：2026年5月8日、大型船2隻（7,831人）。",
   f_store:"お店",fcnote:(n)=>`当日 約${n}人（アプリ利用10%、上陸80%と仮定）`,note_merchant:"表の行をタップすると時間帯別グラフが出ます。",
   h_data:"データがサービスになるまで",lead_data:"6種類の元データが処理コードで整理表になり、分析と最適化モデルを経てこのサービスになります。箱をタップすると詳細が見られます。",
-  foot:"2026 産学研アイデアソン「釜山の味、ローカルからグローカルへ」 · クルーズグルメルート チーム · 地図 © OpenStreetMap contributors · 店舗情報：釜山広域市"}
+  foot:"2026 産学研アイデアソン「釜山の味、ローカルからグローカルへ」 · クルーズグルメルート チーム · 地図 © OpenStreetMap contributors · 店舗情報：釜山広域市"},
+ vi:{tag:"Lộ trình ẩm thực Busan cho khách du thuyền",tab_route:"Lộ trình của tôi",tab_merchant:"Dự báo cho quán",tab_data:"Bản đồ dữ liệu",
+  h_route:"Ăn ngon Busan, không lỡ tàu",lead_route:"Chọn cảng, giờ xuống tàu và giờ lên tàu cuối cùng. Chúng tôi tính sẵn lộ trình tốt nhất qua những món Busan du khách yêu thích, kèm giờ mở cửa, thời gian xếp hàng và di chuyển.",
+  f_term:"Cảng xuống tàu",f_start:"Giờ xuống tàu",f_board:"Giờ lên tàu cuối",go:"Xem lộ trình",ex:"Ví dụ",ex1:"Cảng Bắc, cả ngày",ex2:"Yeongdo, ghé ngắn",ex3:"Nửa ngày",
+  D1:"Cảng du thuyền Bắc Busan",D2:"Cảng du thuyền Yeongdo",m_core:"Phố cổ",m_wide:"Toàn Busan",
+  s_back:"Về đến cảng",s_slack:"Thời gian dư trước giờ lên tàu",s_stops:"Điểm dừng",s_spend:"Chi phí dự kiến (1 người)",min:" phút",places:" điểm",
+  depart:"Xuống tàu",ret:"Quay về",walk:"Đi bộ",taxi:"Taxi",queue:"Xếp hàng",real:"Dữ liệu thành phố",est:"Giờ mở cửa ước tính",hours:"Mở cửa",
+  planb:d=>`<br><b>Xuống tàu trễ 20 phút? Phương án B:</b> bỏ qua ${d}.`,
+  alert:(a,b)=>`<b>Nhắc quay về ${a}</b> Hãy kiểm tra lịch trình còn lại vào lúc này. Rời điểm cuối chậm nhất lúc <b>${b}</b>.`,
+  nofit:"Không có lộ trình phù hợp với thời gian này. Hãy xuống tàu sớm hơn hoặc lên tàu muộn hơn.",
+  snapped:(s,h)=>`Đang hiển thị trường hợp gần nhất (xuống tàu ${s}, có ${h} giờ).`,
+  note_route:"Thời gian xếp hàng là ước tính (không có dữ liệu công khai), tính theo ngày đông khách du thuyền. Trong 1.000 lần mô phỏng, tỉ lệ lỡ tàu là 0% (kế hoạch dư 20 phút).",
+  h_merchant:"Hôm nay mấy giờ khách đến?",lead_merchant:"Từ cùng lịch cập cảng, mỗi quán biết trước số khách du thuyền theo từng giờ. Ví dụ: ngày 8/5/2026, hai tàu lớn cùng cập cảng (7.831 khách).",
+  f_store:"Quán",fcnote:(n)=>`Khoảng ${n} khách trong ngày (giả định 10% dùng ứng dụng, 80% lên bờ)`,note_merchant:"Chạm vào một hàng để xem biểu đồ theo giờ của quán đó.",
+  h_data:"Từ dữ liệu thô đến dịch vụ",lead_data:"Sáu bộ dữ liệu thô qua mã xử lý thành bảng sạch, rồi qua phân tích và mô hình tối ưu để thành dịch vụ này. Chạm vào ô để xem chi tiết.",
+  foot:"Ideathon 2026 “Vị Busan, từ địa phương ra toàn cầu” · Nhóm Lộ trình ẩm thực du thuyền · Bản đồ © OpenStreetMap contributors · Dữ liệu quán: Thành phố Busan"},
+ th:{tag:"เส้นทางอาหารปูซานสำหรับผู้โดยสารเรือสำราญ",tab_route:"เส้นทางของฉัน",tab_merchant:"พยากรณ์ลูกค้าร้าน",tab_data:"แผนผังข้อมูล",
+  h_route:"กินปูซานให้อิ่ม ไม่ตกเรือ",lead_route:"เลือกท่าเรือ เวลาลงเรือ และเวลาขึ้นเรือครั้งสุดท้าย เราคำนวณเส้นทางที่ดีที่สุดผ่านอาหารปูซานที่นักท่องเที่ยวชอบ พร้อมเวลาเปิดร้าน คิว และเวลาเดินทาง",
+  f_term:"ท่าเรือ",f_start:"เวลาลงเรือ",f_board:"ขึ้นเรือไม่เกิน",go:"ดูเส้นทาง",ex:"ตัวอย่าง",ex1:"ท่าเรือเหนือ เต็มวัน",ex2:"ยองโด แวะสั้น",ex3:"ครึ่งวัน",
+  D1:"ท่าเรือสำราญปูซานเหนือ",D2:"ท่าเรือสำราญยองโด",m_core:"เมืองเก่า",m_wide:"ทั่วปูซาน",
+  s_back:"กลับถึงท่าเรือ",s_slack:"เวลาเหลือก่อนขึ้นเรือ",s_stops:"จุดแวะ",s_spend:"ค่าใช้จ่ายโดยประมาณ (ต่อคน)",min:" นาที",places:" แห่ง",
+  depart:"ลงเรือ",ret:"กลับ",walk:"เดิน",taxi:"แท็กซี่",queue:"คิว",real:"ข้อมูลเมือง",est:"เวลาเปิดโดยประมาณ",hours:"เปิด",
+  planb:d=>`<br><b>ลงเรือช้า 20 นาที? แผน B:</b> ข้าม ${d}`,
+  alert:(a,b)=>`<b>เตือนกลับเรือ ${a}</b> ตรวจสอบแผนที่เหลือในเวลานี้ ออกจากจุดสุดท้ายไม่เกิน <b>${b}</b>`,
+  nofit:"ไม่มีเส้นทางที่ตรงกับเวลานี้ ลองลงเรือเร็วขึ้นหรือขึ้นเรือช้าลง",
+  snapped:(s,h)=>`แสดงกรณีที่ใกล้ที่สุด (ลงเรือ ${s} มีเวลา ${h} ชั่วโมง)`,
+  note_route:"เวลาคิวเป็นค่าประมาณ (ไม่มีข้อมูลสาธารณะ) คำนวณจากวันที่ผู้โดยสารเรือสำราญหนาแน่น จากการจำลอง 1,000 ครั้ง โอกาสตกเรือ 0% (เผื่อเวลา 20 นาที)",
+  h_merchant:"วันนี้ลูกค้าจะมากี่โมง?",lead_merchant:"จากตารางเรือเข้าเทียบท่าเดียวกัน แต่ละร้านจะรู้จำนวนผู้โดยสารเรือสำราญที่คาดว่าจะมาในแต่ละชั่วโมง ตัวอย่าง: 8 พ.ค. 2026 เรือใหญ่ 2 ลำ (7,831 คน)",
+  f_store:"ร้าน",fcnote:(n)=>`ประมาณ ${n} คนในวันนั้น (สมมติใช้แอป 10% ขึ้นฝั่ง 80%)`,note_merchant:"แตะแถวในตารางเพื่อดูกราฟรายชั่วโมงของร้านนั้น",
+  h_data:"จากข้อมูลดิบสู่บริการ",lead_data:"ข้อมูลดิบ 6 ชุดผ่านโค้ดประมวลผลเป็นตารางที่จัดระเบียบแล้ว จากนั้นผ่านการวิเคราะห์และแบบจำลองหาค่าเหมาะสมที่สุด จนเป็นบริการนี้ แตะกล่องเพื่อดูรายละเอียด",
+  foot:"ไอเดียธอน 2026 “รสชาติปูซาน จากท้องถิ่นสู่สากล” · ทีมเส้นทางอาหารเรือสำราญ · แผนที่ © OpenStreetMap contributors · ข้อมูลร้าน: นครปูซาน"},
+ id:{tag:"Rute kuliner Busan untuk penumpang kapal pesiar",tab_route:"Rute saya",tab_merchant:"Prakiraan untuk toko",tab_data:"Peta data",
+  h_route:"Kulineran di Busan, tetap tepat waktu ke kapal",lead_route:"Pilih terminal, jam turun kapal, dan batas naik kapal. Kami hitung rute terbaik melewati makanan Busan favorit wisatawan, lengkap dengan jam buka, antrean, dan waktu perjalanan.",
+  f_term:"Terminal",f_start:"Jam turun kapal",f_board:"Batas naik kapal",go:"Lihat rute",ex:"Contoh",ex1:"Pelabuhan Utara, sehari",ex2:"Yeongdo, singgah singkat",ex3:"Setengah hari",
+  D1:"Terminal Kapal Pesiar Pelabuhan Utara",D2:"Terminal Kapal Pesiar Yeongdo",m_core:"Kota tua",m_wide:"Seluruh Busan",
+  s_back:"Kembali ke terminal",s_slack:"Sisa waktu sebelum naik kapal",s_stops:"Tempat",s_spend:"Perkiraan biaya (per orang)",min:" mnt",places:" tempat",
+  depart:"Turun kapal",ret:"Kembali",walk:"Jalan kaki",taxi:"Taksi",queue:"Antre",real:"Data kota",est:"Jam buka perkiraan",hours:"Buka",
+  planb:d=>`<br><b>Turun kapal terlambat 20 menit? Rencana B:</b> lewati ${d}.`,
+  alert:(a,b)=>`<b>Pengingat kembali ${a}</b> Cek sisa jadwal pada jam ini. Tinggalkan tempat terakhir paling lambat pukul <b>${b}</b>.`,
+  nofit:"Tidak ada rute yang cocok. Coba turun kapal lebih awal atau naik kapal lebih lambat.",
+  snapped:(s,h)=>`Menampilkan kasus terdekat (turun ${s}, tersedia ${h} jam).`,
+  note_route:"Waktu antre adalah perkiraan (tidak ada data publik), dihitung untuk hari ramai kapal pesiar. Dalam 1.000 simulasi, peluang ketinggalan kapal 0% (rencana menyisakan 20 menit).",
+  h_merchant:"Jam berapa tamu datang hari ini?",lead_merchant:"Dari jadwal kapal yang sama, setiap toko bisa melihat perkiraan tamu kapal pesiar per jam. Contoh: 8 Mei 2026, dua kapal besar (7.831 penumpang).",
+  f_store:"Toko",fcnote:(n)=>`Sekitar ${n} tamu hari itu (asumsi 10% memakai aplikasi, 80% turun ke darat)`,note_merchant:"Ketuk baris tabel untuk melihat grafik per jam toko itu.",
+  h_data:"Dari data mentah ke layanan ini",lead_data:"Enam data mentah diolah dengan kode menjadi tabel bersih, lalu melalui analisis dan model optimasi hingga menjadi layanan ini. Ketuk kotak untuk detailnya.",
+  foot:"Ideathon 2026 “Rasa Busan, dari Lokal ke Glokal” · Tim Rute Kuliner Kapal Pesiar · Peta © OpenStreetMap contributors · Data toko: Kota Metropolitan Busan"}
 };
 const DATA=window.BBP_DATA, P=Object.fromEntries(DATA.places.map(p=>[p.id,p]));
 let L='ko',MAPK='core';
@@ -370,7 +415,7 @@ function renderMerchant(){
 }
 const tot=id=>Object.values(DATA.forecast[id]).reduce((a,b)=>a+b,0);
 // ----- 데이터 처리 지도 -----
-const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델","결과물"],en:["Raw data","Processing","Clean tables","Analysis · model","Outputs"],zh:["原始数据","处理代码","整理表","分析·模型","成果"],tw:["原始資料","處理程式","整理表","分析·模型","成果"],ja:["元データ","処理コード","整理表","分析・モデル","成果物"]},
+const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델","결과물"],en:["Raw data","Processing","Clean tables","Analysis · model","Outputs"],zh:["原始数据","处理代码","整理表","分析·模型","成果"],tw:["原始資料","處理程式","整理表","分析·模型","成果"],ja:["元データ","処理コード","整理表","分析・モデル","成果物"],vi:["Dữ liệu thô","Mã xử lý","Bảng sạch","Phân tích · mô hình","Kết quả"],th:["ข้อมูลดิบ","โค้ดประมวลผล","ตารางที่จัดแล้ว","วิเคราะห์ · แบบจำลอง","ผลลัพธ์"],id:["Data mentah","Kode olah","Tabel bersih","Analisis · model","Hasil"]},
  nodes:[
   ["r1",0,"크루즈 입출항 신고","Cruise port calls","공공데이터포털 15164568 · CSV(cp949) · 656행×34열 · 2023.1~2026.7","01_원천데이터/data.go.kr/busan_cruise_report/",["p1"]],
   ["r2",0,"외국인 카드소비","Foreign card spending","한국관광데이터랩 외래객 지역별 방한현황 · 6개 구×12개월 · 업종별","01_원천데이터/datalab/",["p2"]],
@@ -396,10 +441,10 @@ const DM={cols:{ko:["원데이터","처리 코드","정제 표","분석·모델"
   ["a4",3,"검증·분산","Validation","1,000회 모의(지각 0%) · 6그룹 분산 배정 · 2척 동시 기항일","03_코드/run_B_model.py · run_dispersion.py",["o2","o3"]],
   ["o1",4,"루트 시간표·지도","Itineraries","6개 시나리오 시간표 · 실제 지도","03_코드/make_itinerary.py",[]],
   ["o2",4,"보고서·발표자료","Report · slides","CSV를 읽어 자동 생성 · 발표 대본 포함","03_코드/문서빌드/",[]],
-  ["o3",4,"Busan Bite Pass","This service","154개 조건 최적 루트 사전 계산 · 상인 예보 · 4개 언어","03_코드/make_service_routes.py · make_service_data.py",[]]
+  ["o3",4,"Busan Bite Pass","This service","154개 조건 최적 루트 사전 계산 · 상인 예보 · 8개 언어","03_코드/make_service_routes.py · make_service_data.py",[]]
  ]};
 let DMSEL='a3';
-const DML={ko:['한 일','파일','다음 단계'],en:['What','File','Feeds into'],zh:['做了什么','文件','下一步'],tw:['做了什麼','檔案','下一步'],ja:['内容','ファイル','次の段階']};
+const DML={ko:['한 일','파일','다음 단계'],en:['What','File','Feeds into'],zh:['做了什么','文件','下一步'],tw:['做了什麼','檔案','下一步'],ja:['内容','ファイル','次の段階'],vi:['Đã làm gì','Tệp','Bước tiếp'],th:['ทำอะไร','ไฟล์','ขั้นต่อไป'],id:['Apa yang dilakukan','Berkas','Lanjut ke']};
 function renderDM(){
   const grid=document.getElementById('dmgrid');
   grid.innerHTML=DM.cols[L].map((h,i)=>`<div class="dm-col"><h4>${h}</h4>${DM.nodes.filter(n=>n[1]===i).map(n=>`<button class="dm-node" data-id="${n[0]}">${L==='ko'?n[2]:(n[3]||n[2])}<small>${(L==='ko'?n[4]:n[4]).split(' · ')[0]}</small></button>`).join('')}</div>`).join('');
